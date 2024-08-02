@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\main.c" />
+    <ClCompile Include="src\engine\log.c" />
+    <ClCompile Include="src\engine\android.c" />
+    <ClCompile Include="src\engine\platform.c" />
+    <ClCompile Include="src\engine\geometry.c" />
+    <ClCompile Include="src\engine\graphics.c" />
+    <ClCompile Include="src\engine\list.c" />
+    <ClCompile Include="src\engine\math.c" />
+    <ClCompile Include="src\engine\physics.c" />
+    <ClCompile Include="src\engine\window.c" />
+    <ClCompile Include="src\engine\time.c" />
+    <ClCompile Include="src\engine\random.c" />
+    <ClCompile Include="src\engine\image.c" />
+    <ClCompile Include="src\engine\sound.c" />
+    <ClCompile Include="src\assets.c" />
+    <ClCompile Include="src\bot.c" />
+    <ClCompile Include="src\button.c" />
+    <ClCompile Include="src\cars.c" />
+    <ClCompile Include="src\checkbox.c" />
+    <ClCompile Include="src\counter.c" />
+    <ClCompile Include="src\global.c" />
+    <ClCompile Include="src\levels.c" />
+    <ClCompile Include="src\wheels.c" />
+    <ClCompile Include="src\scenes\battle.c" />
+    <ClCompile Include="src\scenes\menu.c" />
+    <ClCompile Include="src\scenes\scene.c" />
+    <ClCompile Include="src\util.c" />
+    <ClCompile Include="src\input.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\engine\log.h" />
+    <ClInclude Include="src\engine\android.h" />
+    <ClInclude Include="src\engine\platform.h" />
+    <ClInclude Include="src\engine\geometry.h" />
+    <ClInclude Include="src\engine\graphics.h" />
+    <ClInclude Include="src\engine\list.h" />
+    <ClInclude Include="src\engine\math.h" />
+    <ClInclude Include="src\engine\physics.h" />
+    <ClInclude Include="src\engine\window.h" />
+    <ClInclude Include="src\engine\time.h" />
+    <ClInclude Include="src\engine\random.h" />
+    <ClInclude Include="src\engine\image.h" />
+    <ClInclude Include="src\engine\sound.h" />
+    <ClInclude Include="src\assets.h" />
+    <ClInclude Include="src\bot.h" />
+    <ClInclude Include="src\button.h" />
+    <ClInclude Include="src\cars.h" />
+    <ClInclude Include="src\checkbox.h" />
+    <ClInclude Include="src\counter.h" />
+    <ClInclude Include="src\global.h" />
+    <ClInclude Include="src\levels.h" />
+    <ClInclude Include="src\main.h" />
+    <ClInclude Include="src\wheels.h" />
+    <ClInclude Include="src\scenes\battle.h" />
+    <ClInclude Include="src\scenes\menu.h" />
+    <ClInclude Include="src\scenes\scene.h" />
+    <ClInclude Include="src\util.h" />
+    <ClInclude Include="src\input.h" />
+  </ItemGroup>
+</Project>
