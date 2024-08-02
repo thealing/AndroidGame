@@ -21,6 +21,8 @@ struct Scene
 	void (* enter)();
 	
 	void (* leave)();
+
+	void (* pause)();
 	
 	void (* update)(double delta_time);
 	
@@ -32,6 +34,8 @@ extern Scene g_menu;
 extern Scene g_battle;
 
 void scene_change(Scene* scene);
+
+void scene_pause();
 
 void scene_update(double delta_time);
 

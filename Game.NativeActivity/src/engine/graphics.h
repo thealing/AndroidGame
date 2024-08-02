@@ -49,9 +49,9 @@ struct Color
 	double alpha;
 };
 
-Texture* texture_create_from_image(const Image* image);
+void texture_create_from_image(Texture** texture_pointer, const Image* image);
 
-Texture* texture_create_from_file(const char* path);
+void texture_create_from_file(Texture** texture_pointer, const char* path);
 
 void texture_destroy(Texture* texture);
 

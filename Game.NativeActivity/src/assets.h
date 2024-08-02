@@ -10,6 +10,8 @@ typedef struct Sounds Sounds;
 
 struct Textures
 {
+	Texture* font;
+
 	Texture* laser;
 
 	Texture* level_cave;
@@ -121,8 +123,6 @@ struct Sounds
 extern Textures g_textures;
 
 extern Sounds g_sounds;
-
-void assets_init();
 
 void textures_init();
 

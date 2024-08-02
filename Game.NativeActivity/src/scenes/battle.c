@@ -169,6 +169,8 @@ void battle_init()
 	g_battle.enter = battle_enter;
 	
 	g_battle.leave = battle_leave;
+
+	g_battle.pause = battle_pause;
 	
 	g_battle.update = battle_update;
 	
@@ -295,23 +297,33 @@ void battle_leave()
 	sound_stop(g_sounds.applause);
 }
 
+void battle_pause()
+{
+	if (s_paused)
+	{
+		return;
+	}
+
+	s_paused = true;
+
+	scene_remove_button(s_pause);
+
+	scene_add_button(s_resume);
+
+	scene_add_button(s_back);
+
+	scene_add_button(s_restart);
+
+	sound_pause(g_sounds.music);
+
+	sound_stop(g_sounds.laser);
+}
+
 void battle_update(double delta_time)
 {
 	if (button_was_clicked(s_pause))
 	{
-		s_paused = true;
-
-		scene_remove_button(s_pause);
-
-		scene_add_button(s_resume);
-
-		scene_add_button(s_back);
-
-		scene_add_button(s_restart);
-
-		sound_pause(g_sounds.music);
-
-		sound_stop(g_sounds.laser);
+		battle_pause();
 	}
 
 	if (button_was_clicked(s_resume))

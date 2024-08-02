@@ -24,6 +24,8 @@ void battle_enter();
 
 void battle_leave();
 
+void battle_pause();
+
 void battle_update(double delta_time);
 
 void battle_render();

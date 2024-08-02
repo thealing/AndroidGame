@@ -112,6 +112,8 @@ void menu_init()
 
 	g_menu.leave = menu_leave;
 
+	g_menu.pause = menu_pause;
+
 	g_menu.update = menu_update;
 
 	g_menu.render = menu_render;
@@ -205,6 +207,10 @@ void menu_leave()
 	counter_destroy(s_scores_to_win);
 
 	button_destroy(s_play);
+}
+
+void menu_pause()
+{
 }
 
 void menu_update(double delta_time)

@@ -22,17 +22,20 @@ static const Texture* font_history[GRAPHICS_HISTORY_SIZE];
 
 static int history_index;
 
-Texture* texture_create_from_image(const Image* image)
+void texture_create_from_image(Texture** texture_pointer, const Image* image)
 {
-	Texture* texture = malloc(sizeof(Texture));
+	if (*texture_pointer == NULL)
+	{
+		*texture_pointer = malloc(sizeof(Texture));
+	}
 
-	texture->size = vector_create(image->width, image->height);
+	(*texture_pointer)->size = vector_create(image->width, image->height);
 
-	texture->center = vector_create(image->width / 2.0, image->height / 2.0);
+	(*texture_pointer)->center = vector_create(image->width / 2.0, image->height / 2.0);
 
-	glGenTextures(1, &texture->id);
+	glGenTextures(1, &(*texture_pointer)->id);
 
-	glBindTexture(GL_TEXTURE_2D, texture->id);
+	glBindTexture(GL_TEXTURE_2D, (*texture_pointer)->id);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->width, image->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image->pixels);
 
@@ -45,19 +48,15 @@ Texture* texture_create_from_image(const Image* image)
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
-
-	return texture;
 }
 
-Texture* texture_create_from_file(const char* path)
+void texture_create_from_file(Texture** texture_pointer, const char* path)
 {
 	Image* image = image_load(path);
 
-	Texture* texture = texture_create_from_image(image);
+	texture_create_from_image(texture_pointer, image);
 
 	image_destroy(image);
-
-	return texture;
 }
 
 void texture_destroy(Texture* texture)

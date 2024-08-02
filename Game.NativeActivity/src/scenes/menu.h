@@ -18,6 +18,8 @@ void menu_enter();
 
 void menu_leave();
 
+void menu_pause();
+
 void menu_update(double delta_time);
 
 void menu_render();

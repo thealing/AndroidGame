@@ -6,7 +6,7 @@ static double s_render_fps;
 
 void android_main()
 {
-	bool inited = false;
+	bool started = false;
 
 	double width = 1;
 
@@ -52,6 +52,8 @@ void android_main()
 					}
 					case ANDROID_EVENT_PAUSED:
 					{
+						scene_pause();
+
 						break;
 					}
 					case ANDROID_EVENT_WINDOW_CREATED:
@@ -62,11 +64,25 @@ void android_main()
 
 						graphics_init(e.window_event.window);
 
-						if (!inited)
-						{
-							init();
+						textures_init();
 
-							inited = true;
+						graphics_set_font(g_textures.font);
+
+						graphics_set_camera(&(Rect){ 0, 0, 1280, 720 });
+
+						if (!started)
+						{
+							sounds_init();
+
+							global_init();
+
+							menu_init();
+
+							battle_init();
+
+							scene_change(&g_menu);
+
+							started = true;
 						}
 
 						break;
@@ -132,23 +148,6 @@ void android_main()
 
 		sleep(fmin(last_update_time + update_delta - current_time, last_render_time + render_delta - current_time));
 	}
-}
-
-void init()
-{
-	assets_init();
-
-	global_init();
-
-	menu_init();
-
-	battle_init();
-
-	graphics_set_font(texture_create_from_file("images/font.png"));
-
-	graphics_set_camera(&(Rect){ 0, 0, 1280, 720 });
-
-	scene_change(&g_menu);
 }
 
 void update(double delta_time)

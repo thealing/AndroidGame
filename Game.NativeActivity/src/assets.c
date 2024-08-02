@@ -8,7 +8,7 @@ static void create_blue_red_textures(Texture* textures[2], const char* path)
 {
 	Image* image = image_load(path);
 
-	textures[0] = texture_create_from_image(image);
+	texture_create_from_image(&textures[0], image);
 
 	for (int i = 0; i < image->height; i++)
 	{
@@ -38,39 +38,34 @@ static void create_blue_red_textures(Texture* textures[2], const char* path)
 		}
 	}
 
-	textures[1] = texture_create_from_image(image);
+	texture_create_from_image(&textures[1], image);
 
 	image_destroy(image);
 }
 
-void assets_init()
-{
-	textures_init();
-
-	sounds_init();
-}
-
 void textures_init()
 {
-	g_textures.laser = texture_create_from_file("images/laser.png");
+	texture_create_from_file(&g_textures.font, "images/font.png");
+
+	texture_create_from_file(&g_textures.laser, "images/laser.png");
 
 	texture_resize(g_textures.laser, vector_create(1300, 4));
 
-	g_textures.level_cave = texture_create_from_file("images/levels/cave.png");
+	texture_create_from_file(&g_textures.level_cave, "images/levels/cave.png");
 
-	g_textures.level_tunnel = texture_create_from_file("images/levels/tunnel.png");
+	texture_create_from_file(&g_textures.level_tunnel, "images/levels/tunnel.png");
 
-	g_textures.level_desert_cave = texture_create_from_file("images/levels/desert_cave.png");
+	texture_create_from_file(&g_textures.level_desert_cave, "images/levels/desert_cave.png");
 
-	g_textures.level_desert_tunnel = texture_create_from_file("images/levels/desert_tunnel.png");
+	texture_create_from_file(&g_textures.level_desert_tunnel, "images/levels/desert_tunnel.png");
 
-	g_textures.level_ramp = texture_create_from_file("images/levels/ramp.png");
+	texture_create_from_file(&g_textures.level_ramp, "images/levels/ramp.png");
 
-	g_textures.level_gap = texture_create_from_file("images/levels/gap.png");
+	texture_create_from_file(&g_textures.level_gap, "images/levels/gap.png");
 
-	g_textures.plank = texture_create_from_file("images/cars/plank.png");
+	texture_create_from_file(&g_textures.plank, "images/cars/plank.png");
 
-	g_textures.garbage = texture_create_from_file("images/cars/garbage.png");
+	texture_create_from_file(&g_textures.garbage, "images/cars/garbage.png");
 
 	create_blue_red_textures(g_textures.car_monster_truck, "images/cars/monster_truck.png");
 
@@ -110,21 +105,21 @@ void textures_init()
 
 	create_blue_red_textures(g_textures.garbage_lid, "images/cars/garbage_lid.png");
 
-	g_textures.overlay = texture_create_from_file("images/overlay.png");
+	texture_create_from_file(&g_textures.overlay, "images/overlay.png");
 
-	g_textures.ui_checked = texture_create_from_file("images/ui/checked.png");
+	texture_create_from_file(&g_textures.ui_checked, "images/ui/checked.png");
 
-	g_textures.ui_unchecked = texture_create_from_file("images/ui/unchecked.png");
+	texture_create_from_file(&g_textures.ui_unchecked, "images/ui/unchecked.png");
 
-	g_textures.ui_arrow_pressed = texture_create_from_file("images/ui/arrow_pressed.png");
+	texture_create_from_file(&g_textures.ui_arrow_pressed, "images/ui/arrow_pressed.png");
 
-	g_textures.ui_arrow_released = texture_create_from_file("images/ui/arrow_released.png");
+	texture_create_from_file(&g_textures.ui_arrow_released, "images/ui/arrow_released.png");
 
-	g_textures.ui_arrow_disabled = texture_create_from_file("images/ui/arrow_disabled.png");
+	texture_create_from_file(&g_textures.ui_arrow_disabled, "images/ui/arrow_disabled.png");
 
-	g_textures.ui_star_opaque = texture_create_from_file("images/ui/star_opaque.png");
+	texture_create_from_file(&g_textures.ui_star_opaque, "images/ui/star_opaque.png");
 
-	g_textures.ui_star_translucent = texture_create_from_file("images/ui/star_translucent.png");
+	texture_create_from_file(&g_textures.ui_star_translucent, "images/ui/star_translucent.png");
 
 	g_textures.ui_star_opaque->center.y = 56;
 
@@ -134,21 +129,21 @@ void textures_init()
 
 	texture_resize(g_textures.ui_star_translucent, vector_create(50, 50));
 
-	g_textures.ui_play_pressed = texture_create_from_file("images/ui/play_pressed.png");
+	texture_create_from_file(&g_textures.ui_play_pressed, "images/ui/play_pressed.png");
 
-	g_textures.ui_play_released = texture_create_from_file("images/ui/play_released.png");
+	texture_create_from_file(&g_textures.ui_play_released, "images/ui/play_released.png");
 
-	g_textures.ui_pause_pressed = texture_create_from_file("images/ui/pause_pressed.png");
+	texture_create_from_file(&g_textures.ui_pause_pressed, "images/ui/pause_pressed.png");
 
-	g_textures.ui_pause_released = texture_create_from_file("images/ui/pause_released.png");
+	texture_create_from_file(&g_textures.ui_pause_released, "images/ui/pause_released.png");
 
-	g_textures.ui_restart_pressed = texture_create_from_file("images/ui/restart_pressed.png");
+	texture_create_from_file(&g_textures.ui_restart_pressed, "images/ui/restart_pressed.png");
 
-	g_textures.ui_restart_released = texture_create_from_file("images/ui/restart_released.png");
+	texture_create_from_file(&g_textures.ui_restart_released, "images/ui/restart_released.png");
 
-	g_textures.ui_back_pressed = texture_create_from_file("images/ui/back_pressed.png");
+	texture_create_from_file(&g_textures.ui_back_pressed, "images/ui/back_pressed.png");
 
-	g_textures.ui_back_released = texture_create_from_file("images/ui/back_released.png");
+	texture_create_from_file(&g_textures.ui_back_released, "images/ui/back_released.png");
 
 	create_blue_red_textures(g_textures.ui_brake_pressed, "images/ui/left_pressed.png");
 
