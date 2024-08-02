@@ -114,6 +114,8 @@ void menu_init()
 
 	g_menu.pause = menu_pause;
 
+	g_menu.resume = menu_resume;
+
 	g_menu.update = menu_update;
 
 	g_menu.render = menu_render;
@@ -211,6 +213,12 @@ void menu_leave()
 
 void menu_pause()
 {
+	sound_pause(g_sounds.intro);
+}
+
+void menu_resume()
+{
+	sound_resume(g_sounds.intro);
 }
 
 void menu_update(double delta_time)

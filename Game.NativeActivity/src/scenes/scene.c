@@ -44,6 +44,11 @@ void scene_pause()
 	s_scene->pause();
 }
 
+void scene_resume()
+{
+	s_scene->resume();
+}
+
 void scene_update(double delta_time)
 {
 	if (s_scene != NULL)

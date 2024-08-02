@@ -48,6 +48,11 @@ void android_main()
 				{
 					case ANDROID_EVENT_RESUMED:
 					{
+						if (started)
+						{
+							scene_resume();
+						}
+
 						break;
 					}
 					case ANDROID_EVENT_PAUSED:

@@ -172,6 +172,8 @@ void battle_init()
 
 	g_battle.pause = battle_pause;
 	
+	g_battle.resume = battle_resume;
+	
 	g_battle.update = battle_update;
 	
 	g_battle.render = battle_render;
@@ -317,6 +319,10 @@ void battle_pause()
 	sound_pause(g_sounds.music);
 
 	sound_stop(g_sounds.laser);
+}
+
+void battle_resume()
+{
 }
 
 void battle_update(double delta_time)
