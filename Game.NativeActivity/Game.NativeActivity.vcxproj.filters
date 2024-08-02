@@ -15,7 +15,7 @@
     <ClCompile Include="src\engine\random.c" />
     <ClCompile Include="src\engine\image.c" />
     <ClCompile Include="src\engine\sound.c" />
-    <ClCompile Include="src\assets.c" />
+    <ClCompile Include="src\textures.c" />
     <ClCompile Include="src\bot.c" />
     <ClCompile Include="src\button.c" />
     <ClCompile Include="src\cars.c" />
@@ -29,6 +29,7 @@
     <ClCompile Include="src\scenes\scene.c" />
     <ClCompile Include="src\util.c" />
     <ClCompile Include="src\input.c" />
+    <ClCompile Include="src\sounds.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\engine\log.h" />
@@ -44,7 +45,7 @@
     <ClInclude Include="src\engine\random.h" />
     <ClInclude Include="src\engine\image.h" />
     <ClInclude Include="src\engine\sound.h" />
-    <ClInclude Include="src\assets.h" />
+    <ClInclude Include="src\textures.h" />
     <ClInclude Include="src\bot.h" />
     <ClInclude Include="src\button.h" />
     <ClInclude Include="src\cars.h" />
@@ -59,5 +60,6 @@
     <ClInclude Include="src\scenes\scene.h" />
     <ClInclude Include="src\util.h" />
     <ClInclude Include="src\input.h" />
+    <ClInclude Include="src\sounds.h" />
   </ItemGroup>
 </Project>

@@ -20,6 +20,8 @@ static int s_counter_count;
 
 void scene_change(Scene* scene)
 {
+	sounds_stop_all();
+
 	if (s_scene != NULL)
 	{
 		s_scene->leave();

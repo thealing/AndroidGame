@@ -110,12 +110,26 @@ void sound_stop(Sound* sound)
 
 void sound_pause(Sound* sound)
 {
-	(*sound->play_itf)->SetPlayState(sound->play_itf, SL_PLAYSTATE_PAUSED);
+	SLuint32 play_state;
+
+	(*sound->play_itf)->GetPlayState(sound->play_itf, &play_state);
+
+	if (play_state == SL_PLAYSTATE_PLAYING)
+	{
+		(*sound->play_itf)->SetPlayState(sound->play_itf, SL_PLAYSTATE_PAUSED);
+	}
 }
 
 void sound_resume(Sound* sound)
 {
-	(*sound->play_itf)->SetPlayState(sound->play_itf, SL_PLAYSTATE_PLAYING);
+	SLuint32 play_state;
+
+	(*sound->play_itf)->GetPlayState(sound->play_itf, &play_state);
+
+	if (play_state == SL_PLAYSTATE_PAUSED)
+	{
+		(*sound->play_itf)->SetPlayState(sound->play_itf, SL_PLAYSTATE_PLAYING);
+	}
 }
 
 bool sound_is_looping(Sound* sound)

@@ -1,6 +1,8 @@
 #pragma once
 
-#include "assets.h"
+#include "textures.h"
+
+#include "sounds.h"
 
 #include "util.h"
 

@@ -1,8 +1,6 @@
-#include "assets.h"
+#include "textures.h"
 
 Textures g_textures;
-
-Sounds g_sounds;
 
 static void create_blue_red_textures(Texture* textures[2], const char* path)
 {
@@ -152,29 +150,4 @@ void textures_init()
 	create_blue_red_textures(g_textures.ui_gas_pressed, "images/ui/right_pressed.png");
 
 	create_blue_red_textures(g_textures.ui_gas_released, "images/ui/right_released.png");
-}
-
-void sounds_init()
-{
-	g_sounds.intro = sound_load("sounds/intro.mp2");
-
-	g_sounds.music = sound_load("sounds/music.mp3");
-
-	g_sounds.airhorn = sound_load("sounds/airhorn.mp3");
-
-	g_sounds.applause = sound_load("sounds/applause.mp3");
-
-	g_sounds.blip = sound_load("sounds/blip.mp3");
-
-	g_sounds.click = sound_load("sounds/click.mp3");
-
-	g_sounds.click2 = sound_load("sounds/click2.mp3");
-
-	g_sounds.laser = sound_load("sounds/laser.mp2");
-
-	sound_set_volume(g_sounds.intro, 0.6);
-
-	sound_set_volume(g_sounds.laser, 0.4);
-
-	sound_set_volume(g_sounds.airhorn, 0.5);
 }

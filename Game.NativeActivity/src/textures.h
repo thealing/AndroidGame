@@ -2,11 +2,7 @@
 
 #include "engine/graphics.h"
 
-#include "engine/sound.h"
-
 typedef struct Textures Textures;
-
-typedef struct Sounds Sounds;
 
 struct Textures
 {
@@ -101,29 +97,6 @@ struct Textures
 	Texture* ui_gas_released[2];
 };
 
-struct Sounds
-{
-	Sound* intro;
-
-	Sound* music;
-
-	Sound* airhorn;
-
-	Sound* applause;
-
-	Sound* blip;
-
-	Sound* click;
-
-	Sound* click2;
-
-	Sound* laser;
-};
-
 extern Textures g_textures;
 
-extern Sounds g_sounds;
-
 void textures_init();
-
-void sounds_init();

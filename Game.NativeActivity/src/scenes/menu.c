@@ -213,20 +213,18 @@ void menu_leave()
 
 void menu_pause()
 {
-	sound_pause(g_sounds.intro);
+	sounds_pause_all();
 }
 
 void menu_resume()
 {
-	sound_resume(g_sounds.intro);
+	sounds_resume_all();
 }
 
 void menu_update(double delta_time)
 {
 	if (button_was_clicked(s_play))
 	{
-		sound_stop(g_sounds.intro);
-
 		scene_change(&g_battle);
 
 		return;

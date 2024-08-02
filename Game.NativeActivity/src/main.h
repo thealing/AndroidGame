@@ -16,8 +16,6 @@
 
 void android_main();
 
-void init();
-
 void update(double delta_time);
 
 void render();

@@ -293,10 +293,6 @@ void battle_leave()
 	button_destroy(s_big_back);
 
 	button_destroy(s_big_restart);
-
-	sound_stop(g_sounds.airhorn);
-
-	sound_stop(g_sounds.applause);
 }
 
 void battle_pause()
@@ -316,13 +312,27 @@ void battle_pause()
 
 	scene_add_button(s_restart);
 
-	sound_pause(g_sounds.music);
-
-	sound_stop(g_sounds.laser);
+	sounds_pause_all();
 }
 
 void battle_resume()
 {
+	if (!s_paused)
+	{
+		return;
+	}
+
+	s_paused = false;
+
+	scene_remove_button(s_resume);
+
+	scene_remove_button(s_back);
+
+	scene_remove_button(s_restart);
+
+	scene_add_button(s_pause);
+
+	sounds_resume_all();
 }
 
 void battle_update(double delta_time)
@@ -334,17 +344,7 @@ void battle_update(double delta_time)
 
 	if (button_was_clicked(s_resume))
 	{
-		s_paused = false;
-
-		scene_remove_button(s_resume);
-
-		scene_remove_button(s_back);
-
-		scene_remove_button(s_restart);
-
-		scene_add_button(s_pause);
-
-		sound_resume(g_sounds.music);
+		battle_resume();
 	}
 
 	if (button_was_clicked(s_back) || button_was_clicked(s_big_back))

@@ -35,8 +35,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\sounds.c" />
     <ClCompile Include="src\input.c" />
-    <ClCompile Include="src\assets.c" />
+    <ClCompile Include="src\textures.c" />
     <ClCompile Include="src\bot.c" />
     <ClCompile Include="src\button.c" />
     <ClCompile Include="src\cars.c" />
@@ -65,8 +66,9 @@
     <ClCompile Include="src\util.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\sounds.h" />
     <ClInclude Include="src\input.h" />
-    <ClInclude Include="src\assets.h" />
+    <ClInclude Include="src\textures.h" />
     <ClInclude Include="src\bot.h" />
     <ClInclude Include="src\button.h" />
     <ClInclude Include="src\cars.h" />
