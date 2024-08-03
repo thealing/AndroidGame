@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdbool.h>
+
 typedef enum Android_Event_Type Android_Event_Type;
 
 typedef struct Android_Activity_Event Android_Activity_Event;
@@ -15,8 +17,6 @@ typedef struct Android_Event_Node Android_Event_Node;
 enum Android_Event_Type 
 {
 	ANDROID_EVENT_UNKNOWN,
-
-	ANDROID_EVENT_STOPPED,
 
 	ANDROID_EVENT_RESUMED,
 
@@ -66,6 +66,6 @@ struct Android_Event_Node
 	Android_Event_Node* next;
 };
 
-int android_poll_event(Android_Event* event);
+bool android_poll_event(Android_Event* event);
 
 void android_main();

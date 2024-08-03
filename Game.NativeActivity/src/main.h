@@ -6,6 +6,8 @@
 
 #include "engine/random.h"
 
+#include "engine/log.h"
+
 #include "engine/time.h"
 
 #include "scenes/menu.h"

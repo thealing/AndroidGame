@@ -44,6 +44,8 @@ void android_main()
 
 			while (android_poll_event(&e))
 			{
+				log_info("%d", e.type);
+
 				switch (e.type)
 				{
 					case ANDROID_EVENT_RESUMED:

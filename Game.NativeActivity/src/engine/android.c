@@ -2,6 +2,8 @@
 
 #include "platform.h"
 
+static bool started;
+
 static pthread_t thread;
 
 static pthread_mutex_t mutex;
@@ -128,11 +130,9 @@ static void on_destroy(ANativeActivity* activity)
 {
 	pthread_mutex_lock(&mutex);
 
-	push_event(&(Android_Event){ .type = ANDROID_EVENT_STOPPED });
+	push_event(&(Android_Event){ .type = ANDROID_EVENT_PAUSED });
 
 	pthread_mutex_unlock(&mutex);
-
-	pthread_join(thread, NULL);
 }
 
 static void on_start(ANativeActivity* activity)
@@ -212,18 +212,23 @@ __attribute__((visibility("default"))) void ANativeActivity_onCreate(ANativeActi
 
 	activity->callbacks->onInputQueueDestroyed = on_input_queue_destroyed;
 
-	pthread_mutex_init(&mutex, NULL);
+	if (!started)
+	{
+		started = true;
 
-	pthread_create(&thread, NULL, entry, activity);
+		pthread_mutex_init(&mutex, NULL);
+
+		pthread_create(&thread, NULL, entry, activity);
+	}
 }
 
-int android_poll_event(Android_Event* event)
+bool android_poll_event(Android_Event* event)
 {
 	pthread_mutex_lock(&mutex);
 
 	collect_input_events();
 
-	int result = first != NULL;
+	bool result = first != NULL;
 
 	if (result) 
 	{

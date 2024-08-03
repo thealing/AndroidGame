@@ -13,6 +13,11 @@ struct Sound
 	SLVolumeItf volume_itf;
 };
 
+static void player_callback(SLPlayItf caller, void *context, SLuint32 event)
+{
+	(*caller)->SetPlayState(caller, SL_PLAYSTATE_STOPPED);
+}
+
 Sound* sound_load(const char* path)
 {
 	static SLObjectItf engine_obj;
@@ -76,6 +81,10 @@ Sound* sound_load(const char* path)
 
 	(*player_obj)->GetInterface(player_obj, SL_IID_VOLUME, &volume_itf);
 
+	(*play_itf)->RegisterCallback(play_itf, player_callback, NULL);
+
+	(*play_itf)->SetCallbackEventsMask(play_itf, SL_PLAYEVENT_HEADATEND);
+
 	Sound* sound = malloc(sizeof(Sound));
 
 	sound->player_obj = player_obj;
@@ -98,7 +107,7 @@ void sound_destroy(Sound* sound)
 
 void sound_play(Sound* sound)
 {
-	(*sound->play_itf)->SetPlayState(sound->play_itf, SL_PLAYSTATE_STOPPED);
+	(*sound->seek_itf)->SetPosition(sound->seek_itf, 0, SL_SEEKMODE_ACCURATE);
 
 	(*sound->play_itf)->SetPlayState(sound->play_itf, SL_PLAYSTATE_PLAYING);
 }
