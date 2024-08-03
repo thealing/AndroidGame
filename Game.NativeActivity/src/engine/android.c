@@ -135,20 +135,20 @@ static void on_destroy(ANativeActivity* activity)
 	pthread_mutex_unlock(&mutex);
 }
 
-static void on_start(ANativeActivity* activity)
-{
-	pthread_mutex_lock(&mutex);
-
-	push_event(&(Android_Event){ .type = ANDROID_EVENT_RESUMED });
-
-	pthread_mutex_unlock(&mutex);
-}
-
-static void on_stop(ANativeActivity* activity)
+static void on_pause(ANativeActivity* activity)
 {
 	pthread_mutex_lock(&mutex);
 
 	push_event(&(Android_Event){ .type = ANDROID_EVENT_PAUSED });
+
+	pthread_mutex_unlock(&mutex);
+}
+
+static void on_resume(ANativeActivity* activity)
+{
+	pthread_mutex_lock(&mutex);
+
+	push_event(&(Android_Event){ .type = ANDROID_EVENT_RESUMED });
 
 	pthread_mutex_unlock(&mutex);
 }
@@ -200,9 +200,9 @@ __attribute__((visibility("default"))) void ANativeActivity_onCreate(ANativeActi
 {
 	activity->callbacks->onDestroy = on_destroy;
 
-	activity->callbacks->onStart = on_start;
+	activity->callbacks->onPause = on_pause;
 
-	activity->callbacks->onStop = on_stop;
+	activity->callbacks->onResume = on_resume;
 
 	activity->callbacks->onNativeWindowCreated = on_native_window_created;
 

@@ -297,7 +297,9 @@ void battle_leave()
 
 void battle_pause()
 {
-	if (s_paused)
+	sounds_pause_all();
+
+	if (s_paused || s_over)
 	{
 		return;
 	}
@@ -311,12 +313,12 @@ void battle_pause()
 	scene_add_button(s_back);
 
 	scene_add_button(s_restart);
-
-	sounds_pause_all();
 }
 
 void battle_resume()
 {
+	sounds_resume_all();
+
 	if (!s_paused)
 	{
 		return;
@@ -331,8 +333,6 @@ void battle_resume()
 	scene_remove_button(s_restart);
 
 	scene_add_button(s_pause);
-
-	sounds_resume_all();
 }
 
 void battle_update(double delta_time)
