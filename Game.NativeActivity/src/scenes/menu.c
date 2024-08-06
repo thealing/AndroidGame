@@ -48,7 +48,7 @@ static void draw_car(Vector center, Vector bottom, double scale, Car* car)
 	{
 		graphics_translate(center);
 
-		graphics_scale(create_diagonal(scale));
+		graphics_scale(create_isotropic_vector(scale));
 
 		car_render(car);
 	}
@@ -59,7 +59,7 @@ static void draw_car(Vector center, Vector bottom, double scale, Car* car)
 
 	graphics_translate(bottom);
 
-	graphics_scale(create_diagonal(64));
+	graphics_scale(create_isotropic_vector(64));
 
 	graphics_set_color(&(Color){ 0, 0, 0, 1 });
 
@@ -86,7 +86,7 @@ static void draw_level(Vector center, Vector bottom, double scale)
 	{
 		graphics_translate(vector_subtract(center, vector_create(scale * 640, scale * 360)));
 
-		graphics_scale(create_diagonal(scale));
+		graphics_scale(create_isotropic_vector(scale));
 
 		level_render(s_levels[g_selected_level - 1]);
 	}
@@ -97,7 +97,7 @@ static void draw_level(Vector center, Vector bottom, double scale)
 
 	graphics_translate(bottom);
 
-	graphics_scale(create_diagonal(64));
+	graphics_scale(create_isotropic_vector(64));
 
 	graphics_set_color(&(Color){ 0, 0, 0, 1 });
 

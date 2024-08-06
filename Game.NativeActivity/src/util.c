@@ -1,8 +1,13 @@
 #include "util.h"
 
-Vector create_diagonal(double value)
+Vector create_isotropic_vector(double value)
 {
 	return vector_create(value, value);
+}
+
+Shape* create_rect_shape(Vector min, Vector max)
+{
+	return shape_create_polygon(4, (Vector[]){ { min.x, min.y }, { max.x, min.y }, { max.x, max.y }, { min.x, max.y } });
 }
 
 Shape* move_shape(Shape* shape)
@@ -17,11 +22,6 @@ Shape* move_shape(Shape* shape)
 	old_shape = shape;
 
 	return shape;
-}
-
-Shape* create_rect_shape(Vector min, Vector max)
-{
-	return shape_create_polygon(4, (Vector[]){ { min.x, min.y }, { max.x, min.y }, { max.x, max.y }, { min.x, max.y } });
 }
 
 void set_texture_and_color(const Texture* texture, const Color* color)
@@ -61,26 +61,20 @@ void draw_physics_world(const Physics_World* world)
 
 void draw_physics_body(const Physics_Body* body)
 {
+	graphics_save_transform();
+
+	graphics_translate(body->position);
+
+	graphics_rotate(body->angle);
+
 	for (const List_Node* collider_node = body->collider_list.first; collider_node != NULL; collider_node = collider_node->next)
 	{
 		const Physics_Collider* collider = collider_node->item;
 
-		draw_physics_collider(collider);
+		graphics_draw_shape(collider->local_shape, false);
 	}
-}
 
-void draw_physics_collider(const Physics_Collider* collider)
-{
-	graphics_draw_shape(collider->world_shape, false);
-
-	if (collider->world_shape->type == SHAPE_TYPE_CIRCLE)
-	{
-		const Circle* circle = &collider->world_shape->circle;
-
-		double angle = collider->body->angle;
-
-		graphics_draw_segment(&(Segment){ circle->center, vector_add(circle->center, vector_create(circle->radius * cos(angle), circle->radius * sin(angle))) }, false);
-	}
+	graphics_load_transform();
 }
 
 void draw_physics_joint(const Physics_Joint* joint)

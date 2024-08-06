@@ -498,7 +498,7 @@ void battle_render()
 
 	car_render(s_red_car);
 
-	//draw_physics_world(s_world);
+	draw_physics_world(s_world);
 
 	for (int i = 0; i < g_max_score; i++)
 	{
@@ -534,7 +534,7 @@ void battle_render()
 
 		graphics_translate(vector_create(640, 360));
 		
-		graphics_scale(create_diagonal(100 * (1 + fabs(frac(s_win_time) - 0.5) * 0.3)));
+		graphics_scale(create_isotropic_vector(100 * (1 + fabs(frac(s_win_time) - 0.5) * 0.3)));
 
 		switch (s_winner)
 		{
