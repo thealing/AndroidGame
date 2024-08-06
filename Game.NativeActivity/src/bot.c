@@ -53,7 +53,7 @@ void bot_update(Bot* bot, bool in_air, double bot_location, double bot_angle, Ve
 			bot->backward = false;
 		}
 
-		if (fabs(bot_location - enemy_location) < 250 && random_int_below(6) == 0)
+		if (fabs(bot_location - enemy_location) < 200 && random_int_below(6) == 0)
 		{
 			bot->forward ^= bot->backward;
 

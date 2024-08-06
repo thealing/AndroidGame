@@ -14,6 +14,43 @@ static const Vector s_ramp_bottom[] = {{76,378},{76,347},{80,313},{88,279},{102,
 
 static const Vector s_gap_bottom[] = {{75,380},{76,350},{80,320},{85,289},{93,264},{106,234},{122,206},{141,178},{165,152},{187,131},{224,107},{260,89},{299,77},{310,75},{354,75},{400,80},{435,91},{466,105},{500,124},{530,147},{530,29},{740,29},{740,150},{764,130},{786,115},{810,102},{840,90},{875,80},{910,74},{964,73},{1000,83},{1030,94},{1059,110},{1090,132},{1116,155},{1141,184},{1164,215},{1178,245},{1190,275},{1198,310},{1202,348},{1203,381}};
 
+static void add_polygon(Level* level, int group, double friction, const Vector* hitbox, int hitbox_length)
+{
+	Shape* shape = shape_create_polygon(hitbox_length, hitbox);
+
+	Physics_Collider* collider = physics_collider_create(level->body, move_shape(shape), 1);
+
+	collider->static_friction = friction;
+
+	collider->dynamic_friction = friction;
+
+	collider->filter_group = group;
+}
+
+static void add_ground(Level* level, int group, double friction, double y, const Vector* hitbox, int hitbox_length)
+{
+	for (int i = 0; i + 1 < hitbox_length; i++)
+	{
+		Vector a = hitbox[i];
+
+		Vector b = hitbox[i + 1];
+
+		Vector c = vector_create(b.y >= a.y ? b.x + 10 : b.x, y);
+
+		Vector d = vector_create(a.y >= b.y ? a.x - 10 : a.x, y);
+
+		Shape* shape = shape_create_polygon(4, (Vector[]){ a, b, c, d });
+
+		Physics_Collider* collider = physics_collider_create(level->body, move_shape(shape), 1);
+
+		collider->static_friction = friction;
+
+		collider->dynamic_friction = friction;
+
+		collider->filter_group = group;
+	}
+}
+
 Level* level_create(Level_Type type, Physics_World* world, int group)
 {
 	Level* level = calloc(1, sizeof(Level));
@@ -22,173 +59,37 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 	if (type == LEVEL_TYPE_CAVE || type == LEVEL_TYPE_TUNNEL)
 	{
-		for (int i = 0; i + 1 < countof(s_cave_bottom); i++)
-		{
-			Vector a = s_cave_bottom[i];
-
-			Vector b = s_cave_bottom[i + 1];
-
-			Vector c = vector_create(b.y > a.y ? b.x + 10 : b.x, 0);
-
-			Vector d = vector_create(a.y > b.y ? a.x - 10 : a.x, 0);
-
-			Shape* shape = shape_create_polygon(4, (Vector[]){ a, b, c, d });
-
-			Physics_Collider* collider = physics_collider_create(level->body, shape, 1);
-
-			collider->static_friction = 0.8;
-
-			collider->dynamic_friction = 0.8;
-
-			collider->filter_group = group;
-
-			shape_destroy(shape);
-		}
+		add_ground(level, group, 0.8, 0, s_cave_bottom, countof(s_cave_bottom));
 	}
 
 	if (type == LEVEL_TYPE_DESERT_CAVE || type == LEVEL_TYPE_DESERT_TUNNEL)
 	{
-		for (int i = 0; i + 1 < countof(s_desert_bottom); i++)
-		{
-			Vector a = s_desert_bottom[i];
-
-			Vector b = s_desert_bottom[i + 1];
-
-			Vector c = vector_create(b.y > a.y ? b.x + 10 : b.x, 0);
-
-			Vector d = vector_create(a.y > b.y ? a.x - 10 : a.x, 0);
-
-			Shape* shape = shape_create_polygon(4, (Vector[]){ a, b, c, d });
-
-			Physics_Collider* collider = physics_collider_create(level->body, shape, 1);
-
-			collider->static_friction = 0.4;
-
-			collider->dynamic_friction = 0.4;
-
-			collider->filter_group = group;
-
-			shape_destroy(shape);
-		}
+		add_ground(level, group, 0.4, 0, s_desert_bottom, countof(s_desert_bottom));
 	}
 
 	if (type == LEVEL_TYPE_TUNNEL || type == LEVEL_TYPE_DESERT_TUNNEL)
 	{
-		Shape* shape = shape_create_polygon(countof(s_center), s_center);
-
-		Physics_Collider* collider = physics_collider_create(level->body, shape, 1);
-
-		collider->static_friction = 0.8;
-
-		collider->dynamic_friction = 0.8;
-
-		collider->filter_group = group;
-
-		shape_destroy(shape);
+		add_polygon(level, group, 0.8, s_center, countof(s_center));
 	}
 
 	if (type == LEVEL_TYPE_DESERT_TUNNEL)
 	{
-		for (int i = 0; i + 1 < countof(s_desert_on_center); i++)
-		{
-			Vector a = s_desert_on_center[i];
-
-			Vector b = s_desert_on_center[i + 1];
-
-			Vector c = vector_create(b.y > a.y ? b.x + 10 : b.x, 360);
-
-			Vector d = vector_create(a.y > b.y ? a.x - 10 : a.x, 360);
-
-			Shape* shape = shape_create_polygon(4, (Vector[]){ a, b, c, d });
-
-			Physics_Collider* collider = physics_collider_create(level->body, shape, 1);
-
-			collider->static_friction = 0.4;
-
-			collider->dynamic_friction = 0.4;
-
-			collider->filter_group = group;
-
-			shape_destroy(shape);
-		}
+		add_ground(level, group, 0.4, 360, s_desert_on_center, countof(s_desert_on_center));
 	}
 
 	if (type == LEVEL_TYPE_RAMP)
 	{
-		for (int i = 0; i + 1 < countof(s_ramp_bottom); i++)
-		{
-			Vector a = s_ramp_bottom[i];
-
-			Vector b = s_ramp_bottom[i + 1];
-
-			Vector c = vector_create(b.y > a.y ? b.x + 10 : b.x, 0);
-
-			Vector d = vector_create(a.y > b.y ? a.x - 10 : a.x, 0);
-
-			Shape* shape = shape_create_polygon(4, (Vector[]){ a, b, c, d });
-
-			Physics_Collider* collider = physics_collider_create(level->body, shape, 1);
-
-			collider->static_friction = 0.8;
-
-			collider->dynamic_friction = 0.8;
-
-			collider->filter_group = group;
-
-			shape_destroy(shape);
-		}
+		add_ground(level, group, 0.8, 0, s_ramp_bottom, countof(s_ramp_bottom));
 	}
 
 	if (type == LEVEL_TYPE_GAP)
 	{
-		for (int i = 0; i + 1 < countof(s_gap_bottom); i++)
-		{
-			Vector a = s_gap_bottom[i];
-
-			Vector b = s_gap_bottom[i + 1];
-
-			Vector c = vector_create(i != 18 && b.y > a.y ? b.x + 10 : b.x, 0);
-
-			Vector d = vector_create(i != 22 && a.y > b.y ? a.x - 10 : a.x, 0);
-
-			Shape* shape = shape_create_polygon(4, (Vector[]){ a, b, c, d });
-
-			Physics_Collider* collider = physics_collider_create(level->body, shape, 1);
-
-			collider->static_friction = 0.8;
-
-			collider->dynamic_friction = 0.8;
-
-			collider->filter_group = group;
-
-			shape_destroy(shape);
-		}
+		add_ground(level, group, 0.8, 0, s_gap_bottom, countof(s_gap_bottom));
 	}
 
 	if (true)
 	{
-		for (int i = 0; i + 1 < countof(s_cave_top); i++)
-		{
-			Vector a = s_cave_top[i];
-
-			Vector b = s_cave_top[i + 1];
-
-			Vector c = vector_create(b.y > a.y ? b.x + 10 : b.x, 720);
-
-			Vector d = vector_create(a.y > b.y ? a.x - 10 : a.x, 720);
-
-			Shape* shape = shape_create_polygon(4, (Vector[]){ a, b, c, d });
-
-			Physics_Collider* collider = physics_collider_create(level->body, shape, 1);
-
-			collider->static_friction = 0.8;
-
-			collider->dynamic_friction = 0.8;
-
-			collider->filter_group = group;
-
-			shape_destroy(shape);
-		}
+		add_ground(level, group, 0.8, 720, s_cave_top, countof(s_cave_top));
 	}
 
 	switch (type)
