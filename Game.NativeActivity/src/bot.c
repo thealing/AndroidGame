@@ -39,49 +39,23 @@ void bot_update(Bot* bot, bool in_air, double bot_location, double bot_angle, Ve
 			bot->backward = true;
 		}
 
-		if (bot->forward && bot_angle > M_PI * 0.3)
+		double threshold = in_air ? 0.1 : 0.3;
+
+		if (bot->forward && bot_angle > M_PI * threshold)
 		{
 			bot->forward = false;
 
 			bot->backward = true;
 		}
 
-		if (bot->backward && bot_angle < -M_PI * 0.3)
+		if (bot->backward && bot_angle < -M_PI * threshold)
 		{
 			bot->forward = true;
 
 			bot->backward = false;
 		}
 
-		if (fabs(bot_location - enemy_location) < 200 && random_int_below(6) == 0)
-		{
-			bot->forward ^= bot->backward;
-
-			bot->backward ^= bot->forward;
-
-			bot->forward ^= bot->backward;
-		}
-
-		bot->update_time = time + random_real_in_range(0.2, 1);
-	}
-
-	if (in_air)
-	{
-		double threshold = bot_velocity.y > 0 ? 0.4 : 0.2;
-
-		if (bot_velocity.x > 0 && bot_angle < M_PI * threshold)
-		{
-			bot->forward = true;
-
-			bot->backward = false;
-		}
-
-		if (bot_velocity.x < 0 && bot_angle > -M_PI * threshold)
-		{
-			bot->forward = false;
-
-			bot->backward = true;
-		}
+		bot->update_time = time + random_real_below(0.24);
 	}
 
 	if (bot_angle > M_PI * 0.45)
@@ -89,6 +63,8 @@ void bot_update(Bot* bot, bool in_air, double bot_location, double bot_angle, Ve
 		bot->forward = false;
 
 		bot->backward = true;
+
+		bot->update_time = time;
 	}
 
 	if (bot_angle < -M_PI * 0.45)
@@ -96,5 +72,7 @@ void bot_update(Bot* bot, bool in_air, double bot_location, double bot_angle, Ve
 		bot->forward = true;
 
 		bot->backward = false;
+
+		bot->update_time = time;
 	}
 }

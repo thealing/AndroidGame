@@ -22,6 +22,18 @@ struct Textures
 
 	Texture* level_gap;
 
+	Texture* level_bump;
+
+	Texture* level_double_bump;
+
+	Texture* level_triple_bump;
+
+	Texture* level_smiley_face;
+
+	Texture* level_frowny_face;
+
+	Texture* level_neutral_face;
+
 	Texture* plank;
 
 	Texture* garbage;

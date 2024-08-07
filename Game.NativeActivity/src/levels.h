@@ -10,7 +10,7 @@
 
 typedef enum Level_Type Level_Type;
 
-typedef enum Laser_Direction Laser_Direction;
+typedef enum Armageddon_Type Armageddon_Type;
 
 typedef struct Level Level;
 
@@ -28,16 +28,30 @@ enum Level_Type
 
 	LEVEL_TYPE_GAP,
 
+	LEVEL_TYPE_BUMP,
+
+	LEVEL_TYPE_DOUBLE_BUMP,
+
+	LEVEL_TYPE_TRIPLE_BUMP,
+
+	LEVEL_TYPE_SMILEY_FACE,
+
+	LEVEL_TYPE_FROWNY_FACE,
+
+	LEVEL_TYPE_NEUTRAL_FACE,
+
 	LEVEL_TYPE_COUNT
 };
 
-enum Laser_Direction
+enum Armageddon_Type
 {
-	LASER_DIRECTION_UP,
+	ARMAGEDDON_TYPE_LASER_UP,
 
-	LASER_DIRECTION_DOWN,
+	ARMAGEDDON_TYPE_LASER_DOWN,
 
-	LASER_DIRECTION_COUNT
+	ARMAGEDDON_TYPE_WATER_RISE,
+
+	ARMAGEDDON_TYPE_COUNT
 };
 
 struct Level
@@ -46,9 +60,13 @@ struct Level
 
 	Texture* texture;
 
-	bool armageddon;
+	Vector blue_spawn;
 
-	Laser_Direction laser_direction;
+	Vector red_spawn;
+
+	Armageddon_Type armageddon_type;
+
+	bool armageddon_active;
 
 	Physics_Body* laser_body;
 };

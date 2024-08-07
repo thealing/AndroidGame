@@ -1,5 +1,7 @@
 #pragma once
 
+#include "levels.h"
+
 #include <stdbool.h>
 
 extern int g_max_score;

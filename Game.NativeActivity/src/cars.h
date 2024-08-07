@@ -53,3 +53,5 @@ void car_destroy(Car* car);
 void car_update(Car* car, bool forward, bool backward);
 
 void car_render(Car* car);
+
+void car_kill(Car* car);

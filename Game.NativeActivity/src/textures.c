@@ -61,6 +61,18 @@ void textures_init()
 
 	texture_create_from_file(&g_textures.level_gap, "images/levels/gap.png");
 
+	texture_create_from_file(&g_textures.level_bump, "images/levels/bump.png");
+
+	texture_create_from_file(&g_textures.level_double_bump, "images/levels/double_bump.png");
+
+	texture_create_from_file(&g_textures.level_triple_bump, "images/levels/triple_bump.png");
+
+	texture_create_from_file(&g_textures.level_smiley_face, "images/levels/smiley_face.png");
+
+	texture_create_from_file(&g_textures.level_frowny_face, "images/levels/frowny_face.png");
+
+	texture_create_from_file(&g_textures.level_neutral_face, "images/levels/neutral_face.png");
+
 	texture_create_from_file(&g_textures.plank, "images/cars/plank.png");
 
 	texture_create_from_file(&g_textures.garbage, "images/cars/garbage.png");

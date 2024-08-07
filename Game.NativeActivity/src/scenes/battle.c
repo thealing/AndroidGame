@@ -8,7 +8,7 @@ static const int s_red_car_group = -3;
 
 static const double s_death_delay = 2;
 
-static const double s_air_time_threshold = 0.1;
+static const double s_air_time_threshold = 0.5;
 
 static bool s_paused;
 
@@ -78,9 +78,9 @@ static void on_start()
 
 	s_level = level_create(g_selected_level == 0 ? random_int_below(LEVEL_TYPE_COUNT) : g_selected_level - 1, s_world, s_level_group);
 
-	s_blue_car = car_create(g_selected_blue_car == 0 ? random_int_below(CAR_TYPE_COUNT) : g_selected_blue_car - 1, s_world, vector_create(300, 200), s_blue_car_group);
+	s_blue_car = car_create(g_selected_blue_car == 0 ? random_int_below(CAR_TYPE_COUNT) : g_selected_blue_car - 1, s_world, s_level->blue_spawn, s_blue_car_group);
 
-	s_red_car = car_create(g_selected_red_car == 0 ? random_int_below(CAR_TYPE_COUNT) : g_selected_red_car - 1, s_world, vector_create(980, 200), s_red_car_group);
+	s_red_car = car_create(g_selected_red_car == 0 ? random_int_below(CAR_TYPE_COUNT) : g_selected_red_car - 1, s_world, s_level->red_spawn, s_red_car_group);
 
 	s_blue_contact_time = 1;
 
@@ -490,7 +490,11 @@ void battle_update(double delta_time)
 
 void battle_render()
 {
-	graphics_clear(&(Color){ 1, 1, 1, 1 });
+	Color background_color;
+
+	lerp_colors(&background_color, &(Color){ 0.5, 0.95, 0.95, 1.0 }, &(Color){ 0.65, 0.94, 1.0, 1.0 }, fabs(fmod(get_time(), 8) - 4) / 4);
+
+	graphics_clear(&background_color);
 
 	level_render(s_level);
 
@@ -620,4 +624,10 @@ void battle_render()
 
 		graphics_draw_string_in_rect(&(Rect){ 0, 310, 1280, 410 }, ALIGNMENT_CENTER, "PAUSED");
 	}
+
+	graphics_set_color(&(Color){ 1, 1, 1, 1 });
+
+	graphics_draw_format_in_rect(&(Rect){ 40, 540, 40, 580 }, ALIGNMENT_LEFT, "%.1f", s_elapsed_time - s_blue_contact_time);
+
+	graphics_draw_format_in_rect(&(Rect){ 1240, 540, 1240, 580 }, ALIGNMENT_RIGHT, "%.1f", s_elapsed_time - s_red_contact_time);
 }

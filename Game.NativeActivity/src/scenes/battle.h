@@ -18,6 +18,8 @@
 
 #include "engine/random.h"
 
+#include "engine/time.h"
+
 void battle_init();
 
 void battle_enter();

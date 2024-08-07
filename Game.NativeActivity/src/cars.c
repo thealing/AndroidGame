@@ -26,27 +26,7 @@ static bool head_collision_callback(Physics_Collider* head_collider, Physics_Col
 {
 	Car* car = head_collider->data;
 
-	if (!car->done)
-	{
-		car->done = true;
-
-		physics_body_destroy_all_joints(car->head_body);
-
-		// TODO: CLEAN THIS MESS
-
-		for (int i = 0; car->textures[i] != NULL; i++)
-		{
-			if (car->textures[i] == g_textures.head_neck[0])
-			{
-				car->textures[i] = g_textures.head_only[0];
-			}
-
-			if (car->textures[i] == g_textures.head_neck[1])
-			{
-				car->textures[i] = g_textures.head_only[1];
-			}
-		}
-	}
+	car_kill(car);
 
 	return true;
 }
@@ -416,6 +396,11 @@ void car_update(Car* car, bool forward, bool backward)
 	{
 		wheel_update(car->wheels[i], forward, backward);
 	}
+
+	if (!test_point_rect(car->head_body->position, &(Rect){ -10, -10, 1290, 2000 }))
+	{
+		car_kill(car);
+	}
 }
 
 void car_render(Car* car)
@@ -430,5 +415,32 @@ void car_render(Car* car)
 	for (int i = 0; i < 2; i++)
 	{
 		wheel_render(car->wheels[i]);
+	}
+}
+
+void car_kill(Car* car)
+{
+	if (car->done)
+	{
+		return;
+	}
+
+	car->done = true;
+
+	physics_body_destroy_all_joints(car->head_body);
+
+	// TODO: CLEAN THIS MESS
+
+	for (int i = 0; car->textures[i] != NULL; i++)
+	{
+		if (car->textures[i] == g_textures.head_neck[0])
+		{
+			car->textures[i] = g_textures.head_only[0];
+		}
+
+		if (car->textures[i] == g_textures.head_neck[1])
+		{
+			car->textures[i] = g_textures.head_only[1];
+		}
 	}
 }

@@ -89,6 +89,20 @@ static void draw_level(Vector center, Vector bottom, double scale)
 		graphics_scale(create_isotropic_vector(scale));
 
 		level_render(s_levels[g_selected_level - 1]);
+
+		set_texture_and_color(NULL, &(Color){ 0, 0, 0, 1 });
+
+		graphics_set_line_width(10);
+
+		graphics_set_line_cap(LINE_CAP_SQUARE);
+
+		graphics_draw_line(vector_create(0, 0), vector_create(1280, 0));
+
+		graphics_draw_line(vector_create(1280, 0), vector_create(1280, 720));
+
+		graphics_draw_line(vector_create(1280, 720), vector_create(0, 720));
+
+		graphics_draw_line(vector_create(0, 720), vector_create(0, 0));
 	}
 
 	graphics_load_transform();
@@ -163,6 +177,18 @@ void menu_init()
 	s_level_names[LEVEL_TYPE_RAMP] = "RAMP";
 
 	s_level_names[LEVEL_TYPE_GAP] = "GAP";
+
+	s_level_names[LEVEL_TYPE_BUMP] = "BUMP";
+
+	s_level_names[LEVEL_TYPE_DOUBLE_BUMP] = "DOUBLE BUMP";
+
+	s_level_names[LEVEL_TYPE_TRIPLE_BUMP] = "TRIPLE BUMP";
+
+	s_level_names[LEVEL_TYPE_SMILEY_FACE] = "SMILEY FACE";
+
+	s_level_names[LEVEL_TYPE_FROWNY_FACE] = "FROWNY FACE";
+
+	s_level_names[LEVEL_TYPE_NEUTRAL_FACE] = "NEUTRAL FACE";
 }
 
 void menu_enter()

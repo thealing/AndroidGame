@@ -24,7 +24,7 @@ void global_init()
 
 	g_sudden_death_countdown = 3;
 
-	g_selected_level = 1;
+	g_selected_level = LEVEL_TYPE_COUNT;
 
 	g_selected_blue_car = 1;
 

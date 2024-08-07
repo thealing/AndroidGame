@@ -81,3 +81,14 @@ void draw_physics_joint(const Physics_Joint* joint)
 {
 	graphics_draw_segment(&(Segment){ joint->world_anchor_1, joint->world_anchor_2 }, false);
 }
+
+void lerp_colors(Color* result, const Color* a, const Color* b, double t) 
+{
+	result->red = (1 - t) * a->red + t * b->red;
+
+	result->green = (1 - t) * a->green + t * b->green;
+
+	result->blue = (1 - t) * a->blue + t * b->blue;
+
+	result->alpha = (1 - t) * a->alpha + t * b->alpha;
+}
