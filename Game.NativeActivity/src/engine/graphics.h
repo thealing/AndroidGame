@@ -10,9 +10,13 @@
 
 typedef enum Alignment Alignment;
 
+typedef enum Line_Cap Line_Cap;
+
 typedef struct Texture Texture;
 
 typedef struct Color Color;
+
+typedef struct State State;
 
 enum Alignment
 {
@@ -27,6 +31,17 @@ enum Alignment
 	ALIGNMENT_CENTER,
 
 	ALIGNMENT_COUNT
+};
+
+enum Line_Cap
+{
+	LINE_CAP_FLAT,
+
+	LINE_CAP_SQUARE,
+
+	LINE_CAP_ROUND,
+
+	LINE_CAP_COUNT
 };
 
 struct Texture
@@ -47,6 +62,19 @@ struct Color
 	double blue;
 
 	double alpha;
+};
+
+struct State
+{
+	Color color;
+
+	const Texture* texture;
+
+	const Texture* font;
+
+	double line_width;
+
+	Line_Cap line_cap;
 };
 
 void texture_create_from_image(Texture** texture_pointer, const Image* image);
@@ -75,6 +103,10 @@ void graphics_set_texture(const Texture* texture);
 
 void graphics_set_font(const Texture* font);
 
+void graphics_set_line_width(double line_width);
+
+void graphics_set_line_cap(Line_Cap line_cap);
+
 void graphics_save_state();
 
 void graphics_load_state();
@@ -101,6 +133,8 @@ void graphics_draw_shape(const Shape* shape, bool fill);
 
 void graphics_draw_rect(const Rect* rect, bool fill);
 
+void graphics_draw_quad(const Vector quad[4], bool fill);
+
 void graphics_draw_texture();
 
 void graphics_draw_texture_at(Vector position, double angle);
@@ -124,3 +158,5 @@ void graphics_draw_format_in_rect(const Rect* rect, Alignment alignment, const c
 void graphics_draw_string(Alignment horizontal_alignment, Alignment vertical_alignment, const char* string);
 
 void graphics_draw_format(Alignment horizontal_alignment, Alignment vertical_alignment, const char* format, ...);
+
+void graphics_draw_line(Vector start, Vector end);
