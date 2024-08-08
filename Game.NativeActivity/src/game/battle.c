@@ -491,8 +491,6 @@ void battle_render()
 {
 	Color background_color = { 1, 1, 1, 1 };
 
-	//lerp_colors(&background_color, &(Color){ 0.5, 0.95, 0.95, 1.0 }, &(Color){ 0.65, 0.94, 1.0, 1.0 }, fabs(fmod(get_time(), 8) - 4) / 4);
-
 	graphics_clear(&background_color);
 
 	level_render(s_level);

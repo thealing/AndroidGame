@@ -10,9 +10,9 @@
 
 #include "engine/time.h"
 
-#include "scenes/menu.h"
+#include "menu.h"
 
-#include "scenes/battle.h"
+#include "battle.h"
 
 #include "global.h"
 

@@ -19,5 +19,3 @@ void draw_physics_world(const Physics_World* world);
 void draw_physics_body(const Physics_Body* body);
 
 void draw_physics_joint(const Physics_Joint* joint);
-
-void lerp_colors(Color* result, const Color* a, const Color* b, double t);
