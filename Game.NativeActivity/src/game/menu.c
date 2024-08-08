@@ -189,6 +189,8 @@ void menu_init()
 	s_level_names[LEVEL_TYPE_FROWNY_FACE] = "FROWNY FACE";
 
 	s_level_names[LEVEL_TYPE_NEUTRAL_FACE] = "NEUTRAL FACE";
+
+	s_level_names[LEVEL_TYPE_BLADES] = "BLADES";
 }
 
 void menu_enter()

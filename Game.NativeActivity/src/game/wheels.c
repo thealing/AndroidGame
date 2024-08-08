@@ -24,6 +24,8 @@ Wheel* wheel_create(Wheel_Type type, Physics_Body* chassis_body, Vector chassis_
 
 	collider->filter_group = group;
 
+	collider->flags |= FLAG_CAR;
+
 	wheel->body->position = vector_add(chassis_body->position, chassis_offset);
 
 	physics_joint_create_world(PHYSICS_JOINT_TYPE_PIN, wheel->body, wheel->body->position, chassis_body, wheel->body->position);

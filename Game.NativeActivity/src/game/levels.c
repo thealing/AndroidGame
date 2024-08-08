@@ -34,6 +34,8 @@ static const Vector s_double_bump[] = {{120,2},{121,167},{140,195},{173,214},{29
 
 static const Vector s_triple_bump[] = {{97,3},{98,162},{114,189},{140,207},{176,219},{204,239},{223,269},{256,292},{280,300},{306,300},{335,289},{356,272},{376,246},{391,228},{415,214},{438,208},{500,208},{525,216},{557,244},{572,268},{593,285},{618,296},{623,298},{628,299},{652,299},{657,298},{662,296},{687,285},{708,268},{723,244},{755,216},{780,208},{842,208},{865,214},{889,228},{904,246},{924,272},{945,289},{974,300},{1000,300},{1024,292},{1057,269},{1076,239},{1104,219},{1140,207},{1166,189},{1182,162},{1183,3}};
 
+static const Vector s_blades[] = {{1,236},{73,214},{197,181},{273,175},{385,174},{457,185},{487,189},{545,204},{603,211},{651,212},{704,207},{788,189},{895,173},{1016,175},{1102,182},{1278,236}};
+
 static void add_polygon(Level* level, int group, double friction, const Vector* polygon, int polygon_length)
 {
 	Shape* shape = shape_create_polygon(polygon_length, polygon);
@@ -148,6 +150,35 @@ static void add_water(Level* level)
 	collider->sensor = true;
 
 	collider->flags |= FLAG_WATER;
+}
+
+static void add_object(Level* level, Object_Type type, Physics_World* world, Vector position)
+{
+	level->objects[level->object_count++] = object_create(type, world, position);
+}
+
+static void delete_objects(Level* level)
+{
+	while (level->object_count--)
+	{
+		object_destroy(level->objects[level->object_count]);
+	}
+}
+
+static void update_objects(Level* level, double delta_time)
+{
+	for (int i = 0; i < level->object_count; i++)
+	{
+		object_update(level->objects[i], delta_time);
+	}
+}
+
+static void render_objects(Level* level)
+{
+	for (int i = 0; i < level->object_count; i++)
+	{
+		object_render(level->objects[i]);
+	}
 }
 
 Level* level_create(Level_Type type, Physics_World* world, int group)
@@ -374,13 +405,35 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			break;
 		}
+		case LEVEL_TYPE_BLADES:
+		{
+			add_ground(level, group, 1.2, 0, s_blades, countof(s_blades));
+
+			add_polygons(level, group, 0.5, s_peg, countof(s_peg), countof(s_peg[0]));
+
+			level->texture = g_textures.level_blades;
+
+			level->blue_spawn = vector_create(310, 240);
+
+			level->red_spawn = vector_create(970, 240);
+
+			level->armageddon_type = ARMAGEDDON_TYPE_LASER_UP;
+
+			// {{105,358},{110,451},{156,394}}
+
+			break;
+		}
 	}
+
+	add_object(level, OBJECT_TYPE_MINE, world, vector_create(640, 360));
 
 	return level;
 }
 
 void level_destroy(Level* level)
 {
+	delete_objects(level);
+
 	physics_body_destroy(level->body);
 
 	if (level->laser_body != NULL)
@@ -403,6 +456,8 @@ void level_destroy(Level* level)
 void level_update(Level* level, double delta_time)
 {
 	level->time += delta_time;
+
+	update_objects(level, delta_time);
 }
 
 void level_render(Level* level)
@@ -435,6 +490,8 @@ void level_render(Level* level)
 			water_offset *= 0.9;
 		}
 	}
+
+	render_objects(level);
 }
 
 void level_start_armageddon(Level* level)

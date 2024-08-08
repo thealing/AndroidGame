@@ -51,6 +51,18 @@ void textures_init()
 
 	texture_create_from_file(&g_textures.water, "images/water.png");
 
+	texture_create_from_file(&g_textures.mine_0, "images/mine_0.png");
+
+	texture_create_from_file(&g_textures.mine_1, "images/mine_1.png");
+
+	texture_create_from_file(&g_textures.mine_2, "images/mine_2.png");
+
+	texture_resize(g_textures.mine_0, vector_create(50, 25));
+
+	texture_resize(g_textures.mine_1, vector_create(50, 25));
+
+	texture_resize(g_textures.mine_2, vector_create(50, 25));
+
 	texture_create_from_file(&g_textures.level_cave, "images/levels/cave.png");
 
 	texture_create_from_file(&g_textures.level_tunnel, "images/levels/tunnel.png");
@@ -74,6 +86,8 @@ void textures_init()
 	texture_create_from_file(&g_textures.level_frowny_face, "images/levels/frowny_face.png");
 
 	texture_create_from_file(&g_textures.level_neutral_face, "images/levels/neutral_face.png");
+
+	texture_create_from_file(&g_textures.level_blades, "images/levels/blades.png");
 
 	texture_create_from_file(&g_textures.plank, "images/cars/plank.png");
 

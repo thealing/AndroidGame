@@ -22,6 +22,10 @@ void sounds_init()
 
 	g_sounds.water = sound_load("sounds/water.mp2");
 
+	g_sounds.beep = sound_load("sounds/beep.mp3");
+
+	g_sounds.explosion = sound_load("sounds/explosion.mp3");
+
 	sound_set_volume(g_sounds.intro, 0.6);
 
 	sound_set_volume(g_sounds.airhorn, 0.4);

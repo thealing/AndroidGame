@@ -12,6 +12,12 @@ struct Textures
 
 	Texture* water;
 
+	Texture* mine_0;
+
+	Texture* mine_1;
+
+	Texture* mine_2;
+
 	Texture* level_cave;
 
 	Texture* level_tunnel;
@@ -35,6 +41,8 @@ struct Textures
 	Texture* level_frowny_face;
 
 	Texture* level_neutral_face;
+
+	Texture* level_blades;
 
 	Texture* plank;
 

@@ -23,6 +23,10 @@ struct Sounds
 	Sound* laser;
 
 	Sound* water;
+
+	Sound* beep;
+
+	Sound* explosion;
 };
 
 extern Sounds g_sounds;

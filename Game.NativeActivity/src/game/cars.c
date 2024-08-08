@@ -67,6 +67,8 @@ static void create_chassis(Car* car, int index, Physics_World* world, Vector pos
 		collider->dynamic_friction = 0.5;
 
 		collider->filter_group = group;
+
+		collider->flags |= FLAG_CAR;
 	}
 
 	car->bodies[index] = body;
@@ -93,6 +95,8 @@ static void create_head(Car* car, int index, Physics_World* world, Vector positi
 	collider->collision_callback = head_collision_callback;
 
 	collider->data = car;
+
+	collider->flags |= FLAG_CAR;
 
 	physics_joint_create_world(PHYSICS_JOINT_TYPE_FIXED, car->chassis_body, body->position, body, body->position);
 
@@ -125,6 +129,8 @@ static void create_extra_body(Car* car, int index, Physics_World* world, Vector 
 		collider->dynamic_friction = friction;
 
 		collider->filter_group = group;
+
+		collider->flags |= FLAG_CAR;
 	}
 
 	car->bodies[index] = body;

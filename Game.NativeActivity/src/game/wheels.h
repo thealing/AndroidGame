@@ -4,6 +4,8 @@
 
 #include "util.h"
 
+#include "global.h"
+
 typedef enum Wheel_Type Wheel_Type;
 
 typedef struct Wheel Wheel;

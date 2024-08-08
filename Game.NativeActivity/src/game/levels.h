@@ -8,9 +8,13 @@
 
 #include "global.h"
 
+#include "objects.h"
+
 #include "engine/random.h"
 
 #include "engine/time.h"
+
+#define OBJECT_COUNT_MAX 1000
 
 typedef enum Level_Type Level_Type;
 
@@ -44,6 +48,8 @@ enum Level_Type
 
 	LEVEL_TYPE_NEUTRAL_FACE,
 
+	LEVEL_TYPE_BLADES,
+
 	LEVEL_TYPE_COUNT
 };
 
@@ -69,6 +75,10 @@ struct Level
 	Vector red_spawn;
 
 	double time;
+
+	struct Object* objects[OBJECT_COUNT_MAX];
+
+	int object_count;
 
 	Armageddon_Type armageddon_type;
 

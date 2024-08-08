@@ -22,7 +22,7 @@ bool g_red_is_bot;
 
 void global_init()
 {
-	g_debug_hud = true;
+	g_debug_hud = false;
 
 	g_same_random_car = false;
 

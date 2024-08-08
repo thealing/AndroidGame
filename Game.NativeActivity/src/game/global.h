@@ -10,7 +10,11 @@
 
 #define GROUP_RED_CAR -3
 
-#define FLAG_WATER 1
+#define FLAG_CAR 1
+
+#define FLAG_WATER 2
+
+#define FLAG_MINE 3
 
 #define DEATH_DELAY 2
 
