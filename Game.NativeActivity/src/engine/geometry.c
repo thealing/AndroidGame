@@ -207,6 +207,11 @@ bool segment_test_point(const Segment* segment, Vector point)
 	return vector_dot(ab, point) >= vector_dot(ab, segment->a) && vector_dot(ab, point) <= vector_dot(ab, segment->b) && vector_cross(ab, point) == vector_cross(ab, segment->a);
 }
 
+Vector segment_project_point(const Segment* segment, Vector point)
+{
+	return project_onto_segment(segment->a, segment->b, point);
+}
+
 Vector circle_get_centroid(const Circle* circle)
 {
 	return circle->center;
@@ -243,6 +248,11 @@ void circle_transform(const Circle* circle, Transform transform, Circle* result)
 bool circle_test_point(const Circle* circle, Vector point)
 {
 	return vector_distance_squared(circle->center, point) <= square(circle->radius);
+}
+
+Vector circle_project_point(const Circle* circle, Vector point)
+{
+	return vector_add(circle->center, vector_multiply(vector_normalize(vector_subtract(point, circle->center)), circle->radius));
 }
 
 Vector polygon_get_centroid(const Polygon* polygon)
@@ -354,6 +364,33 @@ bool polygon_test_point(const Polygon* polygon, Vector point)
 	}
 
 	return true;
+}
+
+Vector polygon_project_point(const Polygon* polygon, Vector point)
+{
+	double min_distance = INFINITY;
+
+	Vector closest_point = polygon->points[0];
+
+	for (int i = polygon->point_count - 1, j = 0; j < polygon->point_count; i = j, j++)
+	{
+		Vector a = polygon->points[i];
+
+		Vector b = polygon->points[j];
+	
+		Vector projected_point = project_onto_segment(a, b, point);
+
+		double distance = vector_distance_squared(projected_point, point);
+
+		if (distance < min_distance)
+		{
+			min_distance = distance;
+
+			closest_point = projected_point;
+		}
+	}
+
+	return closest_point;
 }
 
 Shape* shape_create_segment(Vector a, Vector b)
@@ -552,6 +589,25 @@ bool shape_test_point(const Shape* shape, Vector point)
 		case SHAPE_TYPE_POLYGON:
 		{
 			return polygon_test_point(&shape->polygon, point);
+		}
+	}
+}
+
+Vector shape_project_point(const Shape* shape, Vector point)
+{
+	switch (shape->type)
+	{
+		case SHAPE_TYPE_SEGMENT:
+		{
+			return segment_project_point(&shape->segment, point);
+		}
+		case SHAPE_TYPE_CIRCLE:
+		{
+			return circle_project_point(&shape->circle, point);
+		}
+		case SHAPE_TYPE_POLYGON:
+		{
+			return polygon_project_point(&shape->polygon, point);
 		}
 	}
 }

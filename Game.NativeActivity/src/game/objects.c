@@ -2,6 +2,18 @@
 
 static const Vector s_mine[] = {{-23,-10},{-9,8},{9,8},{23,-10}};
 
+static bool saw_collision_callback(Physics_Collider* mine_collider, Physics_Collider* other_collider)
+{
+	if (other_collider->flags & FLAG_HEAD)
+	{
+		Car* car = other_collider->data;
+
+		return !car->done;
+	}
+
+	return false;
+}
+
 static bool mine_collision_callback(Physics_Collider* mine_collider, Physics_Collider* other_collider)
 {
 	if (other_collider->flags & FLAG_CAR)
@@ -19,50 +31,68 @@ static bool mine_collision_callback(Physics_Collider* mine_collider, Physics_Col
 	return true;
 }
 
-static Physics_Body* create_body(Physics_World* world, Vector position, const Vector* hitbox, int hitbox_length, Physics_Collision_Callback callback, void* data, int flag)
+Object* object_create_saw(Physics_World* world, Vector position, double radius, bool reversed)
 {
-	Physics_Body* body = physics_body_create(world, PHYSICS_BODY_TYPE_DYNAMIC);
+	Saw* saw = calloc(1, sizeof(Saw));
 
-	body->position = position;
+	saw->type = OBJECT_TYPE_SAW;
 
-	Shape* shape = shape_create_polygon(hitbox_length, hitbox);
+	saw->body = physics_body_create(world, PHYSICS_BODY_TYPE_KINEMATIC);
 
-	Physics_Collider* collider = physics_collider_create(body, move_shape(shape), 5);
+	saw->body->position = position;
+
+	saw->body->angular_velocity = reversed ? -3 : 3;
+
+	Shape* shape = shape_create_circle(vector_create(0, 0), radius);
+
+	Physics_Collider* collider = physics_collider_create(saw->body, move_shape(shape), 1);
+
+	collider->collision_callback = saw_collision_callback;
+
+	saw->radius = radius;
+
+	return saw;
+}
+
+Object* object_create_mine(Physics_World* world, Vector position)
+{
+	Mine* mine = calloc(1, sizeof(Mine));
+
+	mine->type = OBJECT_TYPE_MINE;
+
+	mine->body = physics_body_create(world, PHYSICS_BODY_TYPE_DYNAMIC);
+
+	mine->body->position = position;
+
+	Shape* shape = shape_create_polygon(countof(s_mine), s_mine);
+
+	Physics_Collider* collider = physics_collider_create(mine->body, move_shape(shape), 5);
 
 	collider->static_friction = 1;
 
 	collider->dynamic_friction = 1;
 
-	collider->collision_callback = callback;
+	collider->collision_callback = mine_collision_callback;
 
-	collider->data = data;
+	collider->data = mine;
 
-	collider->flags |= flag;
+	collider->flags |= FLAG_MINE;
 
-	return body;
-}
-
-Object* object_create(Object_Type type, Physics_World* world, Vector position)
-{
-	switch (type)
-	{
-		case OBJECT_TYPE_MINE:
-		{
-			Mine* mine = calloc(1, sizeof(Mine));
-
-			mine->type = OBJECT_TYPE_MINE;
-
-			mine->body = create_body(world, position, s_mine, countof(s_mine), mine_collision_callback, mine, FLAG_MINE);
-
-			return mine;
-		}
-	}
+	return mine;
 }
 
 void object_destroy(Object* object)
 {
 	switch (object->type)
 	{
+		case OBJECT_TYPE_SAW:
+		{
+			Saw* saw = object;
+
+			physics_body_destroy(saw->body);
+
+			break;
+		}
 		case OBJECT_TYPE_MINE:
 		{
 			Mine* mine = object;
@@ -84,20 +114,24 @@ void object_update(Object* object, double delta_time)
 {
 	switch (object->type)
 	{
+		case OBJECT_TYPE_SAW:
+		{
+			break;
+		}
 		case OBJECT_TYPE_MINE:
 		{
 			Mine* mine = object;
 
 			if (mine->state == 1)
 			{
-				if (mine->count_time / 0.35 >= mine->counter)
+				if (mine->count_time / 0.3 >= mine->counter)
 				{
 					sound_play(g_sounds.beep);
 
 					mine->counter++;
 				}
 
-				if (mine->counter >= 6)
+				if (mine->counter >= 4)
 				{
 					mine->state = 2;
 
@@ -119,17 +153,18 @@ void object_update(Object* object, double delta_time)
 
 					if (collider->body != mine->body)
 					{
-						Vector vector = vector_subtract(collider->body->position, mine->body->position);
+						Vector target = shape_project_point(collider->world_shape, mine->body->position);
+
+						Vector vector = vector_subtract(target, mine->body->position);
 
 						double distance = vector_length(vector);
 
-						double impulse = 100000 / square(distance);
+						if (distance < 250)
+						{
+							double impulse = 1e6 / distance;
 
-						// apply impulse to closest point
-
-						//physics_body_apply_impulse_at_world_point(collider->body, mine->body->position, )
-
-						collider->body->linear_velocity = vector_add(collider->body->linear_velocity, vector_multiply(vector, impulse / distance));
+							physics_body_apply_impulse_at_world_point(collider->body, target, vector_multiply(vector, impulse / distance));
+						}
 					}
 				}
 
@@ -152,6 +187,16 @@ void object_render(Object* object)
 {
 	switch (object->type)
 	{
+		case OBJECT_TYPE_SAW:
+		{
+			Saw* saw = object;
+
+			set_texture_and_color(saw->body->angular_velocity > 0 ? g_textures.saw_left : g_textures.saw_right, NULL);
+
+			draw_texture_scaled(saw->body->position, saw->body->angle, saw->radius);
+
+			break;
+		}
 		case OBJECT_TYPE_MINE:
 		{
 			Mine* mine = object;
@@ -165,7 +210,7 @@ void object_render(Object* object)
 
 			if (mine->state == 1)
 			{
-				if (fmod(mine->count_time, 0.35) < 0.1)
+				if (fmod(mine->count_time, 0.3) < 0.1)
 				{
 					set_texture_and_color(g_textures.mine_1, NULL);
 				}
@@ -181,9 +226,9 @@ void object_render(Object* object)
 			{
 				double progress = mine->count_time / 0.1;
 
-				set_texture_and_color(NULL, &(Color){ 1, 0, 0, 0.5 + progress });
+				set_texture_and_color(NULL, &(Color){ 1, 0, 0, 1.2 - progress });
 
-				graphics_draw_circle(&(Circle){ mine->body->position, square(progress) * 150 }, true);
+				graphics_draw_circle(&(Circle){ mine->body->position, square(progress) * 200 }, true);
 			}
 
 			break;

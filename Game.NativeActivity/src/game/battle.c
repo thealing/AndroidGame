@@ -436,7 +436,9 @@ void battle_update(double delta_time)
 			}
 		}
 
-		level_update(s_level, delta_time);
+		double physics_delta = s_winner != 0 ? delta_time / 2 : delta_time;
+
+		level_update(s_level, physics_delta);
 
 		if (s_blue_player && s_red_player)
 		{
@@ -481,7 +483,7 @@ void battle_update(double delta_time)
 			}
 		}
 
-		physics_world_step(s_world, s_winner != 0 ? delta_time / 2 : delta_time);
+		physics_world_step(s_world, physics_delta);
 
 		s_elapsed_time += delta_time;
 	}

@@ -12,6 +12,10 @@ struct Textures
 
 	Texture* water;
 
+	Texture* saw_left;
+
+	Texture* saw_right;
+
 	Texture* mine_0;
 
 	Texture* mine_1;

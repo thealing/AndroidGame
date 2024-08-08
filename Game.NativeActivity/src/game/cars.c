@@ -98,6 +98,8 @@ static void create_head(Car* car, int index, Physics_World* world, Vector positi
 
 	collider->flags |= FLAG_CAR;
 
+	collider->flags |= FLAG_HEAD;
+
 	physics_joint_create_world(PHYSICS_JOINT_TYPE_FIXED, car->chassis_body, body->position, body, body->position);
 
 	car->bodies[index] = body;

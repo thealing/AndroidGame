@@ -81,3 +81,18 @@ void draw_physics_joint(const Physics_Joint* joint)
 {
 	graphics_draw_segment(&(Segment){ joint->world_anchor_1, joint->world_anchor_2 }, false);
 }
+
+void draw_texture_scaled(Vector position, double rotation, double scale)
+{
+	graphics_save_transform();
+
+	graphics_translate(position);
+
+	graphics_rotate(rotation);
+
+	graphics_scale(vector_create(scale, scale));
+
+	graphics_draw_texture();
+
+	graphics_load_transform();
+}

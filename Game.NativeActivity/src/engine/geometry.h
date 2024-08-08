@@ -172,6 +172,8 @@ void segment_transform(const Segment* segment, Transform transform, Segment* res
 
 bool segment_test_point(const Segment* segment, Vector point);
 
+Vector segment_project_point(const Segment* segment, Vector point);
+
 Vector circle_get_centroid(const Circle* circle);
 
 double circle_get_linear_mass_factor(const Circle* circle);
@@ -184,6 +186,8 @@ void circle_transform(const Circle* circle, Transform transform, Circle* result)
 
 bool circle_test_point(const Circle* circle, Vector point);
 
+Vector circle_project_point(const Circle* circle, Vector point);
+
 Vector polygon_get_centroid(const Polygon* polygon);
 
 double polygon_get_linear_mass_factor(const Polygon* polygon);
@@ -195,6 +199,8 @@ Rect polygon_get_bounding_rect(const Polygon* polygon);
 void polygon_transform(const Polygon* polygon, Transform transform, Polygon* result);
 
 bool polygon_test_point(const Polygon* polygon, Vector point);
+
+Vector polygon_project_point(const Polygon* polygon, Vector point);
 
 Shape* shape_create_segment(Vector a, Vector b);
 
@@ -223,6 +229,8 @@ Rect shape_get_bounding_rect(const Shape* shape);
 void shape_transform(const Shape* shape, Transform transform, Shape* result);
 
 bool shape_test_point(const Shape* shape, Vector point);
+
+Vector shape_project_point(const Shape* shape, Vector point);
 
 Vector project_onto_line(Vector a, Vector b, Vector p);
 

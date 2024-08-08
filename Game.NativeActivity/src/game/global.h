@@ -1,7 +1,5 @@
 #pragma once
 
-#include "levels.h"
-
 #include <stdbool.h>
 
 #define GROUP_LEVEL -1
@@ -12,9 +10,11 @@
 
 #define FLAG_CAR 1
 
-#define FLAG_WATER 2
+#define FLAG_HEAD 2
 
-#define FLAG_MINE 3
+#define FLAG_WATER 4
+
+#define FLAG_MINE 8
 
 #define DEATH_DELAY 2
 

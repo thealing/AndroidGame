@@ -152,9 +152,9 @@ static void add_water(Level* level)
 	collider->flags |= FLAG_WATER;
 }
 
-static void add_object(Level* level, Object_Type type, Physics_World* world, Vector position)
+static void add_object(Level* level, Object* object)
 {
-	level->objects[level->object_count++] = object_create(type, world, position);
+	level->objects[level->object_count++] = object;
 }
 
 static void delete_objects(Level* level)
@@ -411,6 +411,10 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			add_polygons(level, group, 0.5, s_peg, countof(s_peg), countof(s_peg[0]));
 
+			add_object(level, object_create_saw(world, vector_create(105, 360), 110, true));
+
+			add_object(level, object_create_saw(world, vector_create(1175, 360), 110, false));
+
 			level->texture = g_textures.level_blades;
 
 			level->blue_spawn = vector_create(310, 240);
@@ -419,13 +423,9 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->armageddon_type = ARMAGEDDON_TYPE_LASER_UP;
 
-			// {{105,358},{110,451},{156,394}}
-
 			break;
 		}
 	}
-
-	add_object(level, OBJECT_TYPE_MINE, world, vector_create(640, 360));
 
 	return level;
 }

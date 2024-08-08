@@ -150,6 +150,7 @@
     </AntPackage>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Content Include="assets\images\blade.png" />
     <Content Include="assets\images\cars\dragster.png" />
     <Content Include="assets\images\cars\garbage.png" />
     <Content Include="assets\images\cars\garbage_lid.png" />
@@ -182,6 +183,8 @@
     <Content Include="assets\images\mine_1.png" />
     <Content Include="assets\images\mine_2.png" />
     <Content Include="assets\images\overlay.png" />
+    <Content Include="assets\images\saw_left.png" />
+    <Content Include="assets\images\saw_right.png" />
     <Content Include="assets\images\ui\arrow_disabled.png" />
     <Content Include="assets\images\ui\arrow_pressed.png" />
     <Content Include="assets\images\ui\arrow_released.png" />

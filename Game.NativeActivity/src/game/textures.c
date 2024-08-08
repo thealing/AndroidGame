@@ -51,6 +51,14 @@ void textures_init()
 
 	texture_create_from_file(&g_textures.water, "images/water.png");
 
+	texture_create_from_file(&g_textures.saw_left, "images/saw_left.png");
+
+	texture_create_from_file(&g_textures.saw_right, "images/saw_right.png");
+
+	texture_resize(g_textures.saw_left, vector_create(2.2, 2.2));
+
+	texture_resize(g_textures.saw_right, vector_create(2.2, 2.2));
+
 	texture_create_from_file(&g_textures.mine_0, "images/mine_0.png");
 
 	texture_create_from_file(&g_textures.mine_1, "images/mine_1.png");
