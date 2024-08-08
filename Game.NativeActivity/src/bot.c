@@ -39,7 +39,7 @@ void bot_update(Bot* bot, bool in_air, double bot_location, double bot_angle, Ve
 			bot->backward = true;
 		}
 
-		double threshold = in_air ? 0.1 : 0.3;
+		double threshold = in_air ? -0.1 : 0.3;
 
 		if (bot->forward && bot_angle > M_PI * threshold)
 		{

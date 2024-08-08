@@ -26,9 +26,26 @@ static const Vector s_frowny[] = {{122,41},{139,77},{167,113},{203,148},{243,178
 
 static const Vector s_neutral[] = {{157,189},{171,202},{1110,201},{1123,188},{1122,130},{1110,119},{171,120},{158,130}};
 
-static void add_polygon(Level* level, int group, double friction, const Vector* hitbox, int hitbox_length)
+static const Vector s_peg[][5] = {{{0,432},{64,497},{62,535},{0,475}},{{63,499},{211,498},{174,535},{62,535}},{{211,501},{211,1000},{174,1000},{175,535}},{{1280,432},{1216,497},{1218,535},{1280,475}},{{1217,499},{1069,498},{1106,535},{1218,535}},{{1069,501},{1069,1000},{1106,1000},{1105,535}}};
+
+static const Vector s_bump[] = {{119,1},{120,167},{138,194},{169,214},{380,215},{438,230},{479,256},{507,293},{541,326},{578,345},{621,357},{660,357},{701,346},{743,324},{772,293},{796,260},{829,237},{865,221},{905,215},{1112,215},{1141,196},{1159,167},{1160,2}};
+
+static const Vector s_double_bump[] = {{120,2},{121,167},{140,195},{173,214},{290,214},{342,227},{379,257},{403,285},{441,303},{488,305},{527,288},{553,263},{583,231},{614,218},{639,216},{641,216},{666,218},{697,231},{727,263},{753,288},{792,305},{839,303},{877,285},{901,257},{938,227},{990,214},{1107,214},{1140,195},{1159,167},{1160,2}};
+
+static const Vector s_triple_bump[] = {{97,3},{98,162},{114,189},{140,207},{176,219},{204,239},{223,269},{256,292},{280,300},{306,300},{335,289},{356,272},{376,246},{391,228},{415,214},{438,208},{500,208},{525,216},{557,244},{572,268},{593,285},{618,296},{623,298},{628,299},{652,299},{657,298},{662,296},{687,285},{708,268},{723,244},{755,216},{780,208},{842,208},{865,214},{889,228},{904,246},{924,272},{945,289},{974,300},{1000,300},{1024,292},{1057,269},{1076,239},{1104,219},{1140,207},{1166,189},{1182,162},{1183,3}};
+
+static bool water_collision_callback(Physics_Collider* water_collider, Physics_Collider* other_collider)
 {
-	Shape* shape = shape_create_polygon(hitbox_length, hitbox);
+	Physics_Body* other_body = other_collider->body;
+
+	// apply water resistance
+
+	return true;
+}
+
+static void add_polygon(Level* level, int group, double friction, const Vector* polygon, int polygon_length)
+{
+	Shape* shape = shape_create_polygon(polygon_length, polygon);
 
 	Physics_Collider* collider = physics_collider_create(level->body, move_shape(shape), 1);
 
@@ -37,6 +54,29 @@ static void add_polygon(Level* level, int group, double friction, const Vector* 
 	collider->dynamic_friction = friction;
 
 	collider->filter_group = group;
+}
+
+static void add_polygons(Level* level, int group, double friction, const Vector* polygons, int polygon_count, int polygon_length)
+{
+	for (int i = 0; i < polygon_count; i++)
+	{
+		int length = 0;
+
+		while (polygons[i * polygon_length + length].x || polygons[i * polygon_length + length].y)
+		{
+			length++;
+		}
+
+		Shape* shape = shape_create_polygon(length, polygons + i * polygon_length);
+
+		Physics_Collider* collider = physics_collider_create(level->body, move_shape(shape), 1);
+
+		collider->static_friction = friction;
+
+		collider->dynamic_friction = friction;
+
+		collider->filter_group = group;
+	}
 }
 
 static void add_ground(Level* level, int group, double friction, double y, const Vector* surface, int surface_length)
@@ -95,6 +135,28 @@ static void add_platform(Level* level, int group, double friction, const Vector*
 
 		collider->filter_group = group;
 	}
+}
+
+static void add_laser(Level* level)
+{
+	level->laser_body = physics_body_create(level->body->world, PHYSICS_BODY_TYPE_KINEMATIC);
+
+	Physics_Collider* collider = physics_collider_create(level->laser_body, move_shape(shape_create_segment(vector_create(-1000, 0), vector_create(1000, 0))), 1);
+
+	collider->sensor = true;
+}
+
+static void add_water(Level* level)
+{
+	level->water_body = physics_body_create(level->body->world, PHYSICS_BODY_TYPE_KINEMATIC);
+
+	level->water_body->position = vector_create(640, 80);
+
+	Physics_Collider* collider = physics_collider_create(level->water_body, move_shape(create_rect_shape(vector_create(-1000, -1000), vector_create(1000, 0))), 1);
+
+	collider->sensor = true;
+
+	collider->collision_callback = water_collision_callback;
 }
 
 Level* level_create(Level_Type type, Physics_World* world, int group)
@@ -203,12 +265,18 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->red_spawn = vector_create(980, 200);
 
-			level->armageddon_type = ARMAGEDDON_TYPE_LASER_UP;
+			level->armageddon_type = ARMAGEDDON_TYPE_LASER_DOWN;
 
 			break;
 		}
 		case LEVEL_TYPE_BUMP:
 		{
+			add_ground(level, group, 1.2, 0, s_bump, countof(s_bump));
+
+			add_polygons(level, group, 0.5, s_peg, countof(s_peg), countof(s_peg[0]));
+
+			add_water(level);
+
 			level->texture = g_textures.level_bump;
 
 			level->blue_spawn = vector_create(250, 330);
@@ -221,6 +289,12 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 		}
 		case LEVEL_TYPE_DOUBLE_BUMP:
 		{
+			add_ground(level, group, 1.2, 0, s_double_bump, countof(s_double_bump));
+
+			add_polygons(level, group, 0.5, s_peg, countof(s_peg), countof(s_peg[0]));
+
+			add_water(level);
+
 			level->texture = g_textures.level_double_bump;
 
 			level->blue_spawn = vector_create(250, 330);
@@ -233,6 +307,12 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 		}
 		case LEVEL_TYPE_TRIPLE_BUMP:
 		{
+			add_ground(level, group, 1.2, 0, s_triple_bump, countof(s_triple_bump));
+
+			add_polygons(level, group, 0.5, s_peg, countof(s_peg), countof(s_peg[0]));
+
+			add_water(level);
+
 			level->texture = g_textures.level_triple_bump;
 
 			level->blue_spawn = vector_create(440, 330);
@@ -250,6 +330,8 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 			add_ground(level, group, 2, 452, s_right_eye, countof(s_right_eye));
 
 			add_platform(level, group, 1, s_smiley_top, countof(s_smiley_top), s_smiley_bottom, countof(s_smiley_bottom));
+
+			add_water(level);
 
 			level->texture = g_textures.level_smiley_face;
 
@@ -269,6 +351,8 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			add_polygon(level, group, 1, s_frowny, countof(s_frowny));
 
+			add_water(level);
+
 			level->texture = g_textures.level_frowny_face;
 
 			level->blue_spawn = vector_create(200, 650);
@@ -286,6 +370,8 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 			add_ground(level, group, 2, 452, s_left_eye, countof(s_left_eye));
 
 			add_ground(level, group, 2, 452, s_right_eye, countof(s_right_eye));
+
+			add_water(level);
 
 			level->texture = g_textures.level_neutral_face;
 
@@ -311,16 +397,21 @@ void level_destroy(Level* level)
 		physics_body_destroy(level->laser_body);
 	}
 
-	if (level->armageddon_active)
+	if (level->water_body != NULL)
 	{
-		sound_stop(g_sounds.laser);
+		physics_body_destroy(level->water_body);
 	}
+
+	sound_stop(g_sounds.laser);
+
+	sound_stop(g_sounds.water);
 
 	free(level);
 }
 
-void level_update(Level* level)
+void level_update(Level* level, double delta_time)
 {
+	level->time += delta_time;
 }
 
 void level_render(Level* level)
@@ -335,41 +426,65 @@ void level_render(Level* level)
 
 		graphics_draw_texture_at(level->laser_body->position, level->laser_body->angle);
 	}
+
+	if (level->water_body != NULL)
+	{
+		set_texture_and_color(g_textures.water, &(Color){ 1, 1, 1, 0.6 });
+
+		double water_offset = level->time / 5;
+
+		double water_level = level->water_body->position.y + 15;
+
+		double water_height = 55;
+
+		for (double y = water_level; y > 0; y -= water_height)
+		{
+			graphics_draw_texture_rect_in_rect(&(Rect){ water_offset, 0, 1 + water_offset, 1 }, &(Rect){ 0, y - water_height, 1280, y });
+
+			water_offset *= 0.94;
+		}
+	}
 }
 
 void level_start_armageddon(Level* level)
 {
 	level->armageddon_active = true;
 
-	level->laser_body = physics_body_create(level->body->world, PHYSICS_BODY_TYPE_KINEMATIC);
-
-	Physics_Collider* collider = physics_collider_create(level->laser_body, move_shape(shape_create_segment(vector_create(-1000, 0), vector_create(1000, 0))), 1);
-
-	collider->sensor = true;
-
 	switch (level->armageddon_type)
 	{
 		case ARMAGEDDON_TYPE_LASER_UP:
 		{
+			add_laser(level);
+
 			level->laser_body->position = vector_create(640, 0);
 
 			level->laser_body->linear_velocity = vector_create(0, 50);
+
+			sound_play(g_sounds.laser);
 
 			break;
 		}
 		case ARMAGEDDON_TYPE_LASER_DOWN:
 		{
+			add_laser(level);
+
 			level->laser_body->position = vector_create(640, 720);
 
 			level->laser_body->linear_velocity = vector_create(0, -50);
 
+			sound_play(g_sounds.laser);
+
+			break;
+		}
+		case ARMAGEDDON_TYPE_WATER_RISE:
+		{
+			level->water_body->linear_velocity = vector_create(0, 25);
+
+			sound_play(g_sounds.water);
+
 			break;
 		}
 	}
-
-	sound_play(g_sounds.laser);
-
-	sound_set_looping(g_sounds.laser, true);
 }
 
 void level_stop_armageddon(Level* level)
@@ -379,7 +494,14 @@ void level_stop_armageddon(Level* level)
 	if (level->laser_body != NULL)
 	{
 		level->laser_body->linear_velocity = vector_create(0, 0);
-
-		sound_stop(g_sounds.laser);
 	}
+
+	if (level->water_body != NULL)
+	{
+		level->water_body->linear_velocity = vector_create(0, 0);
+	}
+
+	sound_stop(g_sounds.laser);
+
+	sound_stop(g_sounds.laser);
 }

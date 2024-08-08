@@ -8,6 +8,8 @@
 
 #include "engine/random.h"
 
+#include "engine/time.h"
+
 typedef enum Level_Type Level_Type;
 
 typedef enum Armageddon_Type Armageddon_Type;
@@ -64,18 +66,22 @@ struct Level
 
 	Vector red_spawn;
 
+	double time;
+
 	Armageddon_Type armageddon_type;
 
 	bool armageddon_active;
 
 	Physics_Body* laser_body;
+
+	Physics_Body* water_body;
 };
 
 Level* level_create(Level_Type type, Physics_World* world, int group);
 
 void level_destroy(Level* level);
 
-void level_update(Level* level);
+void level_update(Level* level, double delta_time);
 
 void level_render(Level* level);
 

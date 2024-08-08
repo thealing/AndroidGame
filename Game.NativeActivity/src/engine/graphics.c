@@ -67,7 +67,9 @@ void texture_scale(Texture* texture, Vector scale)
 
 void texture_resize(Texture* texture, Vector size)
 {
-	texture_scale(texture, vector_downscale(size, texture->size));
+	texture->center = vector_scale(texture->center, vector_downscale(size, texture->size));
+
+	texture->size = size;
 }
 
 void graphics_init(void* window)
@@ -357,10 +359,10 @@ void graphics_draw_texture()
 	};
 
 	GLfloat texture_coords[] = {
-		0.0, 1.0,
-		1.0, 1.0,
-		1.0, 0.0,
 		0.0, 0.0,
+		1.0, 0.0,
+		1.0, 1.0,
+		0.0, 1.0,
 	};
 
 	glVertexPointer(2, GL_FLOAT, 0, vertices);
@@ -403,10 +405,10 @@ void graphics_draw_texture_in_rect(const Rect* rect)
 	};
 
 	GLfloat texture_coords[] = {
-		0.0, 1.0,
-		1.0, 1.0,
-		1.0, 0.0,
 		0.0, 0.0,
+		1.0, 0.0,
+		1.0, 1.0,
+		0.0, 1.0,
 	};
 
 	glVertexPointer(2, GL_FLOAT, 0, vertices);
@@ -431,10 +433,10 @@ void graphics_draw_texture_in_quad(const Vector quad[4])
 	};
 
 	GLfloat texture_coords[] = {
-		0.0, 1.0,
-		1.0, 1.0,
-		1.0, 0.0,
 		0.0, 0.0,
+		1.0, 0.0,
+		1.0, 1.0,
+		0.0, 1.0,
 	};
 
 	glVertexPointer(2, GL_FLOAT, 0, vertices);
@@ -459,10 +461,10 @@ void graphics_draw_texture_rect_in_rect(const Rect* texture_rect, const Rect* re
 	};
 
 	GLfloat texture_coords[] = {
-		texture_rect->min.x, texture_rect->max.y,
-		texture_rect->max.x, texture_rect->max.y,
-		texture_rect->max.x, texture_rect->min.y,
 		texture_rect->min.x, texture_rect->min.y,
+		texture_rect->max.x, texture_rect->min.y,
+		texture_rect->max.x, texture_rect->max.y,
+		texture_rect->min.x, texture_rect->max.y,
 	};
 
 	glVertexPointer(2, GL_FLOAT, 0, vertices);
@@ -487,10 +489,10 @@ void graphics_draw_texture_rect_in_quad(const Rect* texture_rect, const Vector q
 	};
 
 	GLfloat texture_coords[] = {
-		texture_rect->min.x, texture_rect->max.y,
-		texture_rect->max.x, texture_rect->max.y,
-		texture_rect->max.x, texture_rect->min.y,
 		texture_rect->min.x, texture_rect->min.y,
+		texture_rect->max.x, texture_rect->min.y,
+		texture_rect->max.x, texture_rect->max.y,
+		texture_rect->min.x, texture_rect->max.y,
 	};
 
 	glVertexPointer(2, GL_FLOAT, 0, vertices);
@@ -515,10 +517,10 @@ void graphics_draw_texture_quad_in_quad(const Vector texture_quad[4], const Vect
 	};
 
 	GLfloat texture_coords[] = {
-		texture_quad[3].x, texture_quad[3].y,
-		texture_quad[2].x, texture_quad[2].y,
-		texture_quad[1].x, texture_quad[1].y,
 		texture_quad[0].x, texture_quad[0].y,
+		texture_quad[1].x, texture_quad[1].y,
+		texture_quad[2].x, texture_quad[2].y,
+		texture_quad[3].x, texture_quad[3].y,
 	};
 
 	glVertexPointer(2, GL_FLOAT, 0, vertices);

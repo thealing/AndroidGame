@@ -222,8 +222,6 @@ void menu_enter()
 	scene_add_button(s_play);
 
 	sound_play(g_sounds.intro);
-
-	sound_set_looping(g_sounds.intro, true);
 }
 
 void menu_leave()

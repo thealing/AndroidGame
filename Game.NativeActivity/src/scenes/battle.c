@@ -244,8 +244,6 @@ void battle_enter()
 
 	sound_play(g_sounds.music);
 
-	sound_set_looping(g_sounds.music, true);
-
 	on_start();
 }
 
@@ -437,7 +435,7 @@ void battle_update(double delta_time)
 			}
 		}
 
-		level_update(s_level);
+		level_update(s_level, delta_time);
 
 		if (s_blue_player && s_red_player)
 		{
@@ -490,9 +488,9 @@ void battle_update(double delta_time)
 
 void battle_render()
 {
-	Color background_color;
+	Color background_color = { 1, 1, 1, 1 };
 
-	lerp_colors(&background_color, &(Color){ 0.5, 0.95, 0.95, 1.0 }, &(Color){ 0.65, 0.94, 1.0, 1.0 }, fabs(fmod(get_time(), 8) - 4) / 4);
+	//lerp_colors(&background_color, &(Color){ 0.5, 0.95, 0.95, 1.0 }, &(Color){ 0.65, 0.94, 1.0, 1.0 }, fabs(fmod(get_time(), 8) - 4) / 4);
 
 	graphics_clear(&background_color);
 
@@ -624,10 +622,4 @@ void battle_render()
 
 		graphics_draw_string_in_rect(&(Rect){ 0, 310, 1280, 410 }, ALIGNMENT_CENTER, "PAUSED");
 	}
-
-	graphics_set_color(&(Color){ 1, 1, 1, 1 });
-
-	graphics_draw_format_in_rect(&(Rect){ 40, 540, 40, 580 }, ALIGNMENT_LEFT, "%.1f", s_elapsed_time - s_blue_contact_time);
-
-	graphics_draw_format_in_rect(&(Rect){ 1240, 540, 1240, 580 }, ALIGNMENT_RIGHT, "%.1f", s_elapsed_time - s_red_contact_time);
 }

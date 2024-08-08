@@ -198,6 +198,8 @@
     <Content Include="assets\images\ui\star_opaque.png" />
     <Content Include="assets\images\ui\star_translucent.png" />
     <Content Include="assets\images\ui\unchecked.png" />
+    <Content Include="assets\images\water.png" />
+    <Content Include="assets\images\water1.png" />
     <Content Include="assets\images\wheels\cycle.png" />
     <Content Include="assets\images\wheels\monster.png" />
     <Content Include="assets\images\wheels\small.png" />
@@ -210,6 +212,7 @@
     <Content Include="assets\sounds\intro.mp2" />
     <Content Include="assets\sounds\laser.mp2" />
     <Content Include="assets\sounds\music.mp3" />
+    <Content Include="assets\sounds\water.mp2" />
     <Content Include="res\values\strings.xml" />
     <AntBuildXml Include="build.xml" />
     <AndroidManifest Include="AndroidManifest.xml" />

@@ -21,6 +21,8 @@ struct Sounds
 	Sound* click2;
 
 	Sound* laser;
+
+	Sound* water;
 };
 
 extern Sounds g_sounds;

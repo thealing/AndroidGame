@@ -10,6 +10,8 @@ struct Textures
 
 	Texture* laser;
 
+	Texture* water;
+
 	Texture* level_cave;
 
 	Texture* level_tunnel;

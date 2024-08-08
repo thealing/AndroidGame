@@ -49,6 +49,8 @@ void textures_init()
 
 	texture_resize(g_textures.laser, vector_create(1300, 4));
 
+	texture_create_from_file(&g_textures.water, "images/water.png");
+
 	texture_create_from_file(&g_textures.level_cave, "images/levels/cave.png");
 
 	texture_create_from_file(&g_textures.level_tunnel, "images/levels/tunnel.png");

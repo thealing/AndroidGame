@@ -38,7 +38,10 @@ Image* image_load(const char* path)
 
 	image->pixels = malloc(size * sizeof(Pixel));
 
-	memcpy(image->pixels, j_pixels, size * sizeof(Pixel));
+	for (int i = 0; i < height; i++)
+	{
+		memcpy(image->pixels + i * width, j_pixels + (height - 1 - i) * width, width * sizeof(Pixel));
+	}
 
 	for (int i = 0; i < size; i++)
 	{
