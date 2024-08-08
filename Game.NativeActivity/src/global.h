@@ -4,11 +4,27 @@
 
 #include <stdbool.h>
 
-extern int g_max_score;
+#define GROUP_LEVEL -1
+
+#define GROUP_BLUE_CAR -2
+
+#define GROUP_RED_CAR -3
+
+#define FLAG_WATER 1
+
+#define DEATH_DELAY 2
+
+#define AIR_TIME_THRESHOLD 0.5
+
+extern bool g_debug_hud;
+
+extern bool g_same_random_car;
 
 extern int g_sudden_death_time;
 
 extern int g_sudden_death_countdown;
+
+extern int g_max_score;
 
 extern int g_selected_level;
 

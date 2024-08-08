@@ -132,7 +132,11 @@ struct Physics_Collider
 
 	Physics_Collision_Callback collision_callback;
 
+	// not used by engine
+
 	void* data;
+
+	int flags;
 };
 
 struct Physics_Joint

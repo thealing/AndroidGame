@@ -26,7 +26,19 @@ static bool head_collision_callback(Physics_Collider* head_collider, Physics_Col
 {
 	Car* car = head_collider->data;
 
-	car_kill(car);
+	if (car->done)
+	{
+		return true;
+	}
+	
+	if (other_collider->flags & FLAG_WATER)
+	{
+		car->done = true;
+	}
+	else
+	{
+		car_kill(car);
+	}
 
 	return true;
 }
@@ -399,7 +411,7 @@ void car_update(Car* car, bool forward, bool backward)
 
 	if (!test_point_rect(car->head_body->position, &(Rect){ -10, -10, 1290, 2000 }))
 	{
-		car_kill(car);
+		car->done = true;
 	}
 }
 

@@ -34,15 +34,6 @@ static const Vector s_double_bump[] = {{120,2},{121,167},{140,195},{173,214},{29
 
 static const Vector s_triple_bump[] = {{97,3},{98,162},{114,189},{140,207},{176,219},{204,239},{223,269},{256,292},{280,300},{306,300},{335,289},{356,272},{376,246},{391,228},{415,214},{438,208},{500,208},{525,216},{557,244},{572,268},{593,285},{618,296},{623,298},{628,299},{652,299},{657,298},{662,296},{687,285},{708,268},{723,244},{755,216},{780,208},{842,208},{865,214},{889,228},{904,246},{924,272},{945,289},{974,300},{1000,300},{1024,292},{1057,269},{1076,239},{1104,219},{1140,207},{1166,189},{1182,162},{1183,3}};
 
-static bool water_collision_callback(Physics_Collider* water_collider, Physics_Collider* other_collider)
-{
-	Physics_Body* other_body = other_collider->body;
-
-	// apply water resistance
-
-	return true;
-}
-
 static void add_polygon(Level* level, int group, double friction, const Vector* polygon, int polygon_length)
 {
 	Shape* shape = shape_create_polygon(polygon_length, polygon);
@@ -156,7 +147,7 @@ static void add_water(Level* level)
 
 	collider->sensor = true;
 
-	collider->collision_callback = water_collision_callback;
+	collider->flags |= FLAG_WATER;
 }
 
 Level* level_create(Level_Type type, Physics_World* world, int group)
@@ -441,7 +432,7 @@ void level_render(Level* level)
 		{
 			graphics_draw_texture_rect_in_rect(&(Rect){ water_offset, 0, 1 + water_offset, 1 }, &(Rect){ 0, y - water_height, 1280, y });
 
-			water_offset *= 0.94;
+			water_offset *= 0.9;
 		}
 	}
 }

@@ -6,6 +6,8 @@
 
 #include "util.h"
 
+#include "global.h"
+
 #include "engine/random.h"
 
 #include "engine/time.h"

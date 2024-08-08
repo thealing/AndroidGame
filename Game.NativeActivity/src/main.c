@@ -166,5 +166,8 @@ void render()
 {
 	scene_render();
 
-	graphics_draw_format_in_rect(&(Rect){ 0, 0, 0, 30 }, ALIGNMENT_LEFT, "%5d %3d", lround(s_update_fps), lround(s_render_fps));
+	if (g_debug_hud)
+	{
+		graphics_draw_format_in_rect(&(Rect){ 0, 0, 0, 30 }, ALIGNMENT_LEFT, "%5d %3d", lround(s_update_fps), lround(s_render_fps));
+	}
 }

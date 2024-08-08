@@ -1,15 +1,5 @@
 #include "battle.h"
 
-static const int s_level_group = -1;
-
-static const int s_blue_car_group = -2;
-
-static const int s_red_car_group = -3;
-
-static const double s_death_delay = 2;
-
-static const double s_air_time_threshold = 0.5;
-
 static bool s_paused;
 
 static bool s_over;
@@ -76,11 +66,22 @@ static void on_start()
 
 	s_winner = 0;
 
-	s_level = level_create(g_selected_level == 0 ? random_int_below(LEVEL_TYPE_COUNT) : g_selected_level - 1, s_world, s_level_group);
+	s_level = level_create(g_selected_level == 0 ? random_int_below(LEVEL_TYPE_COUNT) : g_selected_level - 1, s_world, GROUP_LEVEL);
 
-	s_blue_car = car_create(g_selected_blue_car == 0 ? random_int_below(CAR_TYPE_COUNT) : g_selected_blue_car - 1, s_world, s_level->blue_spawn, s_blue_car_group);
+	if (g_selected_blue_car == 0 && g_selected_red_car == 0 && g_same_random_car)
+	{
+		Car_Type type = random_int_below(CAR_TYPE_COUNT);
 
-	s_red_car = car_create(g_selected_red_car == 0 ? random_int_below(CAR_TYPE_COUNT) : g_selected_red_car - 1, s_world, s_level->red_spawn, s_red_car_group);
+		s_blue_car = car_create(type, s_world, s_level->blue_spawn, GROUP_BLUE_CAR);
+
+		s_red_car = car_create(type, s_world, s_level->red_spawn, GROUP_RED_CAR);
+	}
+	else
+	{
+		s_blue_car = car_create(g_selected_blue_car == 0 ? random_int_below(CAR_TYPE_COUNT) : g_selected_blue_car - 1, s_world, s_level->blue_spawn, GROUP_BLUE_CAR);
+
+		s_red_car = car_create(g_selected_red_car == 0 ? random_int_below(CAR_TYPE_COUNT) : g_selected_red_car - 1, s_world, s_level->red_spawn, GROUP_RED_CAR);
+	}
 
 	s_blue_contact_time = 1;
 
@@ -151,12 +152,12 @@ static void on_reset()
 
 static bool on_collision(Physics_Collider* collider, Physics_Collider* other_collider)
 {
-	if (collider->filter_group == s_blue_car_group && other_collider->filter_group == s_level_group)
+	if (collider->filter_group == GROUP_BLUE_CAR && other_collider->filter_group == GROUP_LEVEL)
 	{
 		s_blue_contact_time = s_elapsed_time;
 	}
 
-	if (collider->filter_group == s_red_car_group && other_collider->filter_group == s_level_group)
+	if (collider->filter_group == GROUP_RED_CAR && other_collider->filter_group == GROUP_LEVEL)
 	{
 		s_red_contact_time = s_elapsed_time;
 	}
@@ -388,7 +389,7 @@ void battle_update(double delta_time)
 		
 		if (s_winner != 0)
 		{
-			if (!s_over && s_win_time > s_death_delay)
+			if (!s_over && s_win_time > DEATH_DELAY)
 			{
 				if (s_blue_score == g_max_score || s_red_score == g_max_score)
 				{
@@ -463,7 +464,7 @@ void battle_update(double delta_time)
 			}
 			else
 			{
-				bot_update(s_blue_bot, s_elapsed_time > s_blue_contact_time + s_air_time_threshold, blue_location, blue_angle, blue_velocity, red_location, s_elapsed_time);
+				bot_update(s_blue_bot, s_elapsed_time > s_blue_contact_time + AIR_TIME_THRESHOLD, blue_location, blue_angle, blue_velocity, red_location, s_elapsed_time);
 
 				car_update(s_blue_car, s_blue_bot->forward, s_blue_bot->backward);
 			}
@@ -474,7 +475,7 @@ void battle_update(double delta_time)
 			}
 			else
 			{
-				bot_update(s_red_bot, s_elapsed_time > s_red_contact_time + s_air_time_threshold, 1280 - red_location, -red_angle, vector_create(red_velocity.x * -1, red_velocity.y), 1280 - blue_location, s_elapsed_time);
+				bot_update(s_red_bot, s_elapsed_time > s_red_contact_time + AIR_TIME_THRESHOLD, 1280 - red_location, -red_angle, vector_create(red_velocity.x * -1, red_velocity.y), 1280 - blue_location, s_elapsed_time);
 
 				car_update(s_red_car, s_red_bot->forward, s_red_bot->backward);
 			}
@@ -500,7 +501,10 @@ void battle_render()
 
 	car_render(s_red_car);
 
-	draw_physics_world(s_world);
+	if (g_debug_hud)
+	{
+		draw_physics_world(s_world);
+	}
 
 	for (int i = 0; i < g_max_score; i++)
 	{
@@ -513,7 +517,7 @@ void battle_render()
 			set_texture_and_color(g_textures.ui_star_translucent, NULL);
 		}
 
-		graphics_draw_texture_at(vector_create(40 + i * 60, 680), s_winner == 2 && s_blue_score == i + 1 ? fmax(s_death_delay - s_win_time, 0) * 2 * M_PI : 0);
+		graphics_draw_texture_at(vector_create(40 + i * 60, 680), s_winner == 2 && s_blue_score == i + 1 ? fmax(DEATH_DELAY - s_win_time, 0) * 2 * M_PI : 0);
 	}
 
 	for (int i = 0; i < g_max_score; i++)
@@ -527,7 +531,7 @@ void battle_render()
 			set_texture_and_color(g_textures.ui_star_translucent, NULL);
 		}
 
-		graphics_draw_texture_at(vector_create(1240 - i * 60, 680), s_winner == 3 && s_red_score == i + 1 ? fmin(s_win_time, s_death_delay) * 2 * M_PI : 0);
+		graphics_draw_texture_at(vector_create(1240 - i * 60, 680), s_winner == 3 && s_red_score == i + 1 ? fmin(s_win_time, DEATH_DELAY) * 2 * M_PI : 0);
 	}
 
 	if (s_over)
