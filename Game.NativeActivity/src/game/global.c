@@ -4,6 +4,8 @@ bool g_debug_hud;
 
 bool g_same_random_car;
 
+bool g_random_objects;
+
 int g_sudden_death_time;
 
 int g_sudden_death_countdown;
@@ -25,6 +27,8 @@ void global_init()
 	g_debug_hud = false;
 
 	g_same_random_car = false;
+
+	g_random_objects = true;
 
 	g_sudden_death_time = 12;
 

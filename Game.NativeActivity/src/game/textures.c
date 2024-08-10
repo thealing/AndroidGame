@@ -49,8 +49,6 @@ void textures_init()
 
 	texture_resize(g_textures.laser, vector_create(1300, 4));
 
-	texture_create_from_file(&g_textures.water, "images/water.png");
-
 	texture_create_from_file(&g_textures.saw_left, "images/saw_left.png");
 
 	texture_create_from_file(&g_textures.saw_right, "images/saw_right.png");
@@ -70,6 +68,22 @@ void textures_init()
 	texture_resize(g_textures.mine_1, vector_create(50, 25));
 
 	texture_resize(g_textures.mine_2, vector_create(50, 25));
+
+	texture_create_from_file(&g_textures.box, "images/box.png");
+
+	texture_resize(g_textures.box, vector_create(66, 66));
+
+	texture_create_from_file(&g_textures.tire, "images/tire.png");
+
+	texture_resize(g_textures.tire, vector_create(2.1, 2.1));
+
+	texture_create_from_file(&g_textures.lifter_base, "images/lifter_base.png");
+
+	texture_create_from_file(&g_textures.lifter_sensor, "images/lifter_sensor.png");
+
+	texture_align(g_textures.lifter_base, ALIGNMENT_CENTER, ALIGNMENT_BOTTOM);
+
+	texture_align(g_textures.lifter_sensor, ALIGNMENT_CENTER, ALIGNMENT_BOTTOM);
 
 	texture_create_from_file(&g_textures.level_cave, "images/levels/cave.png");
 
@@ -115,13 +129,13 @@ void textures_init()
 
 	create_blue_red_textures(g_textures.car_garbage_truck, "images/cars/garbage_truck.png");
 
-	create_blue_red_textures(g_textures.wheel_tire, "images/wheels/tire.png");
-
 	create_blue_red_textures(g_textures.wheel_small, "images/wheels/small.png");
 
-	create_blue_red_textures(g_textures.wheel_cycle, "images/wheels/cycle.png");
+	create_blue_red_textures(g_textures.wheel_medium, "images/wheels/medium.png");
 
 	create_blue_red_textures(g_textures.wheel_monster, "images/wheels/monster.png");
+
+	create_blue_red_textures(g_textures.wheel_cycle, "images/wheels/cycle.png");
 
 	create_blue_red_textures(g_textures.head_neck, "images/head_neck.png");
 

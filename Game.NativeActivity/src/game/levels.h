@@ -16,9 +16,13 @@
 
 #define OBJECT_COUNT_MAX 1000
 
+#define RANDOM_LOCATION_COUNT_MAX 6
+
 typedef enum Level_Type Level_Type;
 
 typedef enum Armageddon_Type Armageddon_Type;
+
+typedef struct Location Location;
 
 typedef struct Level Level;
 
@@ -61,7 +65,16 @@ enum Armageddon_Type
 
 	ARMAGEDDON_TYPE_WATER_RISE,
 
+	ARMAGEDDON_TYPE_MINE_RAIN,
+
 	ARMAGEDDON_TYPE_COUNT
+};
+
+struct Location
+{
+	Vector position;
+
+	bool heavy;
 };
 
 struct Level
@@ -76,6 +89,10 @@ struct Level
 
 	double time;
 
+	Location random_locations[RANDOM_LOCATION_COUNT_MAX];
+
+	int random_location_count;
+
 	struct Object* objects[OBJECT_COUNT_MAX];
 
 	int object_count;
@@ -87,6 +104,8 @@ struct Level
 	Physics_Body* laser_body;
 
 	Physics_Body* water_body;
+
+	double mine_spawn_time;
 };
 
 Level* level_create(Level_Type type, Physics_World* world, int group);
@@ -96,6 +115,8 @@ void level_destroy(Level* level);
 void level_update(Level* level, double delta_time);
 
 void level_render(Level* level);
+
+void level_add_random_objects(Level* level);
 
 void level_start_armageddon(Level* level);
 

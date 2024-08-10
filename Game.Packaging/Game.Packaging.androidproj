@@ -150,7 +150,7 @@
     </AntPackage>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Content Include="assets\images\blade.png" />
+    <Content Include="assets\images\box.png" />
     <Content Include="assets\images\cars\dragster.png" />
     <Content Include="assets\images\cars\garbage.png" />
     <Content Include="assets\images\cars\garbage_lid.png" />
@@ -179,12 +179,15 @@
     <Content Include="assets\images\levels\smiley_face.png" />
     <Content Include="assets\images\levels\triple_bump.png" />
     <Content Include="assets\images\levels\tunnel.png" />
+    <Content Include="assets\images\lifter_base.png" />
+    <Content Include="assets\images\lifter_sensor.png" />
     <Content Include="assets\images\mine_0.png" />
     <Content Include="assets\images\mine_1.png" />
     <Content Include="assets\images\mine_2.png" />
     <Content Include="assets\images\overlay.png" />
     <Content Include="assets\images\saw_left.png" />
     <Content Include="assets\images\saw_right.png" />
+    <Content Include="assets\images\tire.png" />
     <Content Include="assets\images\ui\arrow_disabled.png" />
     <Content Include="assets\images\ui\arrow_pressed.png" />
     <Content Include="assets\images\ui\arrow_released.png" />
@@ -204,11 +207,10 @@
     <Content Include="assets\images\ui\star_opaque.png" />
     <Content Include="assets\images\ui\star_translucent.png" />
     <Content Include="assets\images\ui\unchecked.png" />
-    <Content Include="assets\images\water.png" />
     <Content Include="assets\images\wheels\cycle.png" />
+    <Content Include="assets\images\wheels\medium.png" />
     <Content Include="assets\images\wheels\monster.png" />
     <Content Include="assets\images\wheels\small.png" />
-    <Content Include="assets\images\wheels\tire.png" />
     <Content Include="assets\sounds\airhorn.mp3" />
     <Content Include="assets\sounds\applause.mp3" />
     <Content Include="assets\sounds\beep.mp3" />
@@ -219,6 +221,7 @@
     <Content Include="assets\sounds\intro.mp2" />
     <Content Include="assets\sounds\laser.mp2" />
     <Content Include="assets\sounds\music.mp3" />
+    <Content Include="assets\sounds\saw.mp3" />
     <Content Include="assets\sounds\water.mp2" />
     <Content Include="res\values\strings.xml" />
     <AntBuildXml Include="build.xml" />

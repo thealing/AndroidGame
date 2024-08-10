@@ -483,6 +483,20 @@ Transform physics_body_get_inverse_transform(const Physics_Body* body)
 	return transform_invert(transform_create(body->position, body->angle));
 }
 
+void physics_body_apply_speed_at_local_point(Physics_Body* body, Vector local_point, Vector speed)
+{
+	body->linear_velocity = vector_add(body->linear_velocity, vector_rotate(speed, body->angle));
+
+	body->angular_velocity += vector_cross(local_point, speed);
+}
+
+void physics_body_apply_speed_at_world_point(Physics_Body* body, Vector world_point, Vector speed)
+{
+	body->linear_velocity = vector_add(body->linear_velocity, speed);
+
+	body->angular_velocity += vector_cross(vector_subtract(world_point, body->position), speed);
+}
+
 void physics_body_apply_impulse_at_local_point(Physics_Body* body, Vector local_point, Vector impulse)
 {
 	body->linear_velocity = vector_add(body->linear_velocity, vector_multiply(vector_rotate(impulse, body->angle), body->inverse_linear_mass));

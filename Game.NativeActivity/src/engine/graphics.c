@@ -72,6 +72,53 @@ void texture_resize(Texture* texture, Vector size)
 	texture->size = size;
 }
 
+void texture_align(Texture* texture, Alignment horizontal_alignment, Alignment vertical_alignment)
+{
+	switch (horizontal_alignment)
+	{
+		case ALIGNMENT_LEFT:
+		{
+			texture->center.x = 0;
+
+			break;
+		}
+		case ALIGNMENT_RIGHT:
+		{
+			texture->center.x = texture->size.x;
+
+			break;
+		}
+		case ALIGNMENT_CENTER:
+		{
+			texture->center.x = texture->size.x / 2;
+
+			break;
+		}
+	}
+
+	switch (vertical_alignment)
+	{
+		case ALIGNMENT_BOTTOM:
+		{
+			texture->center.y = 0;
+
+			break;
+		}
+		case ALIGNMENT_TOP:
+		{
+			texture->center.y = texture->size.y;
+
+			break;
+		}
+		case ALIGNMENT_CENTER:
+		{
+			texture->center.y = texture->size.y / 2;
+
+			break;
+		}
+	}
+}
+
 void graphics_init(void* window)
 {
 	display = eglGetDisplay(EGL_DEFAULT_DISPLAY);

@@ -68,6 +68,11 @@ static void on_start()
 
 	s_level = level_create(g_selected_level == 0 ? random_int_below(LEVEL_TYPE_COUNT) : g_selected_level - 1, s_world, GROUP_LEVEL);
 
+	if (g_random_objects)
+	{
+		level_add_random_objects(s_level);
+	}
+
 	if (g_selected_blue_car == 0 && g_selected_red_car == 0 && g_same_random_car)
 	{
 		Car_Type type = random_int_below(CAR_TYPE_COUNT);
@@ -123,6 +128,8 @@ static void on_death()
 	s_red_car->done = true;
 
 	level_stop_armageddon(s_level);
+
+	sound_stop(g_sounds.saw);
 
 	sound_play(g_sounds.airhorn);
 

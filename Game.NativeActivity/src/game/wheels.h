@@ -12,13 +12,13 @@ typedef struct Wheel Wheel;
 
 enum Wheel_Type
 {
-	WHEEL_TYPE_TIRE,
-
 	WHEEL_TYPE_SMALL,
 
-	WHEEL_TYPE_CYCLE,
+	WHEEL_TYPE_MEDIUM,
 
 	WHEEL_TYPE_MONSTER,
+
+	WHEEL_TYPE_CYCLE,
 
 	WHEEL_TYPE_COUNT
 };

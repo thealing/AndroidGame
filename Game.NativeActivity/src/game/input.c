@@ -6,6 +6,8 @@ Touch g_previous_touches[TOUCH_COUNT];
 
 Vector input_project_touch(const Touch* touch)
 {
+	// TODO: unproject
+
 	return vector_create(touch->x * 1280, touch->y * 720);
 }
 

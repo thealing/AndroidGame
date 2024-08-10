@@ -10,8 +10,6 @@ struct Textures
 
 	Texture* laser;
 
-	Texture* water;
-
 	Texture* saw_left;
 
 	Texture* saw_right;
@@ -21,6 +19,14 @@ struct Textures
 	Texture* mine_1;
 
 	Texture* mine_2;
+
+	Texture* box;
+
+	Texture* tire;
+
+	Texture* lifter_base;
+
+	Texture* lifter_sensor;
 
 	Texture* level_cave;
 
@@ -66,13 +72,13 @@ struct Textures
 
 	Texture* car_garbage_truck[2];
 
-	Texture* wheel_tire[2];
-
 	Texture* wheel_small[2];
 
-	Texture* wheel_cycle[2];
+	Texture* wheel_medium[2];
 
 	Texture* wheel_monster[2];
+
+	Texture* wheel_cycle[2];
 
 	Texture* head_neck[2];
 

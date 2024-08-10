@@ -87,6 +87,8 @@ void texture_scale(Texture* texture, Vector scale);
 
 void texture_resize(Texture* texture, Vector size);
 
+void texture_align(Texture* texture, Alignment horizontal_alignment, Alignment vertical_alignment);
+
 void graphics_init(void* window);
 
 void graphics_uninit(void* window);

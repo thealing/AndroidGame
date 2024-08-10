@@ -44,8 +44,6 @@ void android_main()
 
 			while (android_poll_event(&e))
 			{
-				log_info("%d", e.type);
-
 				switch (e.type)
 				{
 					case ANDROID_EVENT_RESUMED:
@@ -169,5 +167,7 @@ void render()
 	if (g_debug_hud)
 	{
 		graphics_draw_format_in_rect(&(Rect){ 0, 0, 0, 30 }, ALIGNMENT_LEFT, "%5d %3d", lround(s_update_fps), lround(s_render_fps));
+
+		graphics_draw_format_in_rect(&(Rect){ 0, 200, 0, 230 }, ALIGNMENT_LEFT, "%5f %5f", g_current_touches[0].x*1280, g_current_touches[0].y*720);
 	}
 }

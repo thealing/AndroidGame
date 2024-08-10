@@ -189,6 +189,10 @@ Transform physics_body_get_transform(const Physics_Body* body);
 
 Transform physics_body_get_inverse_transform(const Physics_Body* body);
 
+void physics_body_apply_speed_at_local_point(Physics_Body* body, Vector local_point, Vector speed);
+
+void physics_body_apply_speed_at_world_point(Physics_Body* body, Vector world_point, Vector speed);
+
 void physics_body_apply_impulse_at_local_point(Physics_Body* body, Vector local_point, Vector impulse);
 
 void physics_body_apply_impulse_at_world_point(Physics_Body* body, Vector world_point, Vector impulse);

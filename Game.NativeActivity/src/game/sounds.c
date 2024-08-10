@@ -26,9 +26,17 @@ void sounds_init()
 
 	g_sounds.explosion = sound_load("sounds/explosion.mp3");
 
+	g_sounds.saw = sound_load("sounds/saw.mp3");
+
 	sound_set_volume(g_sounds.intro, 0.6);
 
 	sound_set_volume(g_sounds.airhorn, 0.4);
+
+	sound_set_volume(g_sounds.laser, 0.7);
+
+	sound_set_volume(g_sounds.water, 0.9);
+
+	sound_set_volume(g_sounds.saw, 0.4);
 
 	sound_set_looping(g_sounds.intro, true);
 
@@ -37,6 +45,8 @@ void sounds_init()
 	sound_set_looping(g_sounds.laser, true);
 
 	sound_set_looping(g_sounds.water, true);
+
+	sound_set_looping(g_sounds.saw, true);
 }
 
 void sounds_pause_all()

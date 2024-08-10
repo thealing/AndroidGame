@@ -187,6 +187,8 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 	level->body = physics_body_create(world, PHYSICS_BODY_TYPE_STATIC);
 
+	level->mine_spawn_time = INFINITY;
+
 	switch (type)
 	{
 		case LEVEL_TYPE_CAVE:
@@ -202,6 +204,12 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 			level->red_spawn = vector_create(980, 200);
 
 			level->armageddon_type = random_int_in_range(ARMAGEDDON_TYPE_LASER_UP, ARMAGEDDON_TYPE_LASER_DOWN);
+
+			level->random_location_count = 2;
+
+			level->random_locations[0] = (Location){ vector_create(640, 100), true };
+
+			level->random_locations[1] = (Location){ vector_create(640, 200), false };
 
 			break;
 		}
@@ -421,7 +429,7 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->red_spawn = vector_create(970, 240);
 
-			level->armageddon_type = ARMAGEDDON_TYPE_LASER_UP;
+			level->armageddon_type = ARMAGEDDON_TYPE_MINE_RAIN;
 
 			break;
 		}
@@ -450,14 +458,23 @@ void level_destroy(Level* level)
 
 	sound_stop(g_sounds.water);
 
+	sound_stop(g_sounds.saw);
+
 	free(level);
 }
 
 void level_update(Level* level, double delta_time)
 {
-	level->time += delta_time;
+	if (level->time >= level->mine_spawn_time)
+	{
+		add_object(level, object_create_mine(level->body->world, vector_create(random_real_in_range(50, 1230), 800), true));
+
+		level->mine_spawn_time += random_real_in_range(0.5, 1.5);
+	}
 
 	update_objects(level, delta_time);
+
+	level->time += delta_time;
 }
 
 void level_render(Level* level)
@@ -475,23 +492,61 @@ void level_render(Level* level)
 
 	if (level->water_body != NULL)
 	{
-		set_texture_and_color(g_textures.water, &(Color){ 1, 1, 1, 0.6 });
-
-		double water_offset = level->time / 5;
+		set_texture_and_color(NULL, &(Color){ 0.67, 0.8, 0.85, 0.6 });
 
 		double water_level = level->water_body->position.y + 15;
 
-		double water_height = 55;
-
-		for (double y = water_level; y > 0; y -= water_height)
-		{
-			graphics_draw_texture_rect_in_rect(&(Rect){ water_offset, 0, 1 + water_offset, 1 }, &(Rect){ 0, y - water_height, 1280, y });
-
-			water_offset *= 0.9;
-		}
+		graphics_draw_rect(&(Rect){ 0, 0, 1280, water_level }, true);
 	}
 
 	render_objects(level);
+}
+
+void level_add_random_objects(Level* level)
+{
+	for (int i = 0; i < level->random_location_count; i++)
+	{
+		if (random_int_below(3) < 2)
+		{
+		again:
+			switch (random_int_below(OBJECT_TYPE_COUNT))
+			{
+				case OBJECT_TYPE_MINE:
+				{
+					add_object(level, object_create_mine(level->body->world, level->random_locations[i].position, false));
+
+					break;
+				}
+				case OBJECT_TYPE_BOX:
+				{goto again;
+					add_object(level, object_create_box(level->body->world, level->random_locations[i].position, random_real_in_range(0.4, 1.2)));
+
+					break;
+				}
+				case OBJECT_TYPE_TIRE:
+				{goto again;
+					add_object(level, object_create_tire(level->body->world, level->random_locations[i].position, random_real_in_range(10, 40)));
+
+					break;
+				}
+				case OBJECT_TYPE_LIFTER:
+				{goto again;
+					if (!level->random_locations[i].heavy)
+					{
+						goto again;
+					}
+
+					add_object(level, object_create_lifter(level->body->world, level->random_locations[i].position));
+
+					break;
+				}
+				default:
+				{
+					goto again;
+				}
+			}
+		}
+	}
 }
 
 void level_start_armageddon(Level* level)
@@ -532,12 +587,20 @@ void level_start_armageddon(Level* level)
 
 			break;
 		}
+		case ARMAGEDDON_TYPE_MINE_RAIN:
+		{
+			level->mine_spawn_time = level->time;
+
+			break;
+		}
 	}
 }
 
 void level_stop_armageddon(Level* level)
 {
 	level->armageddon_active = false;
+
+	level->mine_spawn_time = INFINITY;
 
 	if (level->laser_body != NULL)
 	{
@@ -551,5 +614,5 @@ void level_stop_armageddon(Level* level)
 
 	sound_stop(g_sounds.laser);
 
-	sound_stop(g_sounds.laser);
+	sound_stop(g_sounds.water);
 }

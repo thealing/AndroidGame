@@ -32,27 +32,27 @@ Wheel* wheel_create(Wheel_Type type, Physics_Body* chassis_body, Vector chassis_
 
 	switch (type)
 	{
-		case WHEEL_TYPE_TIRE:
-		{
-			wheel->texture = g_textures.wheel_tire[wheel->side];
-
-			break;
-		}
 		case WHEEL_TYPE_SMALL:
 		{
 			wheel->texture = g_textures.wheel_small[wheel->side];
 
 			break;
 		}
-		case WHEEL_TYPE_CYCLE:
+		case WHEEL_TYPE_MEDIUM:
 		{
-			wheel->texture = g_textures.wheel_cycle[wheel->side];
+			wheel->texture = g_textures.wheel_medium[wheel->side];
 
 			break;
 		}
 		case WHEEL_TYPE_MONSTER:
 		{
 			wheel->texture = g_textures.wheel_monster[wheel->side];
+
+			break;
+		}
+		case WHEEL_TYPE_CYCLE:
+		{
+			wheel->texture = g_textures.wheel_cycle[wheel->side];
 
 			break;
 		}

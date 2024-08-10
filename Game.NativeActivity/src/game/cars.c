@@ -30,6 +30,11 @@ static bool head_collision_callback(Physics_Collider* head_collider, Physics_Col
 	{
 		return true;
 	}
+
+	if (other_collider->flags & FLAG_LIFTER)
+	{
+		return true;
+	}
 	
 	if (other_collider->flags & FLAG_WATER)
 	{
@@ -69,6 +74,8 @@ static void create_chassis(Car* car, int index, Physics_World* world, Vector pos
 		collider->filter_group = group;
 
 		collider->flags |= FLAG_CAR;
+
+		collider->flags |= FLAG_CHASSIS;
 	}
 
 	car->bodies[index] = body;
@@ -107,7 +114,7 @@ static void create_head(Car* car, int index, Physics_World* world, Vector positi
 	car->head_body = body;
 }
 
-static void create_extra_body(Car* car, int index, Physics_World* world, Vector position, int group, Vector offset, double density, double friction, const Vector* hitbox, int hitbox_count, int hitbox_length)
+static void create_extra_body(Car* car, int index, Physics_World* world, Vector position, int group, Vector offset, double density, double friction, const Vector* hitbox, int hitbox_count, int hitbox_length, int flags)
 {
 	Physics_Body* body = physics_body_create(world, PHYSICS_BODY_TYPE_DYNAMIC);
 
@@ -133,6 +140,8 @@ static void create_extra_body(Car* car, int index, Physics_World* world, Vector 
 		collider->filter_group = group;
 
 		collider->flags |= FLAG_CAR;
+
+		collider->flags |= flags;
 	}
 
 	car->bodies[index] = body;
@@ -174,9 +183,9 @@ Car* car_create(Car_Type type, Physics_World* world, Vector position, int group)
 
 			car->textures[0] = g_textures.head_neck[car->side];
 
-			car->wheels[0] = wheel_create(WHEEL_TYPE_TIRE, car->chassis_body, vector_create(-43, -3), group, 15, 10, 200, 10, 0.75);
+			car->wheels[0] = wheel_create(WHEEL_TYPE_MEDIUM, car->chassis_body, vector_create(-43, -3), group, 15, 10, 200, 10, 0.75);
 
-			car->wheels[1] = wheel_create(WHEEL_TYPE_TIRE, car->chassis_body, vector_create(60, -9), group, 9, 6, 200, 2, 0.5);
+			car->wheels[1] = wheel_create(WHEEL_TYPE_MEDIUM, car->chassis_body, vector_create(60, -9), group, 9, 6, 200, 2, 0.5);
 
 			break;
 		}
@@ -206,9 +215,9 @@ Car* car_create(Car_Type type, Physics_World* world, Vector position, int group)
 
 			car->textures[0] = g_textures.head_neck[car->side];
 
-			car->wheels[0] = wheel_create(WHEEL_TYPE_TIRE, car->chassis_body, vector_create(-37, -30), group, 14, 5, 80, 5, 2);
+			car->wheels[0] = wheel_create(WHEEL_TYPE_MEDIUM, car->chassis_body, vector_create(-37, -30), group, 14, 5, 80, 5, 2);
 
-			car->wheels[1] = wheel_create(WHEEL_TYPE_TIRE, car->chassis_body, vector_create(39, -30), group, 14, 5, 80, 5, 2);
+			car->wheels[1] = wheel_create(WHEEL_TYPE_MEDIUM, car->chassis_body, vector_create(39, -30), group, 14, 5, 80, 5, 2);
 
 			break;
 		}
@@ -224,7 +233,7 @@ Car* car_create(Car_Type type, Physics_World* world, Vector position, int group)
 
 			car->wheels[0] = wheel_create(WHEEL_TYPE_MONSTER, car->chassis_body, vector_create(-40, -18), group, 22, 10, 70, 4, 1);
 
-			car->wheels[1] = wheel_create(WHEEL_TYPE_TIRE, car->chassis_body, vector_create(33, -26), group, 14, 10, 70, 4, 3);
+			car->wheels[1] = wheel_create(WHEEL_TYPE_MEDIUM, car->chassis_body, vector_create(33, -26), group, 14, 10, 70, 4, 3);
 
 			break;
 		}
@@ -238,18 +247,18 @@ Car* car_create(Car_Type type, Physics_World* world, Vector position, int group)
 
 			car->textures[0] = g_textures.head_neck[car->side];
 
-			car->wheels[0] = wheel_create(WHEEL_TYPE_TIRE, car->chassis_body, vector_create(23, -23), group, 14, 10, 60, 10, 3);
+			car->wheels[0] = wheel_create(WHEEL_TYPE_MEDIUM, car->chassis_body, vector_create(23, -23), group, 14, 10, 60, 10, 3);
 
-			car->wheels[1] = wheel_create(WHEEL_TYPE_TIRE, car->chassis_body, vector_create(-50, -23), group, 14, 10, 60, 10, 3);
+			car->wheels[1] = wheel_create(WHEEL_TYPE_MEDIUM, car->chassis_body, vector_create(-50, -23), group, 14, 10, 60, 10, 3);
 
 			for (int i = 2, j = 0; i <= 5; i++, j++)
 			{
-				create_extra_body(car, i, world, position, 0, vector_create(-38, -1 + 10 * j), 0.5, 2, s_plank, countof(s_plank), countof(s_plank[0]));
+				create_extra_body(car, i, world, position, 0, vector_create(-38, -1 + 10 * j), 0.5, 2, s_plank, countof(s_plank), countof(s_plank[0]), FLAG_OBJECT);
 
 				car->textures[i] = g_textures.plank;
 			}
 
-			create_extra_body(car, 6, world, position, 0, vector_create(-36, 11), 1.7, 0.5, s_timber_holder, countof(s_timber_holder), countof(s_timber_holder[0]));
+			create_extra_body(car, 6, world, position, 0, vector_create(-36, 11), 1.7, 0.5, s_timber_holder, countof(s_timber_holder), countof(s_timber_holder[0]), 0);
 
 			Vector joint_position = vector_add_xy(position, -65, -7);
 
@@ -269,11 +278,11 @@ Car* car_create(Car_Type type, Physics_World* world, Vector position, int group)
 
 			car->textures[6] = g_textures.head_neck[car->side];
 
-			car->wheels[0] = wheel_create(WHEEL_TYPE_TIRE, car->chassis_body, vector_create(-33, -33), group, 14, 10, 60, 5, 3);
+			car->wheels[0] = wheel_create(WHEEL_TYPE_MEDIUM, car->chassis_body, vector_create(-33, -33), group, 14, 10, 60, 5, 3);
 
-			car->wheels[1] = wheel_create(WHEEL_TYPE_TIRE, car->chassis_body, vector_create(46, -33), group, 14, 10, 60, 5, 3);
+			car->wheels[1] = wheel_create(WHEEL_TYPE_MEDIUM, car->chassis_body, vector_create(46, -33), group, 14, 10, 60, 5, 3);
 
-			create_extra_body(car, 8, world, position, 0, vector_create(-52, 3), 3, 1, s_garbage_lid, countof(s_garbage_lid), countof(s_garbage_lid[0]));
+			create_extra_body(car, 8, world, position, 0, vector_create(-52, 3), 3, 1, s_garbage_lid, countof(s_garbage_lid), countof(s_garbage_lid[0]), 0);
 
 			Vector joint_position = vector_add_xy(position, -45, 33);
 
@@ -283,7 +292,7 @@ Car* car_create(Car_Type type, Physics_World* world, Vector position, int group)
 
 			for (int i = 0; i < 6; i++)
 			{
-				create_extra_body(car, i, world, position, 0, vector_create(-32 + i * 8, -17), 0.3, 0.9, s_garbage, countof(s_garbage), countof(s_garbage[0]));
+				create_extra_body(car, i, world, position, 0, vector_create(-32 + i * 8, -17), 0.3, 0.9, s_garbage, countof(s_garbage), countof(s_garbage[0]), FLAG_OBJECT);
 
 				car->textures[i] = g_textures.garbage;
 			}

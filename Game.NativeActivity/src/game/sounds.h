@@ -27,6 +27,8 @@ struct Sounds
 	Sound* beep;
 
 	Sound* explosion;
+
+	Sound* saw;
 };
 
 extern Sounds g_sounds;

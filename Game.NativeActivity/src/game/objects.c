@@ -2,7 +2,11 @@
 
 static const Vector s_mine[] = {{-23,-10},{-9,8},{9,8},{23,-10}};
 
-static bool saw_collision_callback(Physics_Collider* mine_collider, Physics_Collider* other_collider)
+static const Vector s_lifter_base[] = {{-55,1},{-44,10},{44,10},{54,1}};
+
+static const Vector s_lifter_sensor[] = {{-37,10},{39,10},{58,196},{-56,196}};
+
+static bool saw_collision_callback(Physics_Collider* saw_collider, Physics_Collider* other_collider)
 {
 	if (other_collider->flags & FLAG_HEAD)
 	{
@@ -16,16 +20,56 @@ static bool saw_collision_callback(Physics_Collider* mine_collider, Physics_Coll
 
 static bool mine_collision_callback(Physics_Collider* mine_collider, Physics_Collider* other_collider)
 {
-	if (other_collider->flags & FLAG_CAR)
-	{
-		Mine* mine = mine_collider->data;
+	Mine* mine = mine_collider->data;
 
+	if (mine->active || other_collider->flags & FLAG_CAR)
+	{
 		if (mine->state == 0)
 		{
 			mine->state = 1;
 
 			mine->count_time = 0;
 		}
+	}
+
+	return true;
+}
+
+static bool lifter_collision_callback(Physics_Collider* lifter_collider, Physics_Collider* other_collider)
+{
+	Physics_Body* lifter_body = lifter_collider->body;
+
+	Physics_Body* other_body = other_collider->body;
+
+	if (other_body != lifter_collider->body && other_body->type == PHYSICS_BODY_TYPE_DYNAMIC)
+	{
+		Vector closest_point = vector_create(INFINITY, INFINITY);
+
+		double closest_distance = INFINITY;
+
+		for (List_Node* collider_node = other_body->collider_list.first; collider_node != NULL; collider_node = collider_node->next)
+		{
+			Physics_Collider* collider = collider_node->item;
+
+			Vector point = shape_project_point(collider->world_shape, lifter_body->position);
+
+			double distance = vector_distance_squared(point, lifter_body->position);
+
+			if (distance < closest_distance)
+			{
+				closest_point = point;
+
+				closest_distance = distance;
+			}
+		}
+
+		Vector vector = vector_subtract(closest_point, lifter_body->position);
+
+		Vector normal = vector_rotate(vector_create(0, 1), lifter_body->angle);
+
+		double impulse = 2e5 / vector_dot(normal, vector);
+
+		physics_body_apply_impulse_at_world_point(other_body, closest_point, vector_multiply(normal, impulse));
 	}
 
 	return true;
@@ -49,12 +93,18 @@ Object* object_create_saw(Physics_World* world, Vector position, double radius, 
 
 	collider->collision_callback = saw_collision_callback;
 
+	collider->data = saw;
+
+	collider->flags |= FLAG_OBJECT;
+
 	saw->radius = radius;
+
+	sound_play(g_sounds.saw);
 
 	return saw;
 }
 
-Object* object_create_mine(Physics_World* world, Vector position)
+Object* object_create_mine(Physics_World* world, Vector position, bool active)
 {
 	Mine* mine = calloc(1, sizeof(Mine));
 
@@ -76,9 +126,104 @@ Object* object_create_mine(Physics_World* world, Vector position)
 
 	collider->data = mine;
 
+	collider->flags |= FLAG_OBJECT;
+
 	collider->flags |= FLAG_MINE;
 
+	mine->active = active;
+
 	return mine;
+}
+
+Object* object_create_box(Physics_World* world, Vector position, double weight)
+{
+	Box* box = calloc(1, sizeof(Box));
+
+	box->type = OBJECT_TYPE_BOX;
+
+	box->body = physics_body_create(world, PHYSICS_BODY_TYPE_DYNAMIC);
+
+	box->body->position = position;
+
+	Shape* shape = create_rect_shape(create_isotropic_vector(-30), create_isotropic_vector(30));
+
+	Physics_Collider* collider = physics_collider_create(box->body, move_shape(shape), weight);
+
+	collider->static_friction = 0.5;
+
+	collider->dynamic_friction = 0.5;
+
+	collider->data = box;
+
+	collider->flags |= FLAG_OBJECT;
+
+	return box;
+}
+
+Object* object_create_tire(Physics_World* world, Vector position, double radius)
+{
+	Tire* tire = calloc(1, sizeof(Tire));
+
+	tire->type = OBJECT_TYPE_TIRE;
+
+	tire->body = physics_body_create(world, PHYSICS_BODY_TYPE_DYNAMIC);
+
+	tire->body->position = position;
+
+	Shape* shape = shape_create_circle(vector_create(0, 0), radius);
+
+	Physics_Collider* collider = physics_collider_create(tire->body, move_shape(shape), 1);
+
+	collider->static_friction = 1;
+
+	collider->dynamic_friction = 1;
+
+	collider->restitution = 0.5;
+
+	collider->data = tire;
+
+	collider->flags |= FLAG_OBJECT;
+
+	tire->radius = radius;
+
+	return tire;
+}
+
+Object* object_create_lifter(Physics_World* world, Vector position)
+{
+	Lifter* lifter = calloc(1, sizeof(Lifter));
+
+	lifter->type = OBJECT_TYPE_LIFTER;
+
+	lifter->body = physics_body_create(world, PHYSICS_BODY_TYPE_DYNAMIC);
+
+	lifter->body->position = position;
+
+	Shape* base_shape = shape_create_polygon(countof(s_lifter_base), s_lifter_base);
+
+	Physics_Collider* base_collider = physics_collider_create(lifter->body, move_shape(base_shape), 0.6);
+
+	base_collider->static_friction = 1;
+
+	base_collider->dynamic_friction = 1;
+
+	base_collider->data = lifter;
+
+	base_collider->flags |= FLAG_OBJECT;
+
+	Shape* sensor_shape = shape_create_polygon(countof(s_lifter_sensor), s_lifter_sensor);
+
+	Physics_Collider* sensor_collider = physics_collider_create(lifter->body, move_shape(sensor_shape), 1);
+
+	sensor_collider->sensor = true;
+
+	sensor_collider->collision_callback = lifter_collision_callback;
+
+	sensor_collider->data = lifter;
+
+	sensor_collider->flags |= FLAG_LIFTER;
+
+	return lifter;
 }
 
 void object_destroy(Object* object)
@@ -102,6 +247,30 @@ void object_destroy(Object* object)
 			sound_stop(g_sounds.beep);
 
 			sound_stop(g_sounds.explosion);
+
+			break;
+		}
+		case OBJECT_TYPE_BOX:
+		{
+			Box* box = object;
+
+			physics_body_destroy(box->body);
+
+			break;
+		}
+		case OBJECT_TYPE_TIRE:
+		{
+			Tire* tire = object;
+
+			physics_body_destroy(tire->body);
+
+			break;
+		}
+		case OBJECT_TYPE_LIFTER:
+		{
+			Lifter* lifter = object;
+
+			physics_body_destroy(lifter->body);
 
 			break;
 		}
@@ -141,34 +310,71 @@ void object_update(Object* object, double delta_time)
 
 					sound_play(g_sounds.explosion);
 				}
+
+				if (mine->counter >= 2)
+				{
+					for (List_Node* collider_node = mine->body->world->collider_list.first; collider_node != NULL; collider_node = collider_node->next)
+					{
+						Physics_Collider* collider = collider_node->item;
+
+						if (collider->flags & FLAG_MINE)
+						{
+							Mine* other_mine = collider->data;
+
+							if (other_mine->state == 0 && vector_distance_squared(mine->body->position, other_mine->body->position) < square(MINE_RANGE))
+							{
+								other_mine->state = 1;
+
+								other_mine->count_time = 0;
+							}
+						}
+					}
+				}
 			}
 
 			if (mine->state == 2)
 			{
 				Physics_World* world = mine->body->world;
 
-				for (List_Node* collider_node = world->collider_list.first; collider_node != NULL; collider_node = collider_node->next)
+				for (List_Node* body_node = world->body_list.first; body_node != NULL; body_node = body_node->next)
 				{
-					Physics_Collider* collider = collider_node->item;
+					Physics_Body* body = body_node->item;
 
-					if (collider->body != mine->body)
+					if (body != mine->body && body->type == PHYSICS_BODY_TYPE_DYNAMIC)
 					{
-						Vector target = shape_project_point(collider->world_shape, mine->body->position);
+						Vector closest_point = vector_create(INFINITY, INFINITY);
 
-						Vector vector = vector_subtract(target, mine->body->position);
+						double closest_distance = INFINITY;
 
-						double distance = vector_length(vector);
-
-						if (distance < 250)
+						for (List_Node* collider_node = body->collider_list.first; collider_node != NULL; collider_node = collider_node->next)
 						{
-							double impulse = 1e6 / distance;
+							Physics_Collider* collider = collider_node->item;
 
-							physics_body_apply_impulse_at_world_point(collider->body, target, vector_multiply(vector, impulse / distance));
+							if (collider->flags & FLAG_CHASSIS || collider->flags & FLAG_OBJECT && !(collider->flags & FLAG_MINE))
+							{
+								Vector point = shape_project_point(collider->world_shape, mine->body->position);
+
+								double distance = vector_distance_squared(point, mine->body->position);
+
+								if (distance < closest_distance)
+								{
+									closest_point = point;
+
+									closest_distance = distance;
+								}
+							}
+						}
+
+						Vector vector = vector_subtract(closest_point, mine->body->position);
+
+						if (closest_distance < square(MINE_RANGE))
+						{
+							physics_body_apply_speed_at_world_point(body, closest_point, vector_multiply(vector, 2700 / closest_distance));
 						}
 					}
 				}
 
-				if (mine->count_time > 0.1)
+				if (mine->count_time > MINE_EXPLOSION_DURATION)
 				{
 					mine->state = 3;
 
@@ -177,6 +383,22 @@ void object_update(Object* object, double delta_time)
 			}
 
 			mine->count_time += delta_time;
+
+			break;
+		}
+		case OBJECT_TYPE_BOX:
+		{
+			break;
+		}
+		case OBJECT_TYPE_TIRE:
+		{
+			break;
+		}
+		case OBJECT_TYPE_LIFTER:
+		{
+			Lifter* lifter = object;
+
+			lifter->time += delta_time;
 
 			break;
 		}
@@ -224,12 +446,46 @@ void object_render(Object* object)
 
 			if (mine->state == 2)
 			{
-				double progress = mine->count_time / 0.1;
+				double progress = mine->count_time / MINE_EXPLOSION_DURATION;
 
 				set_texture_and_color(NULL, &(Color){ 1, 0, 0, 1.2 - progress });
 
-				graphics_draw_circle(&(Circle){ mine->body->position, square(progress) * 200 }, true);
+				graphics_draw_circle(&(Circle){ mine->body->position, square(progress) * 0.8 * MINE_RANGE }, true);
 			}
+
+			break;
+		}
+		case OBJECT_TYPE_BOX:
+		{
+			Box* box = object;
+
+			set_texture_and_color(g_textures.box, NULL);
+
+			graphics_draw_texture_at(box->body->position, box->body->angle);
+
+			break;
+		}
+		case OBJECT_TYPE_TIRE:
+		{
+			Tire* tire = object;
+
+			set_texture_and_color(g_textures.tire, NULL);
+
+			draw_texture_scaled(tire->body->position, tire->body->angle, tire->radius);
+
+			break;
+		}
+		case OBJECT_TYPE_LIFTER:
+		{
+			Lifter* lifter = object;
+
+			set_texture_and_color(g_textures.lifter_base, NULL);
+
+			graphics_draw_texture_at(lifter->body->position, lifter->body->angle);
+
+			set_texture_and_color(g_textures.lifter_sensor, &(Color){ 1, 1, 1, 0.8 + fabs(fmod(lifter->time / 3, 0.4) - 0.2) });
+
+			graphics_draw_texture_at(lifter->body->position, lifter->body->angle);
 
 			break;
 		}
