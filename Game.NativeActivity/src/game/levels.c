@@ -229,6 +229,16 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->armageddon_type = random_int_in_range(ARMAGEDDON_TYPE_LASER_UP, ARMAGEDDON_TYPE_LASER_DOWN);
 
+			level->random_location_count = 4;
+
+			level->random_locations[0] = (Location){ vector_create(640, 100), true };
+
+			level->random_locations[1] = (Location){ vector_create(640, 200), false };
+
+			level->random_locations[2] = (Location){ vector_create(640, 500), true };
+
+			level->random_locations[3] = (Location){ vector_create(640, 600), false };
+
 			break;
 		}
 		case LEVEL_TYPE_DESERT_CAVE:
@@ -244,6 +254,10 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 			level->red_spawn = vector_create(980, 200);
 
 			level->armageddon_type = random_int_in_range(ARMAGEDDON_TYPE_LASER_UP, ARMAGEDDON_TYPE_LASER_DOWN);
+
+			level->random_location_count = 1;
+
+			level->random_locations[0] = (Location){ vector_create(640, 200), true };
 
 			break;
 		}
@@ -265,6 +279,12 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->armageddon_type = random_int_in_range(ARMAGEDDON_TYPE_LASER_UP, ARMAGEDDON_TYPE_LASER_DOWN);
 
+			level->random_location_count = 2;
+
+			level->random_locations[0] = (Location){ vector_create(640, 200), true };
+
+			level->random_locations[1] = (Location){ vector_create(640, 600), true };
+
 			break;
 		}
 		case LEVEL_TYPE_RAMP:
@@ -280,6 +300,12 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 			level->red_spawn = vector_create(980, 200);
 
 			level->armageddon_type = ARMAGEDDON_TYPE_LASER_UP;
+			
+			level->random_location_count = 2;
+
+			level->random_locations[0] = (Location){ vector_create(600, 350), false };
+
+			level->random_locations[1] = (Location){ vector_create(680, 350), false };
 
 			break;
 		}
@@ -296,6 +322,12 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 			level->red_spawn = vector_create(980, 200);
 
 			level->armageddon_type = ARMAGEDDON_TYPE_LASER_DOWN;
+
+			level->random_location_count = 2;
+
+			level->random_locations[0] = (Location){ vector_create(640, 50), true };
+
+			level->random_locations[1] = (Location){ vector_create(640, 150), false };
 
 			break;
 		}
@@ -315,6 +347,18 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->armageddon_type = ARMAGEDDON_TYPE_WATER_RISE;
 
+			level->random_location_count = 5;
+
+			level->random_locations[0] = (Location){ vector_create(200, 250), true };
+
+			level->random_locations[1] = (Location){ vector_create(1080, 250), true };
+
+			level->random_locations[2] = (Location){ vector_create(400, 250), false };
+
+			level->random_locations[3] = (Location){ vector_create(880, 250), false };
+
+			level->random_locations[4] = (Location){ vector_create(640, 400), true };
+
 			break;
 		}
 		case LEVEL_TYPE_DOUBLE_BUMP:
@@ -333,6 +377,18 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->armageddon_type = ARMAGEDDON_TYPE_WATER_RISE;
 
+			level->random_location_count = 5;
+
+			level->random_locations[0] = (Location){ vector_create(200, 250), true };
+
+			level->random_locations[1] = (Location){ vector_create(1080, 250), true };
+
+			level->random_locations[2] = (Location){ vector_create(475, 360), false };
+
+			level->random_locations[3] = (Location){ vector_create(805, 360), false };
+
+			level->random_locations[4] = (Location){ vector_create(640, 250), true };
+
 			break;
 		}
 		case LEVEL_TYPE_TRIPLE_BUMP:
@@ -350,6 +406,14 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 			level->red_spawn = vector_create(840, 330);
 
 			level->armageddon_type = ARMAGEDDON_TYPE_WATER_RISE;
+
+			level->random_location_count = 3;
+
+			level->random_locations[0] = (Location){ vector_create(300, 350), true };
+
+			level->random_locations[1] = (Location){ vector_create(980, 350), true };
+
+			level->random_locations[2] = (Location){ vector_create(640, 350), true };
 
 			break;
 		}
@@ -518,25 +582,25 @@ void level_add_random_objects(Level* level)
 					break;
 				}
 				case OBJECT_TYPE_BOX:
-				{goto again;
-					add_object(level, object_create_box(level->body->world, level->random_locations[i].position, random_real_in_range(0.4, 1.2)));
+				{
+					add_object(level, object_create_box(level->body->world, level->random_locations[i].position, random_real_in_range(0.2, 1)));
 
 					break;
 				}
 				case OBJECT_TYPE_TIRE:
-				{goto again;
+				{
 					add_object(level, object_create_tire(level->body->world, level->random_locations[i].position, random_real_in_range(10, 40)));
 
 					break;
 				}
 				case OBJECT_TYPE_LIFTER:
-				{goto again;
+				{
 					if (!level->random_locations[i].heavy)
 					{
 						goto again;
 					}
 
-					add_object(level, object_create_lifter(level->body->world, level->random_locations[i].position));
+					add_object(level, object_create_lifter(level->body->world, vector_add_xy(level->random_locations[i].position, 0, -30)));
 
 					break;
 				}

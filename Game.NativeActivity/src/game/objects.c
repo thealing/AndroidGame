@@ -47,6 +47,8 @@ static bool lifter_collision_callback(Physics_Collider* lifter_collider, Physics
 
 		double closest_distance = INFINITY;
 
+		bool is_head = false;
+
 		for (List_Node* collider_node = other_body->collider_list.first; collider_node != NULL; collider_node = collider_node->next)
 		{
 			Physics_Collider* collider = collider_node->item;
@@ -60,16 +62,24 @@ static bool lifter_collision_callback(Physics_Collider* lifter_collider, Physics
 				closest_point = point;
 
 				closest_distance = distance;
+			}	
+			
+			if (collider->flags & FLAG_HEAD)
+			{
+				is_head = true;
 			}
 		}
 
-		Vector vector = vector_subtract(closest_point, lifter_body->position);
+		if (!is_head)
+		{
+			Vector vector = vector_subtract(closest_point, lifter_body->position);
 
-		Vector normal = vector_rotate(vector_create(0, 1), lifter_body->angle);
+			Vector normal = vector_rotate(vector_create(0, 1), lifter_body->angle);
 
-		double impulse = 2e5 / vector_dot(normal, vector);
+			double impulse = 2e5 / vector_dot(normal, vector);
 
-		physics_body_apply_impulse_at_world_point(other_body, closest_point, vector_multiply(normal, impulse));
+			physics_body_apply_impulse_at_world_point(other_body, closest_point, vector_multiply(normal, impulse));
+		}
 	}
 
 	return true;
@@ -153,6 +163,8 @@ Object* object_create_box(Physics_World* world, Vector position, double weight)
 
 	collider->dynamic_friction = 0.5;
 
+	collider->restitution = 0.4;
+
 	collider->data = box;
 
 	collider->flags |= FLAG_OBJECT;
@@ -178,7 +190,7 @@ Object* object_create_tire(Physics_World* world, Vector position, double radius)
 
 	collider->dynamic_friction = 1;
 
-	collider->restitution = 0.5;
+	collider->restitution = 0.75;
 
 	collider->data = tire;
 
@@ -201,7 +213,7 @@ Object* object_create_lifter(Physics_World* world, Vector position)
 
 	Shape* base_shape = shape_create_polygon(countof(s_lifter_base), s_lifter_base);
 
-	Physics_Collider* base_collider = physics_collider_create(lifter->body, move_shape(base_shape), 0.6);
+	Physics_Collider* base_collider = physics_collider_create(lifter->body, move_shape(base_shape), 2);
 
 	base_collider->static_friction = 1;
 
@@ -213,7 +225,7 @@ Object* object_create_lifter(Physics_World* world, Vector position)
 
 	Shape* sensor_shape = shape_create_polygon(countof(s_lifter_sensor), s_lifter_sensor);
 
-	Physics_Collider* sensor_collider = physics_collider_create(lifter->body, move_shape(sensor_shape), 1);
+	Physics_Collider* sensor_collider = physics_collider_create(lifter->body, move_shape(sensor_shape), 0);
 
 	sensor_collider->sensor = true;
 
@@ -346,6 +358,8 @@ void object_update(Object* object, double delta_time)
 
 						double closest_distance = INFINITY;
 
+						bool is_car = false;
+
 						for (List_Node* collider_node = body->collider_list.first; collider_node != NULL; collider_node = collider_node->next)
 						{
 							Physics_Collider* collider = collider_node->item;
@@ -363,13 +377,27 @@ void object_update(Object* object, double delta_time)
 									closest_distance = distance;
 								}
 							}
+
+							if (collider->flags & FLAG_CHASSIS)
+							{
+								is_car = true;
+							}
 						}
 
 						Vector vector = vector_subtract(closest_point, mine->body->position);
 
 						if (closest_distance < square(MINE_RANGE))
 						{
-							physics_body_apply_speed_at_world_point(body, closest_point, vector_multiply(vector, 2700 / closest_distance));
+							closest_distance = fmin(square(MINE_RANGE / 2), closest_distance);
+
+							if (is_car)
+							{
+								physics_body_apply_speed_at_world_point(body, closest_point, vector_multiply(vector, 2700 / closest_distance));
+							}
+							else
+							{
+								physics_body_apply_impulse_at_world_point(body, closest_point, vector_multiply(vector, 1e6 / closest_distance));
+							}
 						}
 					}
 				}
