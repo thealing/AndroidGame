@@ -71,7 +71,7 @@ void textures_init()
 
 	texture_create_from_file(&g_textures.box, "images/box.png");
 
-	texture_resize(g_textures.box, vector_create(66, 66));
+	texture_resize(g_textures.box, vector_create(44, 44));
 
 	texture_create_from_file(&g_textures.tire, "images/tire.png");
 

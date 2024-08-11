@@ -462,6 +462,14 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->armageddon_type = ARMAGEDDON_TYPE_LASER_DOWN;
 
+			add_random_location(level, 230, 280, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, OBJECT_TYPE_LIFTER, OBJECT_TYPE_BOOSTER, -1);
+
+			add_random_location(level, 1050, 280, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, OBJECT_TYPE_LIFTER, OBJECT_TYPE_BOOSTER, -1);
+
+			add_random_location(level, 640, 190, OBJECT_TYPE_MINE, OBJECT_TYPE_LIFTER, -1);
+
+			add_random_location(level, 640, 300, OBJECT_TYPE_MINE, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, -1);
+
 			break;
 		}
 		case LEVEL_TYPE_FROWNY_FACE:
@@ -481,6 +489,10 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 			level->red_spawn = vector_create(1080, 650);
 
 			level->armageddon_type = ARMAGEDDON_TYPE_LASER_DOWN;
+
+			add_random_location(level, 640, 350, OBJECT_TYPE_MINE, OBJECT_TYPE_LIFTER, -1);
+
+			add_random_location(level, 640, 400, OBJECT_TYPE_MINE, OBJECT_TYPE_TIRE, OBJECT_TYPE_BOX, -1);
 
 			break;
 		}
@@ -502,6 +514,12 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->armageddon_type = ARMAGEDDON_TYPE_LASER_DOWN;
 
+			add_random_location(level, 250, 250, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_BOX, -1);
+
+			add_random_location(level, 1030, 250, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_BOX, -1);
+
+			add_random_location(level, 640, 250, OBJECT_TYPE_LIFTER, OBJECT_TYPE_MINE, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, -1);
+
 			break;
 		}
 		case LEVEL_TYPE_BLADES:
@@ -521,6 +539,14 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 			level->red_spawn = vector_create(970, 240);
 
 			level->armageddon_type = ARMAGEDDON_TYPE_MINE_RAIN;
+
+			add_random_location(level, 460, 210, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_MINE, -1);
+
+			add_random_location(level, 820, 210, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_MINE, -1);
+
+			add_random_location(level, 640, 250, OBJECT_TYPE_LIFTER, OBJECT_TYPE_BOX, -1);
+
+			add_random_location(level, 640, 320, OBJECT_TYPE_MINE, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, -1);
 
 			break;
 		}

@@ -91,27 +91,34 @@ static bool lifter_collision_callback(Physics_Collider* lifter_collider, Physics
 
 static bool booster_collision_callback(Physics_Collider* booster_collider, Physics_Collider* other_collider)
 {
-	if (other_collider->flags & FLAG_WHEEL)
+	if (booster_collider->flags & FLAG_SAFE)
 	{
-		Booster* booster = booster_collider->data;
-
-		Wheel* wheel = other_collider->data;
-
-		double multiplier = booster->reversed ? -1 : 1;
-
-		Vector boost = vector_rotate(vector_create(BOOSTER_STRENGTH * multiplier, 0), booster->body->angle - 0.5 * multiplier);
-
-		if (wheel->side == booster->reversed)
+		if (other_collider->flags & FLAG_WHEEL)
 		{
-			wheel->boost_forward = vector_add(wheel->boost_forward, boost);
+			Booster* booster = booster_collider->data;
+
+			Wheel* wheel = other_collider->data;
+
+			double multiplier = booster->reversed ? -1 : 1;
+
+			Vector boost = vector_rotate(vector_create(BOOSTER_STRENGTH * multiplier, 0), booster->body->angle - 0.5 * multiplier);
+
+			if (wheel->side == booster->reversed)
+			{
+				wheel->boost_forward = vector_add(wheel->boost_forward, boost);
+			}
+			else
+			{
+				wheel->boost_backward = vector_add(wheel->boost_backward, boost);
+			}
 		}
-		else
-		{
-			wheel->boost_backward = vector_add(wheel->boost_backward, boost);
-		}
+
+		return other_collider->filter_group == GROUP_LEVEL;
 	}
-
-	return other_collider->filter_group == GROUP_LEVEL;
+	else
+	{
+		return other_collider->filter_group != GROUP_LEVEL;
+	}
 }
 
 Object* object_create_saw(Physics_World* world, Vector position, double radius, bool reversed)
@@ -184,7 +191,7 @@ Object* object_create_box(Physics_World* world, Vector position, double weight)
 
 	box->body->position = position;
 
-	Shape* shape = create_rect_shape(create_isotropic_vector(-30), create_isotropic_vector(30));
+	Shape* shape = create_rect_shape(create_isotropic_vector(-20), create_isotropic_vector(20));
 
 	Physics_Collider* collider = physics_collider_create(box->body, move_shape(shape), weight);
 
@@ -281,7 +288,7 @@ Object* object_create_booster(Physics_World* world, Vector position, double angl
 
 	Shape* top_shape = shape_create_polygon(countof(s_booster_top), s_booster_top);
 
-	Physics_Collider* top_collider = physics_collider_create(booster->body, move_shape(top_shape), 1);
+	Physics_Collider* top_collider = physics_collider_create(booster->body, move_shape(top_shape), 3);
 
 	top_collider->static_friction = 0.9;
 
@@ -300,6 +307,8 @@ Object* object_create_booster(Physics_World* world, Vector position, double angl
 	bottom_collider->static_friction = 0.9;
 
 	bottom_collider->dynamic_friction = 0.9;
+
+	bottom_collider->collision_callback = booster_collision_callback;
 
 	bottom_collider->data = booster;
 
