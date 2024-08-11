@@ -6,6 +6,10 @@ static const Vector s_lifter_base[] = {{-55,1},{-44,10},{44,10},{54,1}};
 
 static const Vector s_lifter_sensor[] = {{-37,10},{39,10},{58,196},{-56,196}};
 
+static const Vector s_booster_top[] = {{-30,6},{30,6},{50,-5},{-50,-5}};
+
+static const Vector s_booster_bottom[] = {{0,-2},{-61,-7},{61,-7}};
+
 static bool saw_collision_callback(Physics_Collider* saw_collider, Physics_Collider* other_collider)
 {
 	if (other_collider->flags & FLAG_HEAD)
@@ -22,7 +26,7 @@ static bool mine_collision_callback(Physics_Collider* mine_collider, Physics_Col
 {
 	Mine* mine = mine_collider->data;
 
-	if (mine->active || other_collider->flags & FLAG_CAR)
+	if (mine->active || mine_collider->flags & FLAG_TOUCHED)
 	{
 		if (mine->state == 0)
 		{
@@ -83,6 +87,31 @@ static bool lifter_collision_callback(Physics_Collider* lifter_collider, Physics
 	}
 
 	return true;
+}
+
+static bool booster_collision_callback(Physics_Collider* booster_collider, Physics_Collider* other_collider)
+{
+	if (other_collider->flags & FLAG_WHEEL)
+	{
+		Booster* booster = booster_collider->data;
+
+		Wheel* wheel = other_collider->data;
+
+		double multiplier = booster->reversed ? -1 : 1;
+
+		Vector boost = vector_rotate(vector_create(BOOSTER_STRENGTH * multiplier, 0), booster->body->angle - 0.5 * multiplier);
+
+		if (wheel->side == booster->reversed)
+		{
+			wheel->boost_forward = vector_add(wheel->boost_forward, boost);
+		}
+		else
+		{
+			wheel->boost_backward = vector_add(wheel->boost_backward, boost);
+		}
+	}
+
+	return other_collider->filter_group == GROUP_LEVEL;
 }
 
 Object* object_create_saw(Physics_World* world, Vector position, double radius, bool reversed)
@@ -233,9 +262,52 @@ Object* object_create_lifter(Physics_World* world, Vector position)
 
 	sensor_collider->data = lifter;
 
-	sensor_collider->flags |= FLAG_LIFTER;
+	sensor_collider->flags |= FLAG_SAFE;
 
 	return lifter;
+}
+
+Object* object_create_booster(Physics_World* world, Vector position, double angle, bool reversed)
+{
+	Booster* booster = calloc(1, sizeof(Booster));
+
+	booster->type = OBJECT_TYPE_BOOSTER;
+
+	booster->body = physics_body_create(world, PHYSICS_BODY_TYPE_DYNAMIC);
+
+	booster->body->position = position;
+
+	booster->body->angle = angle;
+
+	Shape* top_shape = shape_create_polygon(countof(s_booster_top), s_booster_top);
+
+	Physics_Collider* top_collider = physics_collider_create(booster->body, move_shape(top_shape), 1);
+
+	top_collider->static_friction = 0.9;
+
+	top_collider->dynamic_friction = 0.9;
+
+	top_collider->collision_callback = booster_collision_callback;
+
+	top_collider->data = booster;
+
+	top_collider->flags |= FLAG_SAFE;
+
+	Shape* bottom_shape = shape_create_polygon(countof(s_booster_bottom), s_booster_bottom);
+
+	Physics_Collider* bottom_collider = physics_collider_create(booster->body, move_shape(bottom_shape), 4);
+
+	bottom_collider->static_friction = 0.9;
+
+	bottom_collider->dynamic_friction = 0.9;
+
+	bottom_collider->data = booster;
+
+	bottom_collider->flags |= FLAG_OBJECT;
+
+	booster->reversed = reversed;
+
+	return booster;
 }
 
 void object_destroy(Object* object)
@@ -283,6 +355,14 @@ void object_destroy(Object* object)
 			Lifter* lifter = object;
 
 			physics_body_destroy(lifter->body);
+
+			break;
+		}
+		case OBJECT_TYPE_BOOSTER:
+		{
+			Booster* booster = object;
+
+			physics_body_destroy(booster->body);
 
 			break;
 		}
@@ -430,6 +510,14 @@ void object_update(Object* object, double delta_time)
 
 			break;
 		}
+		case OBJECT_TYPE_BOOSTER:
+		{
+			Booster* booster = object;
+
+			booster->time += delta_time;
+
+			break;
+		}
 	}
 }
 
@@ -514,6 +602,16 @@ void object_render(Object* object)
 			set_texture_and_color(g_textures.lifter_sensor, &(Color){ 1, 1, 1, 0.8 + fabs(fmod(lifter->time / 3, 0.4) - 0.2) });
 
 			graphics_draw_texture_at(lifter->body->position, lifter->body->angle);
+
+			break;
+		}
+		case OBJECT_TYPE_BOOSTER:
+		{
+			Booster* booster = object;
+
+			set_texture_and_color(g_textures.booster[(int)(booster->time * 10) % 3], NULL);
+
+			draw_texture_flipped(booster->body->position, booster->body->angle, booster->reversed, false);
 
 			break;
 		}

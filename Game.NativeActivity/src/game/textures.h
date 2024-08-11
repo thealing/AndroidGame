@@ -28,6 +28,8 @@ struct Textures
 
 	Texture* lifter_sensor;
 
+	Texture* booster[3];
+
 	Texture* level_cave;
 
 	Texture* level_tunnel;

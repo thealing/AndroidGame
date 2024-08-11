@@ -74,7 +74,7 @@ struct Location
 {
 	Vector position;
 
-	bool heavy;
+	bool types[OBJECT_TYPE_COUNT];
 };
 
 struct Level
@@ -115,6 +115,8 @@ void level_destroy(Level* level);
 void level_update(Level* level, double delta_time);
 
 void level_render(Level* level);
+
+Vector level_project_point(Level* level, Vector point);
 
 void level_add_random_objects(Level* level);
 

@@ -8,19 +8,23 @@
 
 #define GROUP_RED_CAR -3
 
-#define FLAG_CAR 1
+#define FLAG_CAR (1 << 0)
 
-#define FLAG_CHASSIS 2
+#define FLAG_CHASSIS (1 << 1)
 
-#define FLAG_HEAD 4
+#define FLAG_WHEEL (1 << 2)
 
-#define FLAG_WATER 8
+#define FLAG_HEAD (1 << 3)
 
-#define FLAG_OBJECT 16
+#define FLAG_WATER (1 << 4)
 
-#define FLAG_MINE 32
+#define FLAG_OBJECT (1 << 5)
 
-#define FLAG_LIFTER 64
+#define FLAG_TOUCHED (1 << 6)
+
+#define FLAG_MINE (1 << 7)
+
+#define FLAG_SAFE (1 << 8)
 
 #define DEATH_DELAY 2
 
@@ -29,6 +33,8 @@
 #define MINE_RANGE 250
 
 #define MINE_EXPLOSION_DURATION 0.1
+
+#define BOOSTER_STRENGTH 35
 
 extern bool g_debug_hud;
 

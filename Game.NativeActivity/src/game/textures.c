@@ -85,6 +85,12 @@ void textures_init()
 
 	texture_align(g_textures.lifter_sensor, ALIGNMENT_CENTER, ALIGNMENT_BOTTOM);
 
+	texture_create_from_file(&g_textures.booster[0], "images/booster_0.png");
+
+	texture_create_from_file(&g_textures.booster[1], "images/booster_1.png");
+
+	texture_create_from_file(&g_textures.booster[2], "images/booster_2.png");
+
 	texture_create_from_file(&g_textures.level_cave, "images/levels/cave.png");
 
 	texture_create_from_file(&g_textures.level_tunnel, "images/levels/tunnel.png");

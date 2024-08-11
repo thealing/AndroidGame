@@ -181,6 +181,33 @@ static void render_objects(Level* level)
 	}
 }
 
+static void add_random_location(Level* level, double x, double y, ...)
+{
+	Location* location = &level->random_locations[level->random_location_count++];
+
+	location->position = vector_create(x, y);
+
+	va_list args;
+
+	va_start(args, y);
+
+	while (true)
+	{
+		Object_Type type = va_arg(args, Object_Type);
+
+		if (type >= 0 && type < OBJECT_TYPE_COUNT)
+		{
+			location->types[type] = true;
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	va_end(args);
+}
+
 Level* level_create(Level_Type type, Physics_World* world, int group)
 {
 	Level* level = calloc(1, sizeof(Level));
@@ -199,17 +226,19 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->texture = g_textures.level_cave;
 
-			level->blue_spawn = vector_create(300, 200);
+			level->blue_spawn = vector_create(330, 200);
 
-			level->red_spawn = vector_create(980, 200);
+			level->red_spawn = vector_create(950, 200);
 
 			level->armageddon_type = random_int_in_range(ARMAGEDDON_TYPE_LASER_UP, ARMAGEDDON_TYPE_LASER_DOWN);
 
-			level->random_location_count = 2;
+			add_random_location(level, 170, 200, OBJECT_TYPE_BOOSTER, -1);
 
-			level->random_locations[0] = (Location){ vector_create(640, 100), true };
+			add_random_location(level, 1110, 200, OBJECT_TYPE_BOOSTER, -1);
 
-			level->random_locations[1] = (Location){ vector_create(640, 200), false };
+			add_random_location(level, 640, 100, OBJECT_TYPE_MINE, OBJECT_TYPE_LIFTER, -1);
+
+			add_random_location(level, 640, 200, OBJECT_TYPE_MINE, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, -1);
 
 			break;
 		}
@@ -229,15 +258,17 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->armageddon_type = random_int_in_range(ARMAGEDDON_TYPE_LASER_UP, ARMAGEDDON_TYPE_LASER_DOWN);
 
-			level->random_location_count = 4;
+			add_random_location(level, 170, 200, OBJECT_TYPE_BOOSTER, -1);
 
-			level->random_locations[0] = (Location){ vector_create(640, 100), true };
+			add_random_location(level, 1110, 200, OBJECT_TYPE_BOOSTER, -1);
 
-			level->random_locations[1] = (Location){ vector_create(640, 200), false };
+			add_random_location(level, 640, 100, OBJECT_TYPE_MINE, OBJECT_TYPE_LIFTER, -1);
 
-			level->random_locations[2] = (Location){ vector_create(640, 500), true };
+			add_random_location(level, 640, 200, OBJECT_TYPE_MINE, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, -1);
 
-			level->random_locations[3] = (Location){ vector_create(640, 600), false };
+			add_random_location(level, 640, 500, OBJECT_TYPE_MINE, OBJECT_TYPE_LIFTER, -1);
+
+			add_random_location(level, 640, 600, OBJECT_TYPE_MINE, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, -1);
 
 			break;
 		}
@@ -255,9 +286,11 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->armageddon_type = random_int_in_range(ARMAGEDDON_TYPE_LASER_UP, ARMAGEDDON_TYPE_LASER_DOWN);
 
-			level->random_location_count = 1;
+			add_random_location(level, 170, 200, OBJECT_TYPE_BOOSTER, -1);
 
-			level->random_locations[0] = (Location){ vector_create(640, 200), true };
+			add_random_location(level, 1110, 200, OBJECT_TYPE_BOOSTER, -1);
+
+			add_random_location(level, 640, 200, OBJECT_TYPE_MINE, OBJECT_TYPE_TIRE, OBJECT_TYPE_BOX, OBJECT_TYPE_LIFTER, -1);
 
 			break;
 		}
@@ -279,11 +312,13 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->armageddon_type = random_int_in_range(ARMAGEDDON_TYPE_LASER_UP, ARMAGEDDON_TYPE_LASER_DOWN);
 
-			level->random_location_count = 2;
+			add_random_location(level, 170, 200, OBJECT_TYPE_BOOSTER, -1);
 
-			level->random_locations[0] = (Location){ vector_create(640, 200), true };
+			add_random_location(level, 1110, 200, OBJECT_TYPE_BOOSTER, -1);
 
-			level->random_locations[1] = (Location){ vector_create(640, 600), true };
+			add_random_location(level, 640, 200, OBJECT_TYPE_MINE, OBJECT_TYPE_LIFTER, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, -1);
+
+			add_random_location(level, 640, 600, OBJECT_TYPE_MINE, OBJECT_TYPE_LIFTER, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, -1);
 
 			break;
 		}
@@ -300,12 +335,10 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 			level->red_spawn = vector_create(980, 200);
 
 			level->armageddon_type = ARMAGEDDON_TYPE_LASER_UP;
-			
-			level->random_location_count = 2;
 
-			level->random_locations[0] = (Location){ vector_create(600, 350), false };
+			add_random_location(level, 600, 250, OBJECT_TYPE_TIRE, OBJECT_TYPE_MINE, OBJECT_TYPE_BOOSTER, -1);
 
-			level->random_locations[1] = (Location){ vector_create(680, 350), false };
+			add_random_location(level, 680, 250, OBJECT_TYPE_TIRE, OBJECT_TYPE_MINE, OBJECT_TYPE_BOOSTER, -1);
 
 			break;
 		}
@@ -323,11 +356,13 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->armageddon_type = ARMAGEDDON_TYPE_LASER_DOWN;
 
-			level->random_location_count = 2;
+			add_random_location(level, 640, 50, OBJECT_TYPE_MINE, OBJECT_TYPE_BOX, OBJECT_TYPE_LIFTER, -1);
 
-			level->random_locations[0] = (Location){ vector_create(640, 50), true };
+			add_random_location(level, 640, 150, OBJECT_TYPE_MINE, OBJECT_TYPE_TIRE, -1);
 
-			level->random_locations[1] = (Location){ vector_create(640, 150), false };
+			add_random_location(level, 460, 170, OBJECT_TYPE_TIRE, OBJECT_TYPE_BOOSTER, -1);
+
+			add_random_location(level, 820, 170, OBJECT_TYPE_TIRE, OBJECT_TYPE_BOOSTER, -1);
 
 			break;
 		}
@@ -347,17 +382,15 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->armageddon_type = ARMAGEDDON_TYPE_WATER_RISE;
 
-			level->random_location_count = 5;
+			add_random_location(level, 200, 250, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_MINE, -1);
 
-			level->random_locations[0] = (Location){ vector_create(200, 250), true };
+			add_random_location(level, 1080, 250, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_MINE, -1);
 
-			level->random_locations[1] = (Location){ vector_create(1080, 250), true };
+			add_random_location(level, 400, 250, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_TIRE, OBJECT_TYPE_MINE, -1);
 
-			level->random_locations[2] = (Location){ vector_create(400, 250), false };
+			add_random_location(level, 880, 250, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_TIRE, OBJECT_TYPE_MINE, -1);
 
-			level->random_locations[3] = (Location){ vector_create(880, 250), false };
-
-			level->random_locations[4] = (Location){ vector_create(640, 400), true };
+			add_random_location(level, 640, 400, OBJECT_TYPE_LIFTER, OBJECT_TYPE_MINE, OBJECT_TYPE_BOX, -1);
 
 			break;
 		}
@@ -377,17 +410,13 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->armageddon_type = ARMAGEDDON_TYPE_WATER_RISE;
 
-			level->random_location_count = 5;
+			add_random_location(level, 230, 240, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_MINE, -1);
 
-			level->random_locations[0] = (Location){ vector_create(200, 250), true };
+			add_random_location(level, 1050, 240, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_MINE, -1);
 
-			level->random_locations[1] = (Location){ vector_create(1080, 250), true };
+			add_random_location(level, 475, 360, OBJECT_TYPE_TIRE, OBJECT_TYPE_MINE, -1);
 
-			level->random_locations[2] = (Location){ vector_create(475, 360), false };
-
-			level->random_locations[3] = (Location){ vector_create(805, 360), false };
-
-			level->random_locations[4] = (Location){ vector_create(640, 250), true };
+			add_random_location(level, 640, 250, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, OBJECT_TYPE_LIFTER, -1);
 
 			break;
 		}
@@ -407,13 +436,11 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->armageddon_type = ARMAGEDDON_TYPE_WATER_RISE;
 
-			level->random_location_count = 3;
+			add_random_location(level, 300, 350, OBJECT_TYPE_MINE, OBJECT_TYPE_LIFTER, OBJECT_TYPE_TIRE, -1);
 
-			level->random_locations[0] = (Location){ vector_create(300, 350), true };
+			add_random_location(level, 980, 350, OBJECT_TYPE_MINE, OBJECT_TYPE_LIFTER, OBJECT_TYPE_TIRE, -1);
 
-			level->random_locations[1] = (Location){ vector_create(980, 350), true };
-
-			level->random_locations[2] = (Location){ vector_create(640, 350), true };
+			add_random_location(level, 640, 350, OBJECT_TYPE_MINE, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, -1);
 
 			break;
 		}
@@ -566,14 +593,46 @@ void level_render(Level* level)
 	render_objects(level);
 }
 
+Vector level_project_point(Level* level, Vector point)
+{
+	Vector closest_point = vector_create(INFINITY, INFINITY);
+
+	double closest_distance = INFINITY;
+
+	for (List_Node* collider_node = level->body->collider_list.first; collider_node != NULL; collider_node = collider_node->next)
+	{
+		Physics_Collider* collider = collider_node->item;
+
+		Vector projected_point = shape_project_point(collider->world_shape, point);
+
+		double distance = vector_distance_squared(projected_point, point);
+
+		if (distance < closest_distance)
+		{
+			closest_point = projected_point;
+
+			closest_distance = distance;
+		}
+	}
+
+	return closest_point;
+}
+
 void level_add_random_objects(Level* level)
 {
 	for (int i = 0; i < level->random_location_count; i++)
 	{
-		if (random_int_below(3) < 2)
+		if (random_int_below(4) < 30)
 		{
-		again:
-			switch (random_int_below(OBJECT_TYPE_COUNT))
+			Object_Type type;
+
+			do
+			{
+				type = random_int_below(OBJECT_TYPE_COUNT);
+			}
+			while (!level->random_locations[i].types[type]);
+
+			switch (type)
 			{
 				case OBJECT_TYPE_MINE:
 				{
@@ -595,18 +654,19 @@ void level_add_random_objects(Level* level)
 				}
 				case OBJECT_TYPE_LIFTER:
 				{
-					if (!level->random_locations[i].heavy)
-					{
-						goto again;
-					}
-
 					add_object(level, object_create_lifter(level->body->world, vector_add_xy(level->random_locations[i].position, 0, -30)));
 
 					break;
 				}
-				default:
+				case OBJECT_TYPE_BOOSTER:
 				{
-					goto again;
+					Vector position = level->random_locations[i].position;
+
+					Vector closest_point = level_project_point(level, position);
+
+					add_object(level, object_create_booster(level->body->world, position, atan2(position.y - closest_point.y, position.x - closest_point.x) - M_PI / 2, random_int_below(2)));
+
+					break;
 				}
 			}
 		}

@@ -14,6 +14,8 @@ Wheel* wheel_create(Wheel_Type type, Physics_Body* chassis_body, Vector chassis_
 
 	wheel->body = physics_body_create(chassis_body->world, PHYSICS_BODY_TYPE_DYNAMIC);
 
+	wheel->body->position = vector_add(chassis_body->position, chassis_offset);
+
 	Shape* shape = shape_create_circle(vector_create(0, 0), size);
 
 	Physics_Collider* collider = physics_collider_create(wheel->body, move_shape(shape), density);
@@ -24,9 +26,11 @@ Wheel* wheel_create(Wheel_Type type, Physics_Body* chassis_body, Vector chassis_
 
 	collider->filter_group = group;
 
+	collider->data = wheel;
+
 	collider->flags |= FLAG_CAR;
 
-	wheel->body->position = vector_add(chassis_body->position, chassis_offset);
+	collider->flags |= FLAG_WHEEL;
 
 	physics_joint_create_world(PHYSICS_JOINT_TYPE_PIN, wheel->body, wheel->body->position, chassis_body, wheel->body->position);
 

@@ -150,6 +150,9 @@
     </AntPackage>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Content Include="assets\images\booster_0.png" />
+    <Content Include="assets\images\booster_1.png" />
+    <Content Include="assets\images\booster_2.png" />
     <Content Include="assets\images\box.png" />
     <Content Include="assets\images\cars\dragster.png" />
     <Content Include="assets\images\cars\garbage.png" />

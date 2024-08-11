@@ -31,7 +31,7 @@ static bool head_collision_callback(Physics_Collider* head_collider, Physics_Col
 		return true;
 	}
 
-	if (other_collider->flags & FLAG_LIFTER)
+	if (other_collider->flags & FLAG_SAFE)
 	{
 		return true;
 	}
@@ -424,6 +424,20 @@ void car_update(Car* car, bool forward, bool backward)
 	for (int i = 0; i < 2; i++)
 	{
 		wheel_update(car->wheels[i], forward, backward);
+
+		if (forward)
+		{
+			physics_body_apply_speed_at_local_point(car->chassis_body, vector_create(0, 0), car->wheels[i]->boost_forward);
+		}
+
+		if (backward)
+		{
+			physics_body_apply_speed_at_local_point(car->chassis_body, vector_create(0, 0), car->wheels[i]->boost_backward);
+		}
+
+		car->wheels[i]->boost_forward = vector_create(0, 0);
+
+		car->wheels[i]->boost_backward = vector_create(0, 0);
 	}
 
 	if (!test_point_rect(car->head_body->position, &(Rect){ -10, -10, 1290, 2000 }))

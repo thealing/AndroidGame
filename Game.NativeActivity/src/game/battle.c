@@ -169,6 +169,11 @@ static bool on_collision(Physics_Collider* collider, Physics_Collider* other_col
 		s_red_contact_time = s_elapsed_time;
 	}
 
+	if ((collider->flags & FLAG_CAR || collider->flags & FLAG_TOUCHED) && other_collider->flags & FLAG_OBJECT)
+	{
+		other_collider->flags |= FLAG_TOUCHED;
+	}
+
 	return true;
 }
 

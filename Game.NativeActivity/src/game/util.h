@@ -21,3 +21,5 @@ void draw_physics_body(const Physics_Body* body);
 void draw_physics_joint(const Physics_Joint* joint);
 
 void draw_texture_scaled(Vector position, double rotation, double scale);
+
+void draw_texture_flipped(Vector position, double rotation, bool flip_horizontally, bool flip_vertically);

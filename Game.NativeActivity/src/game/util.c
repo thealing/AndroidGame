@@ -96,3 +96,18 @@ void draw_texture_scaled(Vector position, double rotation, double scale)
 
 	graphics_load_transform();
 }
+
+void draw_texture_flipped(Vector position, double rotation, bool flip_horizontally, bool flip_vertically)
+{
+	graphics_save_transform();
+
+	graphics_translate(position);
+
+	graphics_rotate(rotation);
+
+	graphics_scale(vector_create(flip_horizontally ? -1 : 1, flip_vertically ? -1 : 1));
+
+	graphics_draw_texture();
+
+	graphics_load_transform();
+}

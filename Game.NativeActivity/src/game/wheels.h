@@ -36,6 +36,10 @@ struct Wheel
 	Physics_Body* body;
 
 	Texture* texture;
+
+	Vector boost_forward;
+
+	Vector boost_backward;
 };
 
 Wheel* wheel_create(Wheel_Type type, Physics_Body* chassis_body, Vector chassis_offset, int group, double size, double acceleration, double max_speed, double grip, double density);
