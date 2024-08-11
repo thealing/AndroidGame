@@ -4,11 +4,15 @@
 
 typedef enum Android_Event_Type Android_Event_Type;
 
+typedef enum Android_Key Android_Key;
+
 typedef struct Android_Activity_Event Android_Activity_Event;
 
 typedef struct Android_Window_Event Android_Window_Event;
 
 typedef struct Android_Touch_Event Android_Touch_Event;
+
+typedef struct Android_Key_Event Android_Key_Event;
 
 typedef struct Android_Event Android_Event;
 
@@ -31,6 +35,19 @@ enum Android_Event_Type
 	ANDROID_EVENT_TOUCH_UP,
 
 	ANDROID_EVENT_TOUCH_MOVE,
+
+	ANDROID_EVENT_KEY_DOWN,
+
+	ANDROID_EVENT_KEY_UP,
+
+	ANDROID_EVENT_COUNT
+};
+
+enum Android_Key
+{
+	ANDROID_KEY_BACK,
+
+	ANDROID_KEY_COUNT
 };
 
 struct Android_Window_Event
@@ -47,6 +64,11 @@ struct Android_Touch_Event
 	float y;
 };
 
+struct Android_Key_Event
+{
+	Android_Key key;
+};
+
 struct Android_Event 
 {
 	Android_Event_Type type;
@@ -56,6 +78,8 @@ struct Android_Event
 		Android_Window_Event window_event;
 
 		Android_Touch_Event touch_event;
+
+		Android_Key_Event key_event;
 	};
 };
 

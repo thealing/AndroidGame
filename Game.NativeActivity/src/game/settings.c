@@ -161,7 +161,7 @@ void settings_update(double delta_time)
 		sound_play(g_sounds.blip);
 	}
 
-	if (button_was_clicked(s_back))
+	if (button_was_clicked(s_back) || input_is_key_pressed(ANDROID_KEY_BACK))
 	{
 		scene_change(&g_menu);
 

@@ -120,6 +120,44 @@ static void collect_input_events()
 
 				break;
 			}
+			case AINPUT_EVENT_TYPE_KEY:
+			{
+				int action = AKeyEvent_getAction(input_event);
+
+				int key_code = AKeyEvent_getKeyCode(input_event);
+
+				Android_Event_Type type = ANDROID_EVENT_UNKNOWN;
+
+				switch (action)
+				{
+					case AKEY_EVENT_ACTION_DOWN:
+					{
+						type = ANDROID_EVENT_KEY_DOWN;
+
+						break;
+					}
+					case AKEY_EVENT_ACTION_UP:
+					{
+						type = ANDROID_EVENT_KEY_UP;
+
+						break;
+					}
+				}
+
+				switch (key_code)
+				{
+					case AKEYCODE_BACK:
+					{
+						push_event(&(Android_Event){ .type = type, .key_event = { .key = ANDROID_KEY_BACK } });
+
+						break;
+					}
+
+					// TODO: support other keys?
+				}
+
+				break;
+			}
 		}
 
 		AInputQueue_finishEvent(input_queue, input_event, 1);

@@ -40,6 +40,8 @@ void android_main()
 		{
 			memcpy(g_previous_touches, g_current_touches, sizeof(g_previous_touches));
 
+			memcpy(g_previous_keys, g_current_keys, sizeof(g_previous_keys));
+
 			Android_Event e;
 
 			while (android_poll_event(&e))
@@ -117,6 +119,18 @@ void android_main()
 					case ANDROID_EVENT_TOUCH_UP:
 					{
 						g_current_touches[e.touch_event.index].down = false;
+
+						break;
+					}
+					case ANDROID_EVENT_KEY_DOWN:
+					{
+						g_current_keys[e.key_event.key] = true;
+
+						break;
+					}
+					case ANDROID_EVENT_KEY_UP:
+					{
+						g_current_keys[e.key_event.key] = false;
 
 						break;
 					}

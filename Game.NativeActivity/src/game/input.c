@@ -4,6 +4,10 @@ Touch g_current_touches[TOUCH_COUNT];
 
 Touch g_previous_touches[TOUCH_COUNT];
 
+bool g_current_keys[ANDROID_KEY_COUNT];
+
+bool g_previous_keys[ANDROID_KEY_COUNT];
+
 Vector input_project_touch(const Touch* touch)
 {
 	// TODO: unproject
@@ -204,4 +208,19 @@ bool input_is_shape_released(const Shape* shape)
 	}
 
 	return false;
+}
+
+bool input_is_key_down(Android_Key key)
+{
+	return g_current_keys[key];
+}
+
+bool input_is_key_pressed(Android_Key key)
+{
+	return g_current_keys[key] && !g_previous_keys[key];
+}
+
+bool input_is_key_released(Android_Key key)
+{
+	return !g_current_keys[key] && g_previous_keys[key];
 }
