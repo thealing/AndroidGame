@@ -30,6 +30,8 @@ static Counter* s_scores_to_win;
 
 static Button* s_play;
 
+static Button* s_settings;
+
 static void draw_car(Vector center, Vector bottom, double scale, Car* car)
 {
 	graphics_save_transform();
@@ -191,6 +193,8 @@ void menu_init()
 	s_level_names[LEVEL_TYPE_NEUTRAL_FACE] = "NEUTRAL FACE";
 
 	s_level_names[LEVEL_TYPE_BLADES] = "BLADES";
+
+	sounds_stop_all();
 }
 
 void menu_enter()
@@ -221,7 +225,11 @@ void menu_enter()
 
 	s_play = button_create(move_shape(shape_create_circle(vector_create(1200, 80), 64)), g_textures.ui_play_pressed, g_textures.ui_play_released, vector_create(1200, 80), 120);
 
+	s_settings = button_create(move_shape(shape_create_circle(vector_create(1200, 300), 64)), g_textures.ui_settings_pressed, g_textures.ui_settings_released, vector_create(1200, 300), 120);
+
 	scene_add_button(s_play);
+
+	scene_add_button(s_settings);
 
 	sound_play(g_sounds.intro);
 }
@@ -235,6 +243,8 @@ void menu_leave()
 	counter_destroy(s_scores_to_win);
 
 	button_destroy(s_play);
+
+	button_destroy(s_settings);
 }
 
 void menu_pause()
@@ -251,7 +261,16 @@ void menu_update(double delta_time)
 {
 	if (button_was_clicked(s_play))
 	{
+		sounds_stop_all();
+
 		scene_change(&g_battle);
+
+		return;
+	}
+
+	if (button_was_clicked(s_settings))
+	{
+		scene_change(&g_settings);
 
 		return;
 	}

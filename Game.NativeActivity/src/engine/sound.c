@@ -184,5 +184,5 @@ double sound_get_volume(Sound* sound)
 
 void sound_set_volume(Sound* sound, double volume)
 {
-	(*sound->volume_itf)->SetVolumeLevel(sound->volume_itf, log10(volume) * 2000.0);
+	(*sound->volume_itf)->SetVolumeLevel(sound->volume_itf, fmax(log10(volume) * 2000.0, SL_MILLIBEL_MIN));
 }

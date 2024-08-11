@@ -251,7 +251,17 @@ void graphics_load_state()
 {
 	state_history_index--;
 
-	current_state = state_history[state_history_index];
+	State state = state_history[state_history_index];
+
+	graphics_set_color(&state.color);
+
+	graphics_set_texture(state.texture);
+
+	graphics_set_font(state.font);
+
+	graphics_set_line_width(state.line_width);
+
+	graphics_set_line_cap(state.line_cap);
 }
 
 void graphics_save_transform()
@@ -583,6 +593,8 @@ void graphics_draw_character_in_rect(const Rect* rect, char character)
 	{
 		return;
 	}
+
+	// TODO: draw font without replacing the current texture
 
 	graphics_set_texture(current_state.font);
 

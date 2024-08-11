@@ -195,7 +195,7 @@ static void add_random_location(Level* level, double x, double y, ...)
 	{
 		Object_Type type = va_arg(args, Object_Type);
 
-		if (type >= 0 && type < OBJECT_TYPE_COUNT)
+		if (type != 0)
 		{
 			location->types[type] = true;
 		}
@@ -232,13 +232,13 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->armageddon_type = random_int_in_range(ARMAGEDDON_TYPE_LASER_UP, ARMAGEDDON_TYPE_LASER_DOWN);
 
-			add_random_location(level, 170, 200, OBJECT_TYPE_BOOSTER, -1);
+			add_random_location(level, 170, 200, OBJECT_TYPE_BOOSTER, 0);
 
-			add_random_location(level, 1110, 200, OBJECT_TYPE_BOOSTER, -1);
+			add_random_location(level, 1110, 200, OBJECT_TYPE_BOOSTER, 0);
 
-			add_random_location(level, 640, 100, OBJECT_TYPE_MINE, OBJECT_TYPE_LIFTER, -1);
+			add_random_location(level, 640, 100, OBJECT_TYPE_MINE, OBJECT_TYPE_LIFTER, 0);
 
-			add_random_location(level, 640, 200, OBJECT_TYPE_MINE, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, -1);
+			add_random_location(level, 640, 200, OBJECT_TYPE_MINE, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, 0);
 
 			break;
 		}
@@ -258,17 +258,17 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->armageddon_type = random_int_in_range(ARMAGEDDON_TYPE_LASER_UP, ARMAGEDDON_TYPE_LASER_DOWN);
 
-			add_random_location(level, 170, 200, OBJECT_TYPE_BOOSTER, -1);
+			add_random_location(level, 170, 200, OBJECT_TYPE_BOOSTER, 0);
 
-			add_random_location(level, 1110, 200, OBJECT_TYPE_BOOSTER, -1);
+			add_random_location(level, 1110, 200, OBJECT_TYPE_BOOSTER, 0);
 
-			add_random_location(level, 640, 100, OBJECT_TYPE_MINE, OBJECT_TYPE_LIFTER, -1);
+			add_random_location(level, 640, 100, OBJECT_TYPE_MINE, OBJECT_TYPE_LIFTER, 0);
 
-			add_random_location(level, 640, 200, OBJECT_TYPE_MINE, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, -1);
+			add_random_location(level, 640, 200, OBJECT_TYPE_MINE, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, 0);
 
-			add_random_location(level, 640, 500, OBJECT_TYPE_MINE, OBJECT_TYPE_LIFTER, -1);
+			add_random_location(level, 640, 500, OBJECT_TYPE_MINE, OBJECT_TYPE_LIFTER, 0);
 
-			add_random_location(level, 640, 600, OBJECT_TYPE_MINE, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, -1);
+			add_random_location(level, 640, 600, OBJECT_TYPE_MINE, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, 0);
 
 			break;
 		}
@@ -286,11 +286,11 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->armageddon_type = random_int_in_range(ARMAGEDDON_TYPE_LASER_UP, ARMAGEDDON_TYPE_LASER_DOWN);
 
-			add_random_location(level, 170, 200, OBJECT_TYPE_BOOSTER, -1);
+			add_random_location(level, 170, 200, OBJECT_TYPE_BOOSTER, 0);
 
-			add_random_location(level, 1110, 200, OBJECT_TYPE_BOOSTER, -1);
+			add_random_location(level, 1110, 200, OBJECT_TYPE_BOOSTER, 0);
 
-			add_random_location(level, 640, 200, OBJECT_TYPE_MINE, OBJECT_TYPE_TIRE, OBJECT_TYPE_BOX, OBJECT_TYPE_LIFTER, -1);
+			add_random_location(level, 640, 200, OBJECT_TYPE_MINE, OBJECT_TYPE_TIRE, OBJECT_TYPE_BOX, OBJECT_TYPE_LIFTER, 0);
 
 			break;
 		}
@@ -312,13 +312,13 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->armageddon_type = random_int_in_range(ARMAGEDDON_TYPE_LASER_UP, ARMAGEDDON_TYPE_LASER_DOWN);
 
-			add_random_location(level, 170, 200, OBJECT_TYPE_BOOSTER, -1);
+			add_random_location(level, 170, 200, OBJECT_TYPE_BOOSTER, 0);
 
-			add_random_location(level, 1110, 200, OBJECT_TYPE_BOOSTER, -1);
+			add_random_location(level, 1110, 200, OBJECT_TYPE_BOOSTER, 0);
 
-			add_random_location(level, 640, 200, OBJECT_TYPE_MINE, OBJECT_TYPE_LIFTER, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, -1);
+			add_random_location(level, 640, 200, OBJECT_TYPE_MINE, OBJECT_TYPE_LIFTER, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, 0);
 
-			add_random_location(level, 640, 600, OBJECT_TYPE_MINE, OBJECT_TYPE_LIFTER, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, -1);
+			add_random_location(level, 640, 600, OBJECT_TYPE_MINE, OBJECT_TYPE_LIFTER, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, 0);
 
 			break;
 		}
@@ -336,9 +336,9 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->armageddon_type = ARMAGEDDON_TYPE_LASER_UP;
 
-			add_random_location(level, 600, 250, OBJECT_TYPE_TIRE, OBJECT_TYPE_MINE, OBJECT_TYPE_BOOSTER, -1);
+			add_random_location(level, 600, 250, OBJECT_TYPE_TIRE, OBJECT_TYPE_MINE, OBJECT_TYPE_BOOSTER, 0);
 
-			add_random_location(level, 680, 250, OBJECT_TYPE_TIRE, OBJECT_TYPE_MINE, OBJECT_TYPE_BOOSTER, -1);
+			add_random_location(level, 680, 250, OBJECT_TYPE_TIRE, OBJECT_TYPE_MINE, OBJECT_TYPE_BOOSTER, 0);
 
 			break;
 		}
@@ -356,13 +356,13 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->armageddon_type = ARMAGEDDON_TYPE_LASER_DOWN;
 
-			add_random_location(level, 640, 50, OBJECT_TYPE_MINE, OBJECT_TYPE_BOX, OBJECT_TYPE_LIFTER, -1);
+			add_random_location(level, 640, 50, OBJECT_TYPE_MINE, OBJECT_TYPE_BOX, OBJECT_TYPE_LIFTER, 0);
 
-			add_random_location(level, 640, 150, OBJECT_TYPE_MINE, OBJECT_TYPE_TIRE, -1);
+			add_random_location(level, 640, 150, OBJECT_TYPE_MINE, OBJECT_TYPE_TIRE, 0);
 
-			add_random_location(level, 460, 170, OBJECT_TYPE_TIRE, OBJECT_TYPE_BOOSTER, -1);
+			add_random_location(level, 460, 170, OBJECT_TYPE_TIRE, OBJECT_TYPE_BOOSTER, 0);
 
-			add_random_location(level, 820, 170, OBJECT_TYPE_TIRE, OBJECT_TYPE_BOOSTER, -1);
+			add_random_location(level, 820, 170, OBJECT_TYPE_TIRE, OBJECT_TYPE_BOOSTER, 0);
 
 			break;
 		}
@@ -382,15 +382,15 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->armageddon_type = ARMAGEDDON_TYPE_WATER_RISE;
 
-			add_random_location(level, 200, 250, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_MINE, -1);
+			add_random_location(level, 200, 250, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_MINE, 0);
 
-			add_random_location(level, 1080, 250, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_MINE, -1);
+			add_random_location(level, 1080, 250, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_MINE, 0);
 
-			add_random_location(level, 400, 250, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_TIRE, OBJECT_TYPE_MINE, -1);
+			add_random_location(level, 400, 250, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_TIRE, OBJECT_TYPE_MINE, 0);
 
-			add_random_location(level, 880, 250, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_TIRE, OBJECT_TYPE_MINE, -1);
+			add_random_location(level, 880, 250, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_TIRE, OBJECT_TYPE_MINE, 0);
 
-			add_random_location(level, 640, 400, OBJECT_TYPE_LIFTER, OBJECT_TYPE_MINE, OBJECT_TYPE_BOX, -1);
+			add_random_location(level, 640, 400, OBJECT_TYPE_LIFTER, OBJECT_TYPE_MINE, OBJECT_TYPE_BOX, 0);
 
 			break;
 		}
@@ -410,13 +410,13 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->armageddon_type = ARMAGEDDON_TYPE_WATER_RISE;
 
-			add_random_location(level, 230, 240, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_MINE, -1);
+			add_random_location(level, 230, 240, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_MINE, 0);
 
-			add_random_location(level, 1050, 240, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_MINE, -1);
+			add_random_location(level, 1050, 240, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_MINE, 0);
 
-			add_random_location(level, 475, 360, OBJECT_TYPE_TIRE, OBJECT_TYPE_MINE, -1);
+			add_random_location(level, 475, 360, OBJECT_TYPE_TIRE, OBJECT_TYPE_MINE, 0);
 
-			add_random_location(level, 640, 250, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, OBJECT_TYPE_LIFTER, -1);
+			add_random_location(level, 640, 250, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, OBJECT_TYPE_LIFTER, 0);
 
 			break;
 		}
@@ -436,11 +436,11 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->armageddon_type = ARMAGEDDON_TYPE_WATER_RISE;
 
-			add_random_location(level, 300, 350, OBJECT_TYPE_MINE, OBJECT_TYPE_LIFTER, OBJECT_TYPE_TIRE, -1);
+			add_random_location(level, 300, 350, OBJECT_TYPE_MINE, OBJECT_TYPE_LIFTER, OBJECT_TYPE_TIRE, 0);
 
-			add_random_location(level, 980, 350, OBJECT_TYPE_MINE, OBJECT_TYPE_LIFTER, OBJECT_TYPE_TIRE, -1);
+			add_random_location(level, 980, 350, OBJECT_TYPE_MINE, OBJECT_TYPE_LIFTER, OBJECT_TYPE_TIRE, 0);
 
-			add_random_location(level, 640, 350, OBJECT_TYPE_MINE, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, -1);
+			add_random_location(level, 640, 350, OBJECT_TYPE_MINE, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, 0);
 
 			break;
 		}
@@ -462,13 +462,13 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->armageddon_type = ARMAGEDDON_TYPE_LASER_DOWN;
 
-			add_random_location(level, 230, 280, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, OBJECT_TYPE_LIFTER, OBJECT_TYPE_BOOSTER, -1);
+			add_random_location(level, 230, 280, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, OBJECT_TYPE_LIFTER, OBJECT_TYPE_BOOSTER, 0);
 
-			add_random_location(level, 1050, 280, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, OBJECT_TYPE_LIFTER, OBJECT_TYPE_BOOSTER, -1);
+			add_random_location(level, 1050, 280, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, OBJECT_TYPE_LIFTER, OBJECT_TYPE_BOOSTER, 0);
 
-			add_random_location(level, 640, 190, OBJECT_TYPE_MINE, OBJECT_TYPE_LIFTER, -1);
+			add_random_location(level, 640, 190, OBJECT_TYPE_MINE, OBJECT_TYPE_LIFTER, 0);
 
-			add_random_location(level, 640, 300, OBJECT_TYPE_MINE, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, -1);
+			add_random_location(level, 640, 300, OBJECT_TYPE_MINE, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, 0);
 
 			break;
 		}
@@ -490,9 +490,9 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->armageddon_type = ARMAGEDDON_TYPE_LASER_DOWN;
 
-			add_random_location(level, 640, 350, OBJECT_TYPE_MINE, OBJECT_TYPE_LIFTER, -1);
+			add_random_location(level, 640, 350, OBJECT_TYPE_MINE, OBJECT_TYPE_LIFTER, 0);
 
-			add_random_location(level, 640, 400, OBJECT_TYPE_MINE, OBJECT_TYPE_TIRE, OBJECT_TYPE_BOX, -1);
+			add_random_location(level, 640, 400, OBJECT_TYPE_MINE, OBJECT_TYPE_TIRE, OBJECT_TYPE_BOX, 0);
 
 			break;
 		}
@@ -514,11 +514,11 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->armageddon_type = ARMAGEDDON_TYPE_LASER_DOWN;
 
-			add_random_location(level, 250, 250, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_BOX, -1);
+			add_random_location(level, 250, 250, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_BOX, 0);
 
-			add_random_location(level, 1030, 250, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_BOX, -1);
+			add_random_location(level, 1030, 250, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_BOX, 0);
 
-			add_random_location(level, 640, 250, OBJECT_TYPE_LIFTER, OBJECT_TYPE_MINE, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, -1);
+			add_random_location(level, 640, 250, OBJECT_TYPE_LIFTER, OBJECT_TYPE_MINE, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, 0);
 
 			break;
 		}
@@ -540,13 +540,13 @@ Level* level_create(Level_Type type, Physics_World* world, int group)
 
 			level->armageddon_type = ARMAGEDDON_TYPE_MINE_RAIN;
 
-			add_random_location(level, 460, 210, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_MINE, -1);
+			add_random_location(level, 460, 210, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_MINE, 0);
 
-			add_random_location(level, 820, 210, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_MINE, -1);
+			add_random_location(level, 820, 210, OBJECT_TYPE_BOOSTER, OBJECT_TYPE_MINE, 0);
 
-			add_random_location(level, 640, 250, OBJECT_TYPE_LIFTER, OBJECT_TYPE_BOX, -1);
+			add_random_location(level, 640, 250, OBJECT_TYPE_LIFTER, OBJECT_TYPE_BOX, 0);
 
-			add_random_location(level, 640, 320, OBJECT_TYPE_MINE, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, -1);
+			add_random_location(level, 640, 320, OBJECT_TYPE_MINE, OBJECT_TYPE_BOX, OBJECT_TYPE_TIRE, 0);
 
 			break;
 		}

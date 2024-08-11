@@ -472,7 +472,7 @@ void car_kill(Car* car)
 
 	physics_body_destroy_all_joints(car->head_body);
 
-	// TODO: CLEAN THIS MESS
+	// TODO: clean this mess
 
 	for (int i = 0; car->textures[i] != NULL; i++)
 	{

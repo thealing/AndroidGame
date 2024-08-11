@@ -2,30 +2,6 @@
 
 #include <stdbool.h>
 
-#define GROUP_LEVEL -1
-
-#define GROUP_BLUE_CAR -2
-
-#define GROUP_RED_CAR -3
-
-#define FLAG_CAR (1 << 0)
-
-#define FLAG_CHASSIS (1 << 1)
-
-#define FLAG_WHEEL (1 << 2)
-
-#define FLAG_HEAD (1 << 3)
-
-#define FLAG_WATER (1 << 4)
-
-#define FLAG_OBJECT (1 << 5)
-
-#define FLAG_TOUCHED (1 << 6)
-
-#define FLAG_MINE (1 << 7)
-
-#define FLAG_SAFE (1 << 8)
-
 #define DEATH_DELAY 2
 
 #define AIR_TIME_THRESHOLD 0.5
@@ -36,11 +12,41 @@
 
 #define BOOSTER_STRENGTH 35
 
+enum
+{
+	GROUP_LEVEL = -1,
+
+	GROUP_BLUE_CAR = -2,
+
+	GROUP_RED_CAR = -3,
+};
+
+enum
+{
+	FLAG_CAR = (1 << 0),
+
+	FLAG_CHASSIS = (1 << 1),
+
+	FLAG_WHEEL = (1 << 2),
+
+	FLAG_HEAD = (1 << 3),
+
+	FLAG_WATER = (1 << 4),
+
+	FLAG_OBJECT = (1 << 5),
+
+	FLAG_TOUCHED = (1 << 6),
+
+	FLAG_MINE = (1 << 7),
+
+	FLAG_SAFE = (1 << 8),
+};
+
 extern bool g_debug_hud;
 
-extern bool g_same_random_car;
-
 extern bool g_random_objects;
+
+extern bool g_same_random_car;
 
 extern int g_sudden_death_time;
 

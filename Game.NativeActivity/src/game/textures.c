@@ -199,6 +199,10 @@ void textures_init()
 
 	texture_create_from_file(&g_textures.ui_back_released, "images/ui/back_released.png");
 
+	texture_create_from_file(&g_textures.ui_settings_pressed, "images/ui/settings_pressed.png");
+
+	texture_create_from_file(&g_textures.ui_settings_released, "images/ui/settings_released.png");
+
 	create_blue_red_textures(g_textures.ui_brake_pressed, "images/ui/left_pressed.png");
 
 	create_blue_red_textures(g_textures.ui_brake_released, "images/ui/left_released.png");

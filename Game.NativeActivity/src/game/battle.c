@@ -304,6 +304,8 @@ void battle_leave()
 	button_destroy(s_big_back);
 
 	button_destroy(s_big_restart);
+
+	sounds_stop_all();
 }
 
 void battle_pause()

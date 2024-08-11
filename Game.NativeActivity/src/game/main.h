@@ -12,6 +12,8 @@
 
 #include "menu.h"
 
+#include "settings.h"
+
 #include "battle.h"
 
 #include "global.h"

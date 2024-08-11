@@ -57,7 +57,10 @@ void android_main()
 					}
 					case ANDROID_EVENT_PAUSED:
 					{
-						scene_pause();
+						if (started)
+						{
+							scene_pause();
+						}
 
 						break;
 					}
@@ -83,9 +86,11 @@ void android_main()
 
 							menu_init();
 
+							settings_init();
+
 							battle_init();
 
-							scene_change(&g_menu);
+							scene_change(&g_settings);
 
 							started = true;
 						}

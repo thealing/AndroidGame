@@ -26,6 +26,8 @@ typedef struct Booster Booster;
 
 enum Object_Type
 {
+	OBJECT_TYPE_NONE,
+
 	OBJECT_TYPE_SAW,
 
 	OBJECT_TYPE_MINE,

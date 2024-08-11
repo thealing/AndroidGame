@@ -207,6 +207,8 @@
     <Content Include="assets\images\ui\restart_released.png" />
     <Content Include="assets\images\ui\right_pressed.png" />
     <Content Include="assets\images\ui\right_released.png" />
+    <Content Include="assets\images\ui\settings_pressed.png" />
+    <Content Include="assets\images\ui\settings_released.png" />
     <Content Include="assets\images\ui\star_opaque.png" />
     <Content Include="assets\images\ui\star_translucent.png" />
     <Content Include="assets\images\ui\unchecked.png" />

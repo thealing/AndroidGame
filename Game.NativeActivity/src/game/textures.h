@@ -122,6 +122,10 @@ struct Textures
 
 	Texture* ui_back_released;
 
+	Texture* ui_settings_pressed;
+
+	Texture* ui_settings_released;
+
 	Texture* ui_brake_pressed[2];
 
 	Texture* ui_brake_released[2];

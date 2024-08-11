@@ -33,6 +33,8 @@ struct Scene
 
 extern Scene g_menu;
 
+extern Scene g_settings;
+
 extern Scene g_battle;
 
 void scene_change(Scene* scene);
