@@ -47,6 +47,8 @@ static void collect_input_events()
 
 		AInputQueue_getEvent(input_queue, &input_event);
 
+		bool handled = true;
+
 		switch (AInputEvent_getType(input_event)) 
 		{
 			case AINPUT_EVENT_TYPE_MOTION: 
@@ -150,6 +152,13 @@ static void collect_input_events()
 
 				switch (key_code)
 				{
+					case AKEYCODE_VOLUME_DOWN:
+					case AKEYCODE_VOLUME_UP:
+					{
+						handled = false;
+
+						break;
+					}
 					case AKEYCODE_BACK:
 					{
 						key = ANDROID_KEY_BACK;
@@ -219,7 +228,7 @@ static void collect_input_events()
 			}
 		}
 
-		AInputQueue_finishEvent(input_queue, input_event, 1);
+		AInputQueue_finishEvent(input_queue, input_event, handled);
 	}
 }
 

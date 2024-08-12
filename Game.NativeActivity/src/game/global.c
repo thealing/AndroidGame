@@ -24,7 +24,7 @@ void global_init()
 
 	g_max_score = 5;
 
-	g_selected_level = 10;
+	g_selected_level = 1;
 
 	g_selected_blue_car = 1;
 
