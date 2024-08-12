@@ -4,9 +4,9 @@ Touch g_current_touches[TOUCH_COUNT];
 
 Touch g_previous_touches[TOUCH_COUNT];
 
-bool g_current_keys[ANDROID_KEY_COUNT];
+bool g_current_keys[ANDROID_KEY_MAX];
 
-bool g_previous_keys[ANDROID_KEY_COUNT];
+bool g_previous_keys[ANDROID_KEY_MAX];
 
 Vector input_project_touch(const Touch* touch)
 {

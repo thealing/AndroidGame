@@ -8,6 +8,8 @@
 
 #include "input.h"
 
+#define BUTTON_KEYBIND_COUNT_MAX 4
+
 typedef struct Button Button;
 
 struct Button
@@ -22,6 +24,10 @@ struct Button
 
 	double scale;
 
+	Android_Key keybinds[BUTTON_KEYBIND_COUNT_MAX];
+
+	int keybind_count;
+
 	bool down;
 
 	bool clicked;
@@ -34,6 +40,8 @@ void button_destroy(Button* button);
 void button_update(Button* button);
 
 void button_render(Button* button);
+
+void button_bind_key(Button* button, Android_Key key);
 
 bool button_was_clicked(Button* button);
 

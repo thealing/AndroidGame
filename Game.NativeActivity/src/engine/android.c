@@ -124,8 +124,6 @@ static void collect_input_events()
 			{
 				int action = AKeyEvent_getAction(input_event);
 
-				int key_code = AKeyEvent_getKeyCode(input_event);
-
 				Android_Event_Type type = ANDROID_EVENT_UNKNOWN;
 
 				switch (action)
@@ -144,17 +142,96 @@ static void collect_input_events()
 					}
 				}
 
+				int key_code = AKeyEvent_getKeyCode(input_event);
+
+				Android_Key key = ANDROID_KEY_UNKNOWN;
+
+				// TODO: copy whole enum from keycodes.h?
+
 				switch (key_code)
 				{
 					case AKEYCODE_BACK:
 					{
-						push_event(&(Android_Event){ .type = type, .key_event = { .key = ANDROID_KEY_BACK } });
+						key = ANDROID_KEY_BACK;
 
 						break;
 					}
+					case AKEYCODE_ENTER:
+					case AKEYCODE_DPAD_CENTER:
+					{
+						key = ANDROID_KEY_ENTER;
 
-					// TODO: support other keys?
+						break;
+					}
+					case AKEYCODE_SPACE:
+					{
+						key = ANDROID_KEY_SPACE;
+
+						break;
+					}
+					case AKEYCODE_DPAD_LEFT:
+					{
+						key = ANDROID_KEY_LEFT;
+
+						break;
+					}
+					case AKEYCODE_DPAD_RIGHT:
+					{
+						key = ANDROID_KEY_RIGHT;
+
+						break;
+					}
+					case AKEYCODE_DPAD_UP:
+					{
+						key = ANDROID_KEY_UP;
+
+						break;
+					}
+					case AKEYCODE_DPAD_DOWN:
+					{
+						key = ANDROID_KEY_DOWN;
+
+						break;
+					}
+					case AKEYCODE_MEDIA_PLAY:
+					{
+						key = ANDROID_KEY_PLAY;
+
+						break;
+					}
+					case AKEYCODE_MEDIA_PAUSE:
+					{
+						key = ANDROID_KEY_PAUSE;
+
+						break;
+					}
+					case AKEYCODE_MEDIA_REWIND:
+					{
+						key = ANDROID_KEY_REWIND;
+
+						break;
+					}
+					case AKEYCODE_MEDIA_FAST_FORWARD:
+					{
+						key = ANDROID_KEY_FAST_FORWARD;
+
+						break;
+					}
+					default:
+					{
+						if (key_code >= AKEYCODE_0 && key_code <= AKEYCODE_9)
+						{
+							key = '0' + key_code - AKEYCODE_0;
+						}
+
+						if (key_code >= AKEYCODE_A && key_code <= AKEYCODE_Z)
+						{
+							key = 'A' + key_code - AKEYCODE_A;
+						}
+					}
 				}
+
+				push_event(&(Android_Event){ .type = type, .key_event = { .key = key } });
 
 				break;
 			}

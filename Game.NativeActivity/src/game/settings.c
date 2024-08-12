@@ -57,6 +57,8 @@ void settings_enter()
 
 	s_back = button_create(move_shape(shape_create_circle(vector_create(80, 80), 64)), g_textures.ui_back_pressed, g_textures.ui_back_released, vector_create(80, 80), 120);
 
+	button_bind_key(s_back, ANDROID_KEY_BACK);
+
 	scene_add_button(s_back);
 }
 
@@ -161,7 +163,7 @@ void settings_update(double delta_time)
 		sound_play(g_sounds.blip);
 	}
 
-	if (button_was_clicked(s_back) || input_is_key_pressed(ANDROID_KEY_BACK))
+	if (button_was_clicked(s_back))
 	{
 		scene_change(&g_menu);
 
@@ -186,4 +188,15 @@ void settings_render()
 	graphics_draw_string_in_rect(&(Rect){ 260, 330, 0, 390 }, ALIGNMENT_LEFT, "SAME RANDOM CAR");
 
 	graphics_draw_string_in_rect(&(Rect){ 260, 240, 0, 300 }, ALIGNMENT_LEFT, "SUDDEN DEATH TIME");
+
+	if (g_debug_hud)
+	{
+		for (int i = 0; i < ANDROID_KEY_MAX; i++)
+		{
+			if (input_is_key_down(i))
+			{
+				graphics_draw_format_in_rect(&(Rect){ 640, 100, 0, 200 }, ALIGNMENT_CENTER, "%i", i);
+			}
+		}
+	}
 }

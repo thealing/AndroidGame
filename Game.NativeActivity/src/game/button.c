@@ -32,6 +32,19 @@ void button_update(Button* button)
 	{
 		button->clicked = true;
 	}
+
+	for (int i = 0; i < button->keybind_count; i++)
+	{
+		if (input_is_key_down(button->keybinds[i]))
+		{
+			button->down = true;
+		}
+
+		if (input_is_key_released(button->keybinds[i]))
+		{
+			button->clicked = true;
+		}
+	}
 }
 
 void button_render(Button* button)
@@ -51,6 +64,11 @@ void button_render(Button* button)
 	graphics_draw_texture();
 
 	graphics_load_transform();
+}
+
+void button_bind_key(Button* button, Android_Key key)
+{
+	button->keybinds[button->keybind_count++] = key;
 }
 
 bool button_was_clicked(Button* button)
