@@ -59,6 +59,8 @@ void settings_enter()
 
 	button_bind_key(s_back, ANDROID_KEY_BACK);
 
+	button_bind_key(s_back, ANDROID_KEY_BACKSPACE);
+
 	scene_add_button(s_back);
 }
 

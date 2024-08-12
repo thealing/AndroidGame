@@ -227,18 +227,42 @@ void battle_enter()
 		s_red_brake = button_create(move_shape(create_rect_shape(vector_create(1150, 0), vector_create(1280, 720))), g_textures.ui_brake_pressed[1], g_textures.ui_brake_released[1], vector_create(1220, 60), 80);
 
 		s_red_gas = button_create(move_shape(create_rect_shape(vector_create(1020, 0), vector_create(1150, 720))), g_textures.ui_gas_pressed[1], g_textures.ui_gas_released[1], vector_create(1080, 60), 80);
+
+		button_bind_key(s_blue_brake, 'A');
+
+		button_bind_key(s_blue_gas, 'D');
+
+		button_bind_key(s_red_brake, ANDROID_KEY_RIGHT);
+
+		button_bind_key(s_red_gas, ANDROID_KEY_LEFT);
 	}
 	else if (s_blue_player)
 	{
 		s_blue_brake = button_create(move_shape(create_rect_shape(vector_create(0, 0), vector_create(200, 720))), g_textures.ui_brake_pressed[0], g_textures.ui_brake_released[0], vector_create(60, 60), 80);
 
 		s_blue_gas = button_create(move_shape(create_rect_shape(vector_create(1080, 0), vector_create(1280, 720))), g_textures.ui_gas_pressed[0], g_textures.ui_gas_released[0], vector_create(1220, 60), 80);
+
+		button_bind_key(s_blue_brake, 'A');
+
+		button_bind_key(s_blue_brake, ANDROID_KEY_LEFT);
+
+		button_bind_key(s_blue_gas, 'D');
+
+		button_bind_key(s_blue_gas, ANDROID_KEY_RIGHT);
 	}
 	else if (s_red_player)
 	{
 		s_red_brake = button_create(move_shape(create_rect_shape(vector_create(1080, 0), vector_create(1280, 720))), g_textures.ui_brake_pressed[1], g_textures.ui_brake_released[1], vector_create(1220, 60), 80);
 
 		s_red_gas = button_create(move_shape(create_rect_shape(vector_create(0, 0), vector_create(200, 720))), g_textures.ui_gas_pressed[1], g_textures.ui_gas_released[1], vector_create(60, 60), 80);
+
+		button_bind_key(s_red_brake, 'D');
+
+		button_bind_key(s_red_brake, ANDROID_KEY_RIGHT);
+
+		button_bind_key(s_red_gas, 'A');
+
+		button_bind_key(s_red_gas, ANDROID_KEY_LEFT);
 	}
 
 	s_pause = button_create(move_shape(shape_create_circle(vector_create(640, 50), 32)), g_textures.ui_pause_pressed, g_textures.ui_pause_released, vector_create(640, 50), 60);
@@ -252,6 +276,22 @@ void battle_enter()
 	s_big_back = button_create(move_shape(shape_create_circle(vector_create(60, 60), 50)), g_textures.ui_back_pressed, g_textures.ui_back_released, vector_create(60, 60), 100);
 
 	s_big_restart = button_create(move_shape(shape_create_circle(vector_create(640, 60), 50)), g_textures.ui_restart_pressed, g_textures.ui_restart_released, vector_create(640, 60), 100);
+
+	button_bind_key(s_pause, ANDROID_KEY_SPACE);
+
+	button_bind_key(s_resume, ANDROID_KEY_SPACE);
+
+	button_bind_key(s_back, ANDROID_KEY_BACK);
+
+	button_bind_key(s_big_back, ANDROID_KEY_BACK);
+
+	button_bind_key(s_back, ANDROID_KEY_BACKSPACE);
+
+	button_bind_key(s_big_back, ANDROID_KEY_BACKSPACE);
+
+	button_bind_key(s_restart, ANDROID_KEY_ENTER);
+
+	button_bind_key(s_big_restart, ANDROID_KEY_ENTER);
 
 	scene_add_button(s_pause);
 

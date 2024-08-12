@@ -227,6 +227,8 @@ void menu_enter()
 
 	s_settings = button_create(move_shape(shape_create_circle(vector_create(1200, 300), 64)), g_textures.ui_settings_pressed, g_textures.ui_settings_released, vector_create(1200, 300), 120);
 
+	button_bind_key(s_play, ANDROID_KEY_ENTER);
+
 	scene_add_button(s_play);
 
 	scene_add_button(s_settings);

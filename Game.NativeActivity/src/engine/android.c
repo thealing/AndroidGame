@@ -169,6 +169,12 @@ static void collect_input_events()
 
 						break;
 					}
+					case AKEYCODE_DEL:
+					{
+						key = ANDROID_KEY_BACKSPACE;
+
+						break;
+					}
 					case AKEYCODE_DPAD_LEFT:
 					{
 						key = ANDROID_KEY_LEFT;
