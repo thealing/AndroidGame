@@ -233,7 +233,10 @@ void menu_enter()
 
 	scene_add_button(s_settings);
 
-	sound_play(g_sounds.intro);
+	if (!sound_is_playing(g_sounds.intro))
+	{
+		sound_play(g_sounds.intro);
+	}
 }
 
 void menu_leave()

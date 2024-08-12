@@ -2,10 +2,6 @@
 
 static bool s_loaded;
 
-static bool s_play_music;
-
-static bool s_play_sounds;
-
 static Checkbox* s_music;
 
 static Checkbox* s_sounds;
@@ -35,13 +31,15 @@ void settings_init()
 
 void settings_enter()
 {
-	s_music = checkbox_create(vector_create(120, 630), 32, &s_play_music);
+	save_load();
 
-	s_sounds = checkbox_create(vector_create(120, 540), 32, &s_play_sounds);
+	s_music = checkbox_create(vector_create(120, 630), 32, &g_save.play_music);
 
-	s_random_objects = checkbox_create(vector_create(120, 450), 32, &g_random_objects);
+	s_sounds = checkbox_create(vector_create(120, 540), 32, &g_save.play_sounds);
 
-	s_same_random_car = checkbox_create(vector_create(120, 360), 32, &g_same_random_car);
+	s_random_objects = checkbox_create(vector_create(120, 450), 32, &g_save.random_objects);
+
+	s_same_random_car = checkbox_create(vector_create(120, 360), 32, &g_save.same_random_car);
 
 	scene_add_checkbox(s_music);
 
@@ -51,7 +49,7 @@ void settings_enter()
 
 	scene_add_checkbox(s_same_random_car);
 
-	s_sudden_death_time = counter_create(vector_create(120, 270), vector_create(32, 32), 0, 30, &g_sudden_death_time);
+	s_sudden_death_time = counter_create(vector_create(120, 270), vector_create(32, 32), 0, 30, &g_save.sudden_death_time);
 
 	scene_add_counter(s_sudden_death_time);
 
@@ -66,6 +64,8 @@ void settings_enter()
 
 void settings_leave()
 {
+	save_save();
+
 	checkbox_destroy(s_music);
 
 	checkbox_destroy(s_sounds);
@@ -91,7 +91,7 @@ void settings_resume()
 
 void settings_update(double delta_time)
 {
-	if (s_play_music)
+	if (g_save.play_music)
 	{
 		sound_set_volume(g_sounds.intro, 0.6);
 
@@ -104,7 +104,7 @@ void settings_update(double delta_time)
 		sound_set_volume(g_sounds.music, 0);
 	}
 
-	if (s_play_sounds)
+	if (g_save.play_sounds)
 	{
 		sound_set_volume(g_sounds.airhorn, 0.4);
 

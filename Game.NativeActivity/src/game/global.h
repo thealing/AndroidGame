@@ -1,5 +1,7 @@
 #pragma once
 
+#include "save.h"
+
 #include <stdbool.h>
 
 #define DEATH_DELAY 2
@@ -43,12 +45,6 @@ enum
 };
 
 extern bool g_debug_hud;
-
-extern bool g_random_objects;
-
-extern bool g_same_random_car;
-
-extern int g_sudden_death_time;
 
 extern int g_sudden_death_countdown;
 

@@ -68,12 +68,12 @@ static void on_start()
 
 	s_level = level_create(g_selected_level == 0 ? random_int_below(LEVEL_TYPE_COUNT) : g_selected_level - 1, s_world, GROUP_LEVEL);
 
-	if (g_random_objects)
+	if (g_save.random_objects)
 	{
 		level_add_random_objects(s_level);
 	}
 
-	if (g_selected_blue_car == 0 && g_selected_red_car == 0 && g_same_random_car)
+	if (g_selected_blue_car == 0 && g_selected_red_car == 0 && g_save.same_random_car)
 	{
 		Car_Type type = random_int_below(CAR_TYPE_COUNT);
 
@@ -472,7 +472,7 @@ void battle_update(double delta_time)
 
 		if (!s_over && s_winner == 0)
 		{
-			if (!s_sudden_death && s_elapsed_time > g_sudden_death_time)
+			if (!s_sudden_death && s_elapsed_time > g_save.sudden_death_time)
 			{
 				s_sudden_death = true;
 
@@ -481,7 +481,7 @@ void battle_update(double delta_time)
 
 			if (fmod(s_elapsed_time, 1) < delta_time)
 			{
-				double countdown = ceil(g_sudden_death_time - s_elapsed_time);
+				double countdown = ceil(g_save.sudden_death_time - s_elapsed_time);
 
 				if (countdown > 0 && countdown <= g_sudden_death_countdown)
 				{
@@ -656,7 +656,7 @@ void battle_render()
 	{
 		if (fmod(s_elapsed_time, 1) < 0.7)
 		{
-			double countdown = ceil(g_sudden_death_time - s_elapsed_time);
+			double countdown = ceil(g_save.sudden_death_time - s_elapsed_time);
 
 			Rect rect = { 0, 580, 1280, 640 };
 

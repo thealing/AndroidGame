@@ -2,11 +2,15 @@
 
 #include "global.h"
 
+#include "save.h"
+
 #include "scene.h"
 
 #include "engine/window.h"
 
 #include "engine/sound.h"
+
+#include "engine/data.h"
 
 void settings_init();
 

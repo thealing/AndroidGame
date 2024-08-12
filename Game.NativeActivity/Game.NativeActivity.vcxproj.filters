@@ -32,6 +32,8 @@
     <ClCompile Include="src\game\sounds.c" />
     <ClCompile Include="src\game\objects.c" />
     <ClCompile Include="src\game\settings.c" />
+    <ClCompile Include="src\engine\data.c" />
+    <ClCompile Include="src\game\save.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\engine\log.h" />
@@ -65,5 +67,7 @@
     <ClInclude Include="src\game\sounds.h" />
     <ClInclude Include="src\game\objects.h" />
     <ClInclude Include="src\game\settings.h" />
+    <ClInclude Include="src\engine\data.h" />
+    <ClInclude Include="src\game\save.h" />
   </ItemGroup>
 </Project>

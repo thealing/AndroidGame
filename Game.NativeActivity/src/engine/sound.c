@@ -105,6 +105,15 @@ void sound_destroy(Sound* sound)
 	free(sound);
 }
 
+bool sound_is_playing(Sound* sound)
+{
+	SLuint32 play_state;
+
+	(*sound->play_itf)->GetPlayState(sound->play_itf, &play_state);
+
+	return play_state == SL_PLAYSTATE_PLAYING;
+}
+
 void sound_play(Sound* sound)
 {
 	(*sound->seek_itf)->SetPosition(sound->seek_itf, 0, SL_SEEKMODE_ACCURATE);

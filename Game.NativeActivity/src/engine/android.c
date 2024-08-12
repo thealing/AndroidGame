@@ -199,30 +199,6 @@ static void collect_input_events()
 
 						break;
 					}
-					case AKEYCODE_MEDIA_PLAY:
-					{
-						key = ANDROID_KEY_PLAY;
-
-						break;
-					}
-					case AKEYCODE_MEDIA_PAUSE:
-					{
-						key = ANDROID_KEY_PAUSE;
-
-						break;
-					}
-					case AKEYCODE_MEDIA_REWIND:
-					{
-						key = ANDROID_KEY_REWIND;
-
-						break;
-					}
-					case AKEYCODE_MEDIA_FAST_FORWARD:
-					{
-						key = ANDROID_KEY_FAST_FORWARD;
-
-						break;
-					}
 					default:
 					{
 						if (key_code >= AKEYCODE_0 && key_code <= AKEYCODE_9)
