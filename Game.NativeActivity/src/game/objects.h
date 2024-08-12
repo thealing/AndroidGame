@@ -2,7 +2,7 @@
 
 #include "util.h"
 
-#include "global.h"
+#include "defines.h"
 
 #include "sounds.h"
 

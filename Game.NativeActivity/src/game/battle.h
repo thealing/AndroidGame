@@ -2,6 +2,10 @@
 
 #include "global.h"
 
+#include "defines.h"
+
+#include "save.h"
+
 #include "scene.h"
 
 #include "button.h"

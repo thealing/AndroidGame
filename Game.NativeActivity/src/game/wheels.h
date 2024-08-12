@@ -4,7 +4,7 @@
 
 #include "util.h"
 
-#include "global.h"
+#include "defines.h"
 
 typedef enum Wheel_Type Wheel_Type;
 

@@ -8,11 +8,11 @@
 
 #include <stddef.h>
 
-#define BUTTON_COUNT_MAX 10
+#define BUTTON_COUNT_MAX 20
 
-#define CHECKBOX_COUNT_MAX 10
+#define CHECKBOX_COUNT_MAX 20
 
-#define COUNTER_COUNT_MAX 10
+#define COUNTER_COUNT_MAX 20
 
 typedef struct Scene Scene;
 

@@ -70,6 +70,7 @@
     <ClCompile Include="src\game\util.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\game\defines.h" />
     <ClInclude Include="src\game\save.h" />
     <ClInclude Include="src\engine\data.h" />
     <ClInclude Include="src\game\settings.h" />
