@@ -10,16 +10,6 @@
 
 #include "engine/time.h"
 
-#include "menu.h"
-
-#include "settings.h"
-
-#include "battle.h"
-
-#include "global.h"
+#include "engine/window.h"
 
 void android_main();
-
-void update(double delta_time);
-
-void render();

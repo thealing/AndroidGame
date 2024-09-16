@@ -174,6 +174,10 @@ void graphics_uninit(void* window)
 	context = EGL_NO_CONTEXT;
 
 	surface = EGL_NO_SURFACE;
+
+	memset(&current_state, 0, sizeof(current_state));
+
+	state_history_index = 0;
 }
 
 void graphics_display()

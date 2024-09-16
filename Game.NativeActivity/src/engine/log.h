@@ -1,6 +1,6 @@
 #pragma once
 
-#define TAG "ruhodes"
+#define LOG_TAG __PROJECT__
 
 void log_info(const char* format, ...);
 
